@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class UserGetTickets
     {
+        #region Модель для получения билетов
+
         public int Id { get; set; }
 
         [Required]
@@ -19,5 +21,7 @@ namespace CC.Models
         [DataType(DataType.Password)]
         [StringLength(25, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 5)]
         public string Password { get; set; }
+
+        #endregion
     }
 }

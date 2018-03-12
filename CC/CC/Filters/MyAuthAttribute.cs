@@ -10,6 +10,8 @@ namespace CC.Filters
 {
     public class MyAuthAttribute : FilterAttribute, IAuthenticationFilter
     {
+        #region Фильт для проверки аунтификации пользователя 
+
         public void OnAuthentication(AuthenticationContext filterContext)
         {
             var user = filterContext.HttpContext.User;
@@ -29,5 +31,7 @@ namespace CC.Filters
                 filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary { { "controller", "Account" }, { "action", "Login" } });
             }
         }
+
+        #endregion
     }
 }

@@ -12,17 +12,23 @@ namespace CC.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account/Create
+        // GET, POST: Account/Create
+        #region Регистрация
+
         public ActionResult Create()
         {
             return View();
         }
 
-        //POST: Account/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserCreateModel model)
         {
+            Session["Id"] = null;
+            Session["UserRole"] = null;
+            Session["AdminRole"] = null;
+            Session["ModerRole"] = null;
+
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
@@ -31,7 +37,7 @@ namespace CC.Controllers
 
                     if (user == null)
                     {
-                        context.Users.Add(new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0 });
+                        context.Users.Add(new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 });
                         context.SaveChanges();
 
                         Session["UserRole"] = "User";
@@ -47,18 +53,26 @@ namespace CC.Controllers
 
             return View(model);
         }
+        #endregion
 
-        //GET: Account/Login
+        //GET, POST: Account/Login
+        #region Авторизация
+
         public ActionResult Login()
         {
             return View();
         }
 
-        //POST: Account/Login
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserLoginModel model)
         {
+            Session["Id"] = null;
+            Session["UserRole"] = null;
+            Session["AdminRole"] = null;
+            Session["ModerRole"] = null;
+
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
@@ -99,24 +113,33 @@ namespace CC.Controllers
 
             return View(model);
         }
+        #endregion
 
         //POST: Account/Logout
+        #region Выход из аккаунта
+
         [HttpPost]
         public ActionResult Logout()
         {
             Session["Id"] = null;
+            Session["UserRole"] = null;
+            Session["AdminRole"] = null;
+            Session["ModerRole"] = null;
 
             return View("Index");
         }
+        #endregion
 
-        //GET: Account/GetAdmin
+
+        //GET, POST: Account/GetAdmin
+        #region Получение прав администратора
+
         [MyAuth]
         public ActionResult GetAdmin()
         {
             return View();
         }
 
-        //POST: Account/GetAdmin
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
@@ -154,15 +177,18 @@ namespace CC.Controllers
 
             return View(model);
         }
+        #endregion
 
-        //GET: Account/GetModer
+
+        //GET, POST: Account/GetModer
+        #region Получение прав модератора
+
         [MyAuth]
         public ActionResult GetModer()
         {
             return View();
         }
 
-        //POST: Account/GerModer
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
@@ -200,5 +226,6 @@ namespace CC.Controllers
 
             return View(model);
         }
+        #endregion
     }
 }

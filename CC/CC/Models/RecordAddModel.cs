@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class RecordAddModel
     {
+        #region Модель для добавления новости
+
         public int Id { get; set; }
 
         [Display(Name = "Никнейм")]
@@ -25,5 +27,7 @@ namespace CC.Models
         [Display(Name = "Описание")]
         [StringLength(1000, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 50)]
         public string Description { get; set; }
+
+        #endregion
     }
 }

@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class RecordEditModel
     {
+        #region Модель для редактирования новостей
+
         public int Id { get; set; }
 
         public int UserId { get; set; }
@@ -23,5 +25,7 @@ namespace CC.Models
         [Display(Name = "Описание")]
         [StringLength(1000, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 50)]
         public string Description { get; set; }
+
+        #endregion
     }
 }

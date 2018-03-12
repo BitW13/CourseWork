@@ -9,9 +9,13 @@ namespace CC.Controllers
 {
     public class HomeController : Controller
     {
+        #region Главная страница
+
         public ActionResult Index()
         {
             return View();
         }
+
+        #endregion
     }
 }

@@ -12,7 +12,23 @@ namespace CC.Controllers
 {
     public class ManageController : Controller
     {
+        // GET: Manage/AccountIndex
+        #region Страница аккаунта пользователя
+
+        [MyAuth]
+        public ActionResult AccountIndex()
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault());
+            }
+        }
+
+        #endregion
+
         //GET: Manage/ListOfUsers
+        #region Список пользователей
+
         [MyAuth]
         public ActionResult ListOfUsers()
         {
@@ -22,7 +38,11 @@ namespace CC.Controllers
             }
         }
 
+        #endregion
+
         //GET: Manage/AllRecords
+        #region Список всех новостей
+
         public ActionResult AllRecords()
         {
             using (var context = new UserContext())
@@ -31,7 +51,12 @@ namespace CC.Controllers
             }
         }
 
+
+        #endregion
+
         //GET: Manage/ListOfRecords
+        #region Список новостей определенного пользователя
+
         [MyAuth]
         public ActionResult ListOfRecords()
         {
@@ -43,11 +68,83 @@ namespace CC.Controllers
             }
         }
 
-        //POS: Manage/ListOfRecords
+        #endregion
+
+        //GET: Manage/Details
+        #region Новость детально
+
+        public ActionResult Details(int? id)
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+            }
+        }
+
+        #endregion
+
+        //GET, POST: Manage/AddRecord
+        #region Добавление новостей
+
+        [MyAuth]
+        public ActionResult AddRecord()
+        {
+            return View();
+        }
+
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult ListOfRecords(RecordEditModel model)
+        public ActionResult AddRecord(RecordAddModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    var user = context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+
+                    if (user != null)
+                    {
+                        if (user.UserRoleName == "Moder")
+                        {
+                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id });
+                            context.SaveChanges();
+
+                            return RedirectToAction("AccountIndex", "Manage");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "У Вас недостаточно прав");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого пользователя не существует");
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        #endregion
+
+        //GET, POST: Manage/EditRecord
+        #region Редактирование новостей
+
+        [MyAuth]
+        public ActionResult EditRecord(int? id)
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+            }
+        }
+
+        [HttpPost]
+        [MyAuth]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRecord(RecordEditModel model)
         {
             if (ModelState.IsValid)
             {
@@ -57,17 +154,68 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
-
-                        if (record != null)
+                        if (user.UserRoleName == "Moder")
                         {
+                            var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
+
                             record.Title = model.Title;
                             record.Description = model.Description;
 
                             context.Entry(record).State = EntityState.Modified;
                             context.SaveChanges();
 
-                            return RedirectToAction("AccountIndex", "Account");
+                            return RedirectToAction("AccountIndex", "Manage");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "У Вас недостаточно прав");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Пользователя с таким никнеймом не существует");
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        #endregion
+
+        //GET, POST: Manage/DeleteRecord
+        #region Удаление новостей
+
+        [MyAuth]
+        public ActionResult DeleteRecord(int? id)
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+            }
+        }
+
+        [HttpPost]
+        [MyAuth]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRecord(Record model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    var user = context.Users.Where(m => m.Id == model.UserId);
+
+                    if (user != null)
+                    {
+                        var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
+
+                        if (record != null)
+                        {
+                            context.Entry(record).State = EntityState.Deleted;
+                            context.SaveChanges();
+
+                            return RedirectToAction("AccountIndex", "Manage");
                         }
                         else
                         {
@@ -81,78 +229,14 @@ namespace CC.Controllers
                 }
             }
 
-            return View(model);
-        }
-
-        //GET: Manage/Details
-        public ActionResult Details(int? id)
-        {
-            using (var context = new UserContext())
-            {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
-            }
-        }
-
-        //GET: Manage/UserTickets
-        [MyAuth]
-        [ValidateAntiForgeryToken]
-        public ActionResult UseTickets(int? id)
-        {
-            using (var context = new UserContext())
-            {
-                return View(context.Users.Where(m => m.Id == id).FirstOrDefault());
-            }
-        }
-
-        //POST: Manage/UseTickets
-        [HttpPost]
-        [MyAuth]
-        [ValidateAntiForgeryToken]
-        public ActionResult UseTickets(UseTicketsModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
-
-                    if (user != null)
-                    {
-                        if (user.Password == model.Password)
-                        {
-                            user.UserTickets = user.UserTickets - 1;
-
-                            context.Entry(user).State = EntityState.Modified;
-                            context.SaveChanges();
-
-                            return RedirectToAction("ListOfUsers", "Manage");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Неверный пароль");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
-                }
-            }
-
             return View();
         }
 
-        // GET: Manage/Acc
-        [MyAuth]
-        public ActionResult AccountIndex(int? id)
-        {
-            using (var context = new UserContext())
-            {
-                return View(context.Users.Where(m => m.Id == id).FirstOrDefault());
-            }
-        }
+        #endregion
 
-        //GET: Manage/EditUserData
+        //GET, POST: Manage/EditUserData
+        #region Редактирование данных пользователя
+
         [MyAuth]
         public ActionResult EditUserData(int? id)
         {
@@ -162,7 +246,6 @@ namespace CC.Controllers
             }
         }
 
-        //POST: Manage/EditUserData
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
@@ -195,14 +278,17 @@ namespace CC.Controllers
             return View(model);
         }
 
-        //GET: Manage/EditUserPassword
+        #endregion
+
+        //GET, POST: Manage/EditUserPassword
+        #region Изменение пароля пользователя 
+
         [MyAuth]
         public ActionResult EditUserPassword(int? id)
         {
             return View();
         }
 
-        //POST: Manage/EditUserPassword
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
@@ -243,19 +329,22 @@ namespace CC.Controllers
             return View();
         }
 
-        //GET: Manage/Delete
+        #endregion
+
+        //GET, POST: Manage/Delete
+        #region Удаление аккаунта пользователя
+
         [MyAuth]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete()
         {
             using (var contex = new UserContext())
             {
-                var user = contex.Users.Where(m => m.Id == id).FirstOrDefault();
+                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
 
                 return View(user);
             }
         }
 
-        //POST: Manage/Delete
         [HttpPost]
         [MyAuth]
         public ActionResult Delete(User model)
@@ -279,136 +368,46 @@ namespace CC.Controllers
             return View();
         }
 
-        //GET: Manage/AddRecord
-        [MyAuth]
-        public ActionResult AddRecord()
-        {
-            return View();
-        }
+        #endregion
 
-        //POST: Manage/AddRecord
-        [HttpPost]
+        //GET, POST: Manage/UseTickets
+        #region Использование билетов для кофе
+
         [MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult AddRecord(RecordAddModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    var user = context.Users.Where(m => m.NickName == model.NickName).FirstOrDefault();
-
-                    if (user != null)
-                    {
-                        if (user.UserRoleName == "Moder")
-                        {
-                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description });
-                            context.SaveChanges();
-
-                            return RedirectToAction("AccountIndex", "Manage");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "У Вас недостаточно прав");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
-                }
-            }
-
-            return View(model);
-        }
-
-        //GET: Manage/EditRecord
-        [MyAuth]
-        public ActionResult EditRecord(int? id)
+        public ActionResult UseTickets()
         {
             using (var context = new UserContext())
             {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+                return View(context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault());
             }
         }
 
-        //POST: Manage/EditRecord
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRecord(RecordAddModel model)
+        public ActionResult UseTickets(UseTicketsModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.NickName == model.NickName).FirstOrDefault();
+                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
 
                     if (user != null)
                     {
-                        if (user.UserRoleName == "Moder")
+                        if (user.Password == model.Password)
                         {
-                            var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
+                            user.UserTickets = user.UserTickets - 1;
 
-                            record.Title = model.Title;
-                            record.Description = model.Description;
-
-                            context.Entry(record).State = EntityState.Modified;
+                            context.Entry(user).State = EntityState.Modified;
                             context.SaveChanges();
 
-                            return RedirectToAction("AccountIndex", "Manage");
+                            return RedirectToAction("ListOfUsers", "Manage");
                         }
                         else
                         {
-                            ModelState.AddModelError("", "У Вас недостаточно прав");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Пользователя с таким никнеймом не существует");
-                    }
-                }
-            }
-
-            return View(model);
-        }
-
-        //GET: Manage/DeleteRecord
-        [MyAuth]
-        public ActionResult DeleteRecord(int? id)
-        {
-            using (var context = new UserContext())
-            {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
-            }
-        }
-
-        //POST: Manage/DeleteRecord
-        [HttpPost]
-        [MyAuth]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteRecord(Record model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    var user = context.Users.Where(m => m.NickName == model.NickName);
-
-                    if (user != null)
-                    {
-                        var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
-
-                        if (record != null)
-                        {
-                            context.Entry(record).State = EntityState.Deleted;
-                            context.SaveChanges();
-
-                            return RedirectToAction("AccountIndex", "Manage");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Такой записи не существует");
+                            ModelState.AddModelError("", "Неверный пароль");
                         }
                     }
                     else
@@ -420,5 +419,7 @@ namespace CC.Controllers
 
             return View();
         }
+
+        #endregion
     }
 }

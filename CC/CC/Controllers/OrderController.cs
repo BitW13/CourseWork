@@ -13,12 +13,18 @@ namespace CC.Controllers
     public class OrderController : Controller
     {
         // GET: Order/OrderInex
+        #region Главная страница для получения валюты и билетов
+
         public ActionResult OrderIndex()
         {
             return View();
         }
 
-        //GET: Order/GetCoins
+        #endregion
+
+        //GET, POST: Order/GetCoins
+        #region Получение валюты Coffee-Coin
+
         [MyAuth]
         public ActionResult GetCoffeeCoins(int? id)
         {
@@ -68,7 +74,11 @@ namespace CC.Controllers
             return View();
         }
 
-        //GET: Order/GetTickets
+        #endregion
+
+        //GET, POST: Order/GetTickets
+        #region Получение билетов
+
         [MyAuth]
         public ActionResult GetTickets(int? id)
         {
@@ -78,7 +88,6 @@ namespace CC.Controllers
             }
         }
 
-        //POST: Order/GetTickets
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
@@ -123,5 +132,7 @@ namespace CC.Controllers
 
             return View();
         }
+
+        #endregion
     }
 }

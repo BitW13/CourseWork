@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class UserEditDataModel
     {
+        #region Модель для редактирования данных пользователя 
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
@@ -27,5 +29,7 @@ namespace CC.Models
         [DataType(DataType.Text)]
         [StringLength(20, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 4)]
         public string UserSurname { get; set; }
+
+        #endregion
     }
 }

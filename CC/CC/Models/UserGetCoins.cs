@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class UserGetCoins
     {
+        #region Модель для получения валюты 
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
@@ -20,5 +22,7 @@ namespace CC.Models
         [DataType(DataType.Password)]
         [StringLength(25, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 5)]
         public string Password { get; set; }
+
+        #endregion
     }
 }

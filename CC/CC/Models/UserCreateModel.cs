@@ -8,12 +8,14 @@ namespace CC.Models
 {
     public class UserCreateModel
     {
+        #region Модель для регистрации пользователя
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Никнейм")]
         [DataType(DataType.Text)]
-        [StringLength(12, ErrorMessage ="Это поле должно быть от {0} до {1} символов", MinimumLength = 4)]
+        [StringLength(12, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 4)]
         public string NickName { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
@@ -38,5 +40,7 @@ namespace CC.Models
         [Display(Name = "Подтверждение пароля")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        #endregion
     }
 }

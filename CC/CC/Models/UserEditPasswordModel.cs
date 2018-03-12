@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class UserEditPasswordModel
     {
+        #region Модель для редактирования пароля пользователя
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
@@ -26,5 +28,7 @@ namespace CC.Models
         [Display(Name = "Подтверждение пароля")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        #endregion
     }
 }

@@ -8,6 +8,8 @@ namespace CC.Models
 {
     public class UserGetRightsModel
     {
+        #region Модель для получения прав
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
@@ -38,5 +40,7 @@ namespace CC.Models
         [Display(Name = "Защитный код")]
         [DataType(DataType.Password)]
         public string SecurityCode { get; set; }
+
+        #endregion
     }
 }
