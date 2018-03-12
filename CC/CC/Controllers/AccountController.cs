@@ -34,6 +34,8 @@ namespace CC.Controllers
                         context.Users.Add(new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0 });
                         context.SaveChanges();
 
+                        Session["UserRole"] = "User";
+
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -63,22 +65,31 @@ namespace CC.Controllers
                 {
                     var user = context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefault();
 
-                    if (user.UserRoleName == "User")
+                    if (user != null)
                     {
-                        Session["Id"] = user.Id.ToString() + user.UserRoleName;
+                        if (user.UserRoleName == "User")
+                        {
+                            Session["Id"] = user.Id.ToString();
+                            Session["UserRole"] = user.UserRoleName;
 
-                        return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (user.UserRoleName == "Admin")
+                        {
+                            Session["Id"] = user.Id.ToString();
+                            Session["AdminRole"] = user.UserRoleName;
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (user.UserRoleName == "Moder")
+                        {
+                            Session["Id"] = user.Id.ToString();
+                            Session["ModerRole"] = user.UserRoleName;
+
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
-                    else if (user.UserRoleName == "Admin")
-                    {
-                        Session["Id"] = user.Id.ToString() + user.UserRoleName;
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else if (user.UserRoleName == "Moder")
-                    {
-                        Session["Id"] = user.Id.ToString() + user.UserRoleName;
-                        return RedirectToAction("Index", "Home");
-                    }
+
                     else
                     {
                         ModelState.AddModelError("", "Такого пользователя не существует");
@@ -93,43 +104,9 @@ namespace CC.Controllers
         [HttpPost]
         public ActionResult Logout()
         {
+            Session["Id"] = null;
+
             return View("Index");
-        }
-
-        //GET: Account/Delete
-        [MyAuth]
-        public ActionResult Delete(int? id)
-        {
-            using (var contex = new UserContext())
-            {
-                var user = contex.Users.Where(m => m.Id == id).FirstOrDefault();
-
-                return View(user);
-            }
-        }
-
-        //POST: Account/Delete
-        [HttpPost]
-        [MyAuth]
-        public ActionResult Delete(User model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
-
-                    if (user != null)
-                    {
-                        context.Entry(user).State = EntityState.Deleted;
-                        context.SaveChanges();
-
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-            }
-
-            return View();
         }
 
         //GET: Account/GetAdmin
@@ -158,6 +135,8 @@ namespace CC.Controllers
                             if (model.SecurityCode == "qw12po09fj")
                             {
                                 user.UserRoleName = "Admin";
+
+                                Session["AdminRole"] = user.UserRoleName;
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
@@ -202,6 +181,8 @@ namespace CC.Controllers
                             if (model.SecurityCode == "bmd78zl4r1")
                             {
                                 user.UserRoleName = "Moder";
+
+                                Session["ModerRole"] = user.UserRoleName;
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();

@@ -1,0 +1,82 @@
+﻿@model CC.Context.User
+
+@{
+    ViewBag.Title = "AccountIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container body-content">
+        <div>
+            <h2>Мой аккаунт</h2>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.Display("Никнейм")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.NickName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Имя")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Фамилия")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserSurname)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Ваши права")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserRoleName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Количество Coffee-Coins")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserCoins)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Количество билетов на кофе")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserTickets)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("На главную", "Index", "Home") |
+            @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage", new { id = Model.Id }) |
+            @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage", new { id = Model.Id }) |
+            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage", new { id = Model.Id }) |
+            @Html.Partial("_AccountPartial") |
+            @Html.ActionLink("Получить Coffee-Coins", "GetCoffeeCoins", "Order") |
+            @Html.ActionLink("Получить билеты на кофе", "GetTickets", "Order")
+        </p>
+    </div>
+</body>
+</html>
+
+

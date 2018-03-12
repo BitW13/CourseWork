@@ -20,7 +20,7 @@ namespace CC.Controllers
 
         //GET: Order/GetCoins
         [MyAuth]
-        public ActionResult GetCoins(int? id)
+        public ActionResult GetCoffeeCoins(int? id)
         {
             using (var context = new UserContext())
             {
@@ -31,7 +31,7 @@ namespace CC.Controllers
         [HttpPost]
         [MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult GetCoins(UserGetCoins model)
+        public ActionResult GetCoffeeCoins(UserGetCoins model)
         {
             if (ModelState.IsValid)
             {
@@ -96,8 +96,8 @@ namespace CC.Controllers
                         {
                             if (user.UserCoins >= 2)
                             {
-                                user.UserTickets = user.UserTickets + 2;
-                                user.UserCoins = user.UserCoins - 2;
+                                user.UserTickets = user.UserTickets + model.UserTickets;
+                                user.UserCoins = user.UserCoins - (model.UserTickets * 2);
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();

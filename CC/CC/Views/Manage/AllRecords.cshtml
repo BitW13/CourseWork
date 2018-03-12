@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CC.Context.Record>
+
+@{
+    ViewBag.Title = "AllRecords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Все новости</h2>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Никнейм автора")
+                </th>
+                <th>
+                    @Html.DisplayName("Заголовок")
+                </th>
+                <th>
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NickName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Подробнее", "Details", "Manage")
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
+
+

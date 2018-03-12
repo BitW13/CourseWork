@@ -10,6 +10,8 @@ namespace CC.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [Display(Name = "Количество билетов")]
         public int UserTickets { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]

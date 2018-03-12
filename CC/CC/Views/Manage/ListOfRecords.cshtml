@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CC.Context.Record>
+
+@{
+    ViewBag.Title = "ListOfRecords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Список ваших записей</h2>
+
+        <div>
+            @Html.ActionLink("Назад", "ListOfRecords", "Manage")
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Display("Номер")
+                </th>
+
+                <th>
+                    @Html.DisplayName("Заголовок")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Редактировать", "EditRecord", "Manage", new { id = item.Id }) |
+                        @Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id }) |
+                        @Html.ActionLink("Удалить", "DeleteRecord", "Manage", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
+
+

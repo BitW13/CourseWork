@@ -200,6 +200,7 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\RecordAddModel.cs" />
+    <Compile Include="Models\RecordEditModel.cs" />
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserEditDataModel.cs" />
     <Compile Include="Models\UserEditPasswordModel.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Models\UserGetRightsModel.cs" />
     <Compile Include="Models\UserGetTickets.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
+    <Compile Include="Models\UseTicketsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -247,11 +249,24 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LoggedIn.cshtml" />
+    <Content Include="Views\Shared\_AllUsers.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\GetAdmin.cshtml" />
+    <Content Include="Views\Account\GetModer.cshtml" />
+    <Content Include="Views\Manage\AccountIndex.cshtml" />
+    <Content Include="Views\Shared\_AccountPartial.cshtml" />
+    <Content Include="Views\Manage\ListOfUsers.cshtml" />
+    <Content Include="Views\Manage\EditUserData.cshtml" />
+    <Content Include="Views\Manage\EditUserPassword.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+    <Content Include="Views\Manage\AllRecords.cshtml" />
+    <Content Include="Views\Manage\Details.cshtml" />
+    <Content Include="Views\Manage\ListOfRecords.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Manage\" />
     <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
