@@ -26,6 +26,152 @@ namespace CC.Controllers
 
         #endregion
 
+        //GET, POST: Manage/WriteDescription
+        #region Добавление описания для заведений 
+
+        [MyAuth]
+        public ActionResult WriteDescription()
+        {
+            return View();
+        }
+
+        [MyAuth]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult WriteDescription(AddCafeDescriptionModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    var user = context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+
+                    if (user != null)
+                    {
+                        if (user.UserRoleName == "Admin")
+                        {
+                            var cafe = context.Cafes.Where(m => m.Name == model.Name).FirstOrDefault();
+
+                            if (cafe == null)
+                            {
+                                context.Cafes.Add(new Cafe { Name = model.Name, Description = model.Description, UserId = user.Id });
+                                context.SaveChanges();
+
+                                return RedirectToAction("AccountIndex", "Manage");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Заведение с таким именем уже существует");
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "У Вас недостаточно прав");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого пользователя не существует");
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        #endregion
+
+        //GET, POST: Manage/EditDescription
+        #region Редактирование описания для заведения 
+
+        [MyAuth]
+        public ActionResult EditDescription()
+        {
+            using (var contex = new UserContext())
+            {
+                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+
+                return View(contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefault());
+            }
+        }
+
+        [MyAuth]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDescription(EditCafeDescriptionModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    var cafe = context.Cafes.Where(m => m.Id == model.Id).FirstOrDefault();
+
+                    if (cafe != null)
+                    {
+                        cafe.Name = model.Name;
+                        cafe.Description = model.Description;
+
+                        context.Entry(cafe).State = EntityState.Modified;
+                        context.SaveChanges();
+
+                        return RedirectToAction("AccountIndex", "Manage");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такой записи ну существует");
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        #endregion
+
+        //GET, POST: Manage/DeleteDescription
+        #region Удаление описания для заведения
+
+        [MyAuth]
+        public ActionResult DeleteDescription()
+        {
+            using (var contex = new UserContext())
+            {
+                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+
+                return View(contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefault());
+            }
+        }
+
+        [MyAuth]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDescription(Cafe model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    var cafe = context.Cafes.Where(m => m.Id == model.Id).FirstOrDefault();
+
+                    if (cafe != null)
+                    {
+                        context.Entry(cafe).State = EntityState.Modified;
+                        context.SaveChanges();
+
+                        return RedirectToAction("AccountIndex", "Manage");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого заведения не существует");
+                    }
+                }
+            }
+
+            return View();
+        }
+
+        #endregion
+
         //GET: Manage/ListOfCafes
         #region Список заведений 
 
@@ -40,7 +186,7 @@ namespace CC.Controllers
         #endregion
 
         //GET: Manage/GetCafe
-        #region Описание одного заведения
+        #region Вывод описание одного заведения
 
         public ActionResult GetCafe(int? id)
         {

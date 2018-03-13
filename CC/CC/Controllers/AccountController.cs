@@ -130,7 +130,6 @@ namespace CC.Controllers
         }
         #endregion
 
-
         //GET, POST: Account/GetAdmin
         #region Получение прав администратора
 
@@ -227,41 +226,6 @@ namespace CC.Controllers
         }
         #endregion
 
-        //GET, POST: Account/WriteDescription
-        #region Описание заведений 
 
-        [MyAuth]
-        public ActionResult WriteDescription()
-        {
-            return View();
-        }
-
-        [MyAuth]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult WriteDescription(DescribeCafeModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    var cafe = context.Cafes.Where(m => m.Name == model.Name).FirstOrDefault();
-
-                    if (cafe == null)
-                    {
-                        context.Cafes.Add(new Cafe { Name = model.Name, Description = model.Description });
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Заведение с таким именем уже существует");
-                    }
-                }
-            }
-
-            return View(model);
-        }
-
-        #endregion
     }
 }
