@@ -25,7 +25,7 @@ namespace CC.Models
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]
         [Display(Name = "Описание")]
-        [StringLength(1000, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 50)]
+        [StringLength(10000, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 50)]
         public string Description { get; set; }
 
         #endregion

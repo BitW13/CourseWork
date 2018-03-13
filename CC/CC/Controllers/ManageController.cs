@@ -26,6 +26,32 @@ namespace CC.Controllers
 
         #endregion
 
+        //GET: Manage/ListOfCafes
+        #region Список заведений 
+
+        public ActionResult ListOfCafes()
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Cafes.ToList());
+            }
+        }
+
+        #endregion
+
+        //GET: Manage/GetCafe
+        #region Описание одного заведения
+
+        public ActionResult GetCafe(int? id)
+        {
+            using (var context = new UserContext())
+            {
+                return View(context.Cafes.Where(m => m.Id == id).FirstOrDefault());
+            }
+        }
+
+        #endregion
+
         //GET: Manage/ListOfUsers
         #region Список пользователей
 
