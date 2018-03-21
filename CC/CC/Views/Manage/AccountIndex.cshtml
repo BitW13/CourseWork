@@ -17,7 +17,7 @@
             <hr />
             <dl class="dl-horizontal">
                 <dt>
-                    @Html.Display("Никнейм")
+                    @Html.DisplayName("Никнейм")
                 </dt>
 
                 <dd>
@@ -68,12 +68,24 @@
         </div>
         <p>
             @Html.ActionLink("На главную", "Index", "Home") |
-            @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage", new { id = Model.Id }) |
-            @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage", new { id = Model.Id }) |
-            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage", new { id = Model.Id }) |
-            @Html.Partial("_AccountPartial") |
-            @Html.ActionLink("Получить Coffee-Coins", "GetCoffeeCoins", "Order") |
-            @Html.ActionLink("Получить билеты на кофе", "GetTickets", "Order")
+            @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage") |
+            @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage") |
+            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage") |
+
+            @if (Session["ModerRole"] != null)
+            {
+                Html.RenderPartial("_AccountPartial");
+            }
+
+            @if (Session["ModerRole"] == null)
+            {
+                @Html.ActionLink("Получить права модератора", "GetModer", "Account")
+            }
+
+            @if (Session["AdminRole"] == null)
+            {
+                @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")
+            }
         </p>
     </div>
 </body>

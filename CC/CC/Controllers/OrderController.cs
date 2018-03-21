@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,6 +18,11 @@ namespace CC.Controllers
 
         public ActionResult OrderIndex()
         {
+            if (Session["Id"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 
@@ -25,25 +31,39 @@ namespace CC.Controllers
         //GET, POST: Order/GetCoins
         #region Получение валюты Coffee-Coin
 
-        [MyAuth]
-        public ActionResult GetCoffeeCoins(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> GetCoffeeCoins()
         {
             using (var context = new UserContext())
             {
-                return View(context.Users.Where(m => m.Id == id).FirstOrDefault());
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var user1 = new UserGetCoins();
+
+                user1.Id = user.Id;
+                user1.UserCoins = user.UserCoins;
+
+                return View(user1);
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult GetCoffeeCoins(UserGetCoins model)
+        public async Task<ActionResult> GetCoffeeCoins(UserGetCoins model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -56,7 +76,7 @@ namespace CC.Controllers
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
 
-                                return RedirectToAction("AccountIndex", "Manage");
+                                return RedirectToAction("OrderIndex", "Order");
                             }
                         }
                         else
@@ -71,7 +91,7 @@ namespace CC.Controllers
                 }
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion
@@ -79,26 +99,40 @@ namespace CC.Controllers
         //GET, POST: Order/GetTickets
         #region Получение билетов
 
-        [MyAuth]
-        public ActionResult GetTickets(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> GetTickets()
         {
             using (var context = new UserContext())
             {
-                return View(context.Users.Where(m => m.Id == id).FirstOrDefault().UserTickets);
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var user1 = new UserGetTickets();
+
+                user1.UserTickets = user.UserTickets;
+                user1.Id = user.Id;
+
+                return View(user1);
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult GetTickets(UserGetTickets model)
+        public async Task<ActionResult> GetTickets(UserGetTickets model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
-
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                    
                     if (user != null)
                     {
                         if (user.Password == model.Password)
@@ -111,7 +145,7 @@ namespace CC.Controllers
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
 
-                                return RedirectToAction("AccountIndex", "Manage");
+                                return RedirectToAction("OrderIndex", "Order");
                             }
                             else
                             {
@@ -130,7 +164,7 @@ namespace CC.Controllers
                 }
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion

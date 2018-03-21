@@ -9,6 +9,7 @@ namespace CC
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            app.MapSignalR();
         }
     }
 }

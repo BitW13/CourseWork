@@ -1,5 +1,11 @@
 ﻿@if (Session["ModerRole"] != null)
 {
-    @Html.ActionLink("Список новостей", "ListOfRecords", "Manage") 
-    @Html.ActionLink("Редактировать новости", "EditRecord", "Manage")
+    @Html.ActionLink("Список новостей", "ListOfRecords", "Manage")
 }
+ |
+@if (Session["ModerRole"] != null)
+{
+    @Html.ActionLink("Редактировать новости", "EditRecord", "Manage")
+
+}
+ |

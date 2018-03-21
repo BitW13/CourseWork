@@ -15,13 +15,13 @@ namespace CC.Models
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Пароль")]
         [DataType(DataType.Password)]
-        [StringLength(25, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 5)]
+        [StringLength(25, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 5)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Новый пароль")]
         [DataType(DataType.Password)]
-        [StringLength(25, ErrorMessage = "Это поле должно быть от {0} до {1} символов", MinimumLength = 5)]
+        [StringLength(25, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 5)]
         public string NewPassword { get; set; }
 
         [Compare("NewPassword", ErrorMessage = "Пороли не совпадают")]

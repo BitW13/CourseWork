@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace CC.Controllers
 {
@@ -15,12 +16,21 @@ namespace CC.Controllers
         // GET: Manage/AccountIndex
         #region Страница аккаунта пользователя
 
-        [MyAuth]
-        public ActionResult AccountIndex()
+        //[MyAuth]
+        public async Task<ActionResult> AccountIndex()
         {
             using (var context = new UserContext())
             {
-                return View(context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault());
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                return View(user);
             }
         }
 
@@ -29,28 +39,41 @@ namespace CC.Controllers
         //GET, POST: Manage/WriteDescription
         #region Добавление описания для заведений 
 
-        [MyAuth]
-        public ActionResult WriteDescription()
+        //[MyAuth]
+        public async Task<ActionResult> WriteDescription()
         {
+            using (var context = new UserContext())
+            {
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Admin")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+            }
+
             return View();
         }
 
-        [MyAuth]
+        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult WriteDescription(AddCafeDescriptionModel model)
+        public async Task<ActionResult> WriteDescription(AddCafeDescriptionModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
                         if (user.UserRoleName == "Admin")
                         {
-                            var cafe = context.Cafes.Where(m => m.Name == model.Name).FirstOrDefault();
+                            var cafe = await context.Cafes.Where(m => m.Name == model.Name).FirstOrDefaultAsync();
 
                             if (cafe == null)
                             {
@@ -84,27 +107,36 @@ namespace CC.Controllers
         //GET, POST: Manage/EditDescription
         #region Редактирование описания для заведения 
 
-        [MyAuth]
-        public ActionResult EditDescription()
+        //[MyAuth]
+        public async Task<ActionResult> EditDescription()
         {
             using (var contex = new UserContext())
             {
-                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                int id = int.Parse(Session["Id"].ToString());
 
-                return View(contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefault());
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Admin")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var cafe = await contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefaultAsync();
+
+                return View(cafe);
             }
         }
 
-        [MyAuth]
+        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditDescription(EditCafeDescriptionModel model)
+        public async Task<ActionResult> EditDescription(EditCafeDescriptionModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var cafe = context.Cafes.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var cafe = await context.Cafes.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (cafe != null)
                     {
@@ -131,27 +163,36 @@ namespace CC.Controllers
         //GET, POST: Manage/DeleteDescription
         #region Удаление описания для заведения
 
-        [MyAuth]
-        public ActionResult DeleteDescription()
+        //[MyAuth]
+        public async Task<ActionResult> DeleteDescription()
         {
             using (var contex = new UserContext())
             {
-                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                int id = int.Parse(Session["Id"].ToString());
 
-                return View(contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefault());
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Admin")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var cafe = await contex.Cafes.Where(m => m.UserId == user.Id).FirstOrDefaultAsync();
+
+                return View(cafe);
             }
         }
 
-        [MyAuth]
+        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteDescription(Cafe model)
+        public async Task<ActionResult> DeleteDescription(Cafe model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var cafe = context.Cafes.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var cafe = await context.Cafes.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (cafe != null)
                     {
@@ -188,11 +229,13 @@ namespace CC.Controllers
         //GET: Manage/GetCafe
         #region Вывод описание одного заведения
 
-        public ActionResult GetCafe(int? id)
+        public async Task<ActionResult> GetCafe(int? id)
         {
             using (var context = new UserContext())
             {
-                return View(context.Cafes.Where(m => m.Id == id).FirstOrDefault());
+                var cafe = await context.Cafes.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                return View(cafe);
             }
         }
 
@@ -201,11 +244,20 @@ namespace CC.Controllers
         //GET: Manage/ListOfUsers
         #region Список пользователей
 
-        [MyAuth]
-        public ActionResult ListOfUsers()
+        //[MyAuth]
+        public async Task<ActionResult> ListOfUsers()
         {
             using (var context = new UserContext())
             {
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Admin")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 return View(context.Users.ToList());
             }
         }
@@ -229,12 +281,19 @@ namespace CC.Controllers
         //GET: Manage/ListOfRecords
         #region Список новостей определенного пользователя
 
-        [MyAuth]
-        public ActionResult ListOfRecords()
+        //[MyAuth]
+        public async Task<ActionResult> ListOfRecords()
         {
             using (var context = new UserContext())
             {
-                var user = context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
 
                 return View(context.Records.Where(m => m.UserId == user.Id).ToList());
             }
@@ -245,11 +304,13 @@ namespace CC.Controllers
         //GET: Manage/Details
         #region Новость детально
 
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             using (var context = new UserContext())
             {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                return View(record);
             }
         }
 
@@ -258,22 +319,36 @@ namespace CC.Controllers
         //GET, POST: Manage/AddRecord
         #region Добавление новостей
 
-        [MyAuth]
-        public ActionResult AddRecord()
+        //[MyAuth]
+        public async Task<ActionResult> AddRecord()
         {
-            return View();
+            using (var context = new UserContext())
+            {
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Moder")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var model = new RecordAddModel { Id = user.Id };
+
+                return View(model);
+            }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult AddRecord(RecordAddModel model)
+        public async Task<ActionResult> AddRecord(RecordAddModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -282,7 +357,7 @@ namespace CC.Controllers
                             context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id });
                             context.SaveChanges();
 
-                            return RedirectToAction("AccountIndex", "Manage");
+                            return RedirectToAction("Index", "Home");
                         }
                         else
                         {
@@ -304,31 +379,42 @@ namespace CC.Controllers
         //GET, POST: Manage/EditRecord
         #region Редактирование новостей
 
-        [MyAuth]
-        public ActionResult EditRecord(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> EditRecord(int? id)
         {
             using (var context = new UserContext())
             {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+                int userId = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Moder")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                return View();
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRecord(RecordEditModel model)
+        public async Task<ActionResult> EditRecord(RecordEditModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.UserId).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
                         if (user.UserRoleName == "Moder")
                         {
-                            var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
+                            var record = await context.Records.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                             record.Title = model.Title;
                             record.Description = model.Description;
@@ -358,29 +444,40 @@ namespace CC.Controllers
         //GET, POST: Manage/DeleteRecord
         #region Удаление новостей
 
-        [MyAuth]
-        public ActionResult DeleteRecord(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> DeleteRecord(int? id)
         {
             using (var context = new UserContext())
             {
-                return View(context.Records.Where(m => m.Id == id).FirstOrDefault());
+                int userId = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
+
+                if (user.UserRoleName != "Moder")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                return View();
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteRecord(Record model)
+        public async Task<ActionResult> DeleteRecord(Record model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.UserId);
+                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
-                        var record = context.Records.Where(m => m.Id == model.Id).FirstOrDefault();
+                        var record = await context.Records.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                         if (record != null)
                         {
@@ -409,25 +506,36 @@ namespace CC.Controllers
         //GET, POST: Manage/EditUserData
         #region Редактирование данных пользователя
 
-        [MyAuth]
-        public ActionResult EditUserData(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> EditUserData()
         {
             using (var contex = new UserContext())
             {
-                return View(contex.Users.Where(m => m.Id == id).FirstOrDefault());
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var model = new UserEditDataModel { Id = user.Id, NickName = user.NickName, UserName = user.UserName, UserSurname = user.UserSurname };
+
+                return View(model);
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUserData(UserEditDataModel model)
+        public async Task<ActionResult> EditUserData(UserEditDataModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -455,22 +563,34 @@ namespace CC.Controllers
         //GET, POST: Manage/EditUserPassword
         #region Изменение пароля пользователя 
 
-        [MyAuth]
-        public ActionResult EditUserPassword(int? id)
+        //[MyAuth]
+        public async Task<ActionResult> EditUserPassword()
         {
+            using (var context = new UserContext())
+            {
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+
             return View();
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUserPassword(UserEditPasswordModel model)
+        public async Task<ActionResult> EditUserPassword(UserEditPasswordModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -506,26 +626,33 @@ namespace CC.Controllers
         //GET, POST: Manage/Delete
         #region Удаление аккаунта пользователя
 
-        [MyAuth]
-        public ActionResult Delete()
+        //[MyAuth]
+        public async Task<ActionResult> Delete()
         {
             using (var contex = new UserContext())
             {
-                var user = contex.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault();
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
 
                 return View(user);
             }
         }
 
         [HttpPost]
-        [MyAuth]
-        public ActionResult Delete(User model)
+        //[MyAuth]
+        public async Task<ActionResult> Delete(User model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -545,26 +672,38 @@ namespace CC.Controllers
         //GET, POST: Manage/UseTickets
         #region Использование билетов для кофе
 
-        [MyAuth]
-        [ValidateAntiForgeryToken]
-        public ActionResult UseTickets()
+        //[MyAuth]
+        public async Task<ActionResult> UseTickets()
         {
             using (var context = new UserContext())
             {
-                return View(context.Users.Where(m => m.Id == int.Parse(Session["Id"].ToString())).FirstOrDefault());
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var model = new UseTicketsModel();
+
+                model.Id = user.Id;
+
+                return View(model);
             }
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult UseTickets(UseTicketsModel model)
+        public async Task<ActionResult> UseTickets(UseTicketsModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.Id == model.Id).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {

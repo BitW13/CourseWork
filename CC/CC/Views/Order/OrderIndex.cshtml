@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "OrderIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container body-content" style="font-size: 20px;">
+        <h2>Магазин Coffee-Cup</h2>
+        <hr />
+
+        @Html.ActionLink("Получить Coffee-Coins", "GetCoffeeCoins", "Order") |
+        @Html.ActionLink("Получить билеты на кофе", "GetTickets", "Order")
+
+    </div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,11 @@
+﻿<ul class="nav navbar-nav">
+
+    <li>@Html.ActionLink("Новости", "AllRecords", "Manage")</li>
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+    <li>@Html.ActionLink("Магазин", "OrderIndex", "Order")</li>
+    <li>@Html.ActionLink("Добавить новость", "AddRecord", "Manage")</li>
+    <li>@Html.ActionLink("Мой аккаунт", "AccountIndex", "Manage")</li>
+    <li>@Ajax.ActionLink("Выход", "Logout", "Account", new AjaxOptions { UpdateTargetId = "header" })</li>
+</ul>

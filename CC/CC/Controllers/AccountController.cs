@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using CC.Filters;
+using System.Threading.Tasks;
 
 namespace CC.Controllers
 {
@@ -22,7 +23,7 @@ namespace CC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserCreateModel model)
+        public async Task<ActionResult> Create(UserCreateModel model)
         {
             Session["Id"] = null;
             Session["UserRole"] = null;
@@ -33,7 +34,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
 
                     if (user == null)
                     {
@@ -66,7 +67,7 @@ namespace CC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(UserLoginModel model)
+        public async Task<ActionResult> Login(UserLoginModel model)
         {
             Session["Id"] = null;
             Session["UserRole"] = null;
@@ -77,33 +78,39 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
-                        if (user.UserRoleName == "User")
+                        if (user.Password == model.Password)
                         {
-                            Session["Id"] = user.Id.ToString();
-                            Session["UserRole"] = user.UserRoleName;
+                            if (user.UserRoleName == "User")
+                            {
+                                Session["Id"] = user.Id.ToString();
+                                Session["UserRole"] = user.UserRoleName;
 
-                            return RedirectToAction("Index", "Home");
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else if (user.UserRoleName == "Admin")
+                            {
+                                Session["Id"] = user.Id.ToString();
+                                Session["AdminRole"] = user.UserRoleName;
+
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else if (user.UserRoleName == "Moder")
+                            {
+                                Session["Id"] = user.Id.ToString();
+                                Session["ModerRole"] = user.UserRoleName;
+
+                                return RedirectToAction("Index", "Home");
+                            }
                         }
-                        else if (user.UserRoleName == "Admin")
+                        else
                         {
-                            Session["Id"] = user.Id.ToString();
-                            Session["AdminRole"] = user.UserRoleName;
-
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else if (user.UserRoleName == "Moder")
-                        {
-                            Session["Id"] = user.Id.ToString();
-                            Session["ModerRole"] = user.UserRoleName;
-
-                            return RedirectToAction("Index", "Home");
+                            ModelState.AddModelError("", "Неверный пароль");
                         }
                     }
-
                     else
                     {
                         ModelState.AddModelError("", "Такого пользователя не существует");
@@ -118,7 +125,6 @@ namespace CC.Controllers
         //POST: Account/Logout
         #region Выход из аккаунта
 
-        [HttpPost]
         public ActionResult Logout()
         {
             Session["Id"] = null;
@@ -126,29 +132,34 @@ namespace CC.Controllers
             Session["AdminRole"] = null;
             Session["ModerRole"] = null;
 
-            return View("Index");
+            return PartialView("_Guests");
         }
         #endregion
 
         //GET, POST: Account/GetAdmin
         #region Получение прав администратора
 
-        [MyAuth]
+        //[MyAuth]
         public ActionResult GetAdmin()
         {
+            if (Session["Id"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult GetAdmin(UserGetRightsModel model)
+        public async Task<ActionResult> GetAdmin(UserGetRightsModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -181,22 +192,27 @@ namespace CC.Controllers
         //GET, POST: Account/GetModer
         #region Получение прав модератора
 
-        [MyAuth]
+        //[MyAuth]
         public ActionResult GetModer()
         {
+            if (Session["Id"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             return View();
         }
 
         [HttpPost]
-        [MyAuth]
+        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public ActionResult GetModer(UserGetRightsModel model)
+        public async Task<ActionResult> GetModer(UserGetRightsModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var context = new UserContext())
                 {
-                    var user = context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefault();
+                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -225,7 +241,5 @@ namespace CC.Controllers
             return View(model);
         }
         #endregion
-
-
     }
 }

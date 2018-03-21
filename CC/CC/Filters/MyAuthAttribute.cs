@@ -14,6 +14,16 @@ namespace CC.Filters
 
         public void OnAuthentication(AuthenticationContext filterContext)
         {
+            //using (var context = new UserContext())
+            //{
+            //    var user = context.Users;
+
+            //    if (user == null)
+            //    {
+            //        filterContext.Result = new HttpNotFoundResult();
+            //    }
+            //}
+
             var user = filterContext.HttpContext.User;
 
             if (user == null || !user.Identity.IsAuthenticated)

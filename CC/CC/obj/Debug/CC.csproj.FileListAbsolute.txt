@@ -70,3 +70,10 @@ D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.CoreCompileInputs.cache
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.CopyComplete
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.dll
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.pdb
+D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.InitialCreate.resources
+D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.GenerateResource.cache
+D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig.resources
+D:\Git\CourseWork\CC\CC\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Git\CourseWork\CC\CC\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Git\CourseWork\CC\CC\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Git\CourseWork\CC\CC\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
