@@ -41,6 +41,7 @@ namespace CC.Controllers
                         context.Users.Add(new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 });
                         context.SaveChanges();
 
+                        Session["Id"] = user.Id.ToString();
                         Session["UserRole"] = "User";
 
                         return RedirectToAction("Index", "Home");

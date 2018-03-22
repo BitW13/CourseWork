@@ -26,7 +26,7 @@
                     @Html.DisplayName("Фамилия")
                 </th>
                 <th>
-                    @Html.DisplayName("Количество билетов на кофе")
+                    @Html.DisplayName("Количество купонов на кофе")
                 </th>
                 <th></th>
             </tr>
@@ -47,7 +47,7 @@
                         @Html.DisplayFor(modelItem => item.UserTickets)
                     </td>
                     <td>
-                        @Html.ActionLink("Обналичить билет", "UseTickets", "Manage", new { id = item.Id })
+                        @Html.ActionLink("Обналичить купон", "UseTickets", "Manage", new { item.Id })
                     </td>
                 </tr>
             }

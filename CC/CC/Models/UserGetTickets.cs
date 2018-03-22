@@ -13,7 +13,7 @@ namespace CC.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Количество билетов")]
+        [Display(Name = "Количество купонов")]
         public int UserTickets { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]

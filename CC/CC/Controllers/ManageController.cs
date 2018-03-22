@@ -673,22 +673,22 @@ namespace CC.Controllers
         #region Использование билетов для кофе
 
         //[MyAuth]
-        public async Task<ActionResult> UseTickets()
+        public async Task<ActionResult> UseTickets(int Id)
         {
             using (var context = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
+                int adminId = int.Parse(Session["Id"].ToString());
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+                var admin = await context.Users.Where(m => m.Id == adminId).FirstOrDefaultAsync();
 
-                if (user == null)
+                if (admin == null)
                 {
                     return RedirectToAction("Login", "Account");
                 }
 
-                var model = new UseTicketsModel();
+                //var user = await context.Users.Where(m => m.Id == Id).FirstOrDefaultAsync();
 
-                model.Id = user.Id;
+                var model = new UseTicketsModel() { Id = Id };
 
                 return View(model);
             }

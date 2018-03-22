@@ -57,7 +57,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Количество билетов на кофе")
+                    @Html.DisplayName("Количество купонов на кофе")
                 </dt>
 
                 <dd>
@@ -76,12 +76,12 @@
             {
                 Html.RenderPartial("_AccountPartial");
             }
-
+            
             @if (Session["ModerRole"] == null)
             {
                 @Html.ActionLink("Получить права модератора", "GetModer", "Account")
             }
-
+             |
             @if (Session["AdminRole"] == null)
             {
                 @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")

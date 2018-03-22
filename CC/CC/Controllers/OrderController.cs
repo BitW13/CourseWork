@@ -132,7 +132,7 @@ namespace CC.Controllers
                 using (var context = new UserContext())
                 {
                     var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
-                    
+
                     if (user != null)
                     {
                         if (user.Password == model.Password)
@@ -142,10 +142,17 @@ namespace CC.Controllers
                                 user.UserTickets = user.UserTickets + model.UserTickets;
                                 user.UserCoins = user.UserCoins - (model.UserTickets * 2);
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
+                                if (user.UserCoins < 0)
+                                {
+                                    ModelState.AddModelError("", "Вы не можете купить столько купонов, у Вас не хватает средств");
+                                }
+                                else
+                                {
+                                    context.Entry(user).State = EntityState.Modified;
+                                    context.SaveChanges();
 
-                                return RedirectToAction("OrderIndex", "Order");
+                                    return RedirectToAction("OrderIndex", "Order");
+                                }
                             }
                             else
                             {

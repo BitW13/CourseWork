@@ -18,7 +18,7 @@ namespace CC.Models
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Password)]
-        [Display(Name = "Секретный ключ")]
+        [Display(Name = "Промокод")]
         public string SecretKey { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
