@@ -21,14 +21,14 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user == null)
+                if (Session["Id"] == null)
                 {
                     return RedirectToAction("Login", "Account");
                 }
+
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
                 return View(user);
             }
@@ -44,6 +44,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
@@ -112,6 +117,11 @@ namespace CC.Controllers
         {
             using (var contex = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
@@ -168,6 +178,11 @@ namespace CC.Controllers
         {
             using (var contex = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
@@ -249,6 +264,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
@@ -286,11 +306,16 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
-                if (user == null)
+                if (user.UserRoleName != "Moder")
                 {
                     return RedirectToAction("Login", "Account");
                 }
@@ -324,6 +349,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
@@ -384,6 +414,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int userId = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
@@ -449,6 +484,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int userId = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
@@ -511,14 +551,14 @@ namespace CC.Controllers
         {
             using (var contex = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user == null)
+                if (Session["Id"] == null)
                 {
                     return RedirectToAction("Login", "Account");
                 }
+
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
                 var model = new UserEditDataModel { Id = user.Id, NickName = user.NickName, UserName = user.UserName, UserSurname = user.UserSurname };
 
@@ -568,17 +608,25 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
-                if (user == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+                //if (user == null)
+                //{
+                //    return RedirectToAction("Login", "Account");
+                //}
+                var model = new UserEditPasswordModel { Id = user.Id };
+
+                return View(model);
             }
 
-            return View();
+
         }
 
         [HttpPost]
@@ -631,14 +679,14 @@ namespace CC.Controllers
         {
             using (var contex = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user == null)
+                if (Session["Id"] == null)
                 {
                     return RedirectToAction("Login", "Account");
                 }
+
+                int id = int.Parse(Session["Id"].ToString());
+
+                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
                 return View(user);
             }
@@ -659,6 +707,11 @@ namespace CC.Controllers
                         context.Entry(user).State = EntityState.Deleted;
                         context.SaveChanges();
 
+                        Session["Id"] = null;
+                        Session["UserRole"] = null;
+                        Session["AdminRole"] = null;
+                        Session["ModerRole"] = null;
+
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -677,6 +730,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int adminId = int.Parse(Session["Id"].ToString());
 
                 var admin = await context.Users.Where(m => m.Id == adminId).FirstOrDefaultAsync();

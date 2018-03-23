@@ -29,17 +29,14 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
+                if (Session["Id"] == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 int id = int.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user != null)
-                {
-                    if (user.UserRoleName != "Admin")
-                    {
-                        return RedirectToAction("Login", "Account");
-                    }
-                }
 
                 return View();
             }

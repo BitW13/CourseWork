@@ -297,6 +297,7 @@
     <Content Include="Views\Manage\UseTickets.cshtml" />
     <Content Include="Views\Manage\AddRecord.cshtml" />
     <Content Include="Views\Order\View.cshtml" />
+    <Content Include="Views\Account\Logout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

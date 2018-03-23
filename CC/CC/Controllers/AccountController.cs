@@ -128,12 +128,23 @@ namespace CC.Controllers
 
         public ActionResult Logout()
         {
+            if (Session["Id"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Logout(int? id)
+        {
             Session["Id"] = null;
             Session["UserRole"] = null;
             Session["AdminRole"] = null;
             Session["ModerRole"] = null;
 
-            return PartialView("_Guests");
+            return RedirectToAction("Index", "Home");
         }
         #endregion
 
