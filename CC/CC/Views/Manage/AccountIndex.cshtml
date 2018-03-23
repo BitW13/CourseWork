@@ -70,18 +70,19 @@
             @Html.ActionLink("На главную", "Index", "Home") |
             @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage") |
             @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage") |
-            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage") |
+            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage")
+        </p>
 
-            @if (Session["ModerRole"] != null)
-            {
-                Html.RenderPartial("_AccountPartial");
-            }
-            
+        <p>
+            @{ Html.RenderPartial("_AccountModer");}
+
+            @{ Html.RenderPartial("_AccountAdmin");}
+
             @if (Session["ModerRole"] == null)
             {
                 @Html.ActionLink("Получить права модератора", "GetModer", "Account")
             }
-             |
+            |
             @if (Session["AdminRole"] == null)
             {
                 @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")

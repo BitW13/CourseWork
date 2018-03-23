@@ -193,9 +193,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CafeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\RecordController.cs" />
     <Compile Include="Controllers\SupportController.cs" />
     <Compile Include="Filters\MyAuthAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -279,7 +281,7 @@
     <Content Include="Views\Account\GetAdmin.cshtml" />
     <Content Include="Views\Account\GetModer.cshtml" />
     <Content Include="Views\Manage\AccountIndex.cshtml" />
-    <Content Include="Views\Shared\_AccountPartial.cshtml" />
+    <Content Include="Views\Shared\_AccountModer.cshtml" />
     <Content Include="Views\Manage\ListOfUsers.cshtml" />
     <Content Include="Views\Manage\EditUserData.cshtml" />
     <Content Include="Views\Manage\EditUserPassword.cshtml" />
@@ -298,9 +300,17 @@
     <Content Include="Views\Manage\AddRecord.cshtml" />
     <Content Include="Views\Order\View.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
+    <Content Include="Views\Cafe\WriteDescription.cshtml" />
+    <Content Include="Views\Shared\_AccountAdmin.cshtml" />
+    <Content Include="Views\Cafe\EditDescription.cshtml" />
+    <Content Include="Views\Cafe\ListOfCafes.cshtml" />
+    <Content Include="Views\Cafe\DeleteDescription.cshtml" />
+    <Content Include="Views\Cafe\GetCafe.cshtml" />
+    <Content Include="Views\Cafe\UserCafe.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Record\" />
     <Folder Include="Views\Support\" />
   </ItemGroup>
   <ItemGroup>

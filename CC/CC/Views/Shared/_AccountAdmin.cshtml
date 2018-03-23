@@ -1,0 +1,10 @@
+﻿@if (Session["AdminRole"] != null)
+{
+    @Html.ActionLink("Добавть заведение", "WriteDescription", "Cafe")
+}
+ |
+@if (Session["AdminRole"] != null)
+{
+    @Html.ActionLink("Мои заведения", "UserCafe", "Cafe")
+}
+ |

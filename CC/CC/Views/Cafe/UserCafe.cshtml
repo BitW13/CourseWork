@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CC.Context.Cafe>
+
+@{
+    ViewBag.Title = "UserCafe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Список Ваших заведений</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Название заведения")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { id = item.Id }) |
+                        @Html.ActionLink("Редактировать", "EditDescription", "Cafe", new { id = item.Id }) |
+                        @Html.ActionLink("Удалить", "DeleteDescription", "Cafe", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Назад", "AccountIndex", "Manage")
+    </div>
+</body>
+</html>
+
+

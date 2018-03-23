@@ -67,7 +67,6 @@ D:\Git\CourseWork\CC\CC\bin\Microsoft.AI.WindowsServer.xml
 D:\Git\CourseWork\CC\CC\bin\Microsoft.AI.Web.xml
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.csprojResolveAssemblyReference.cache
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.CoreCompileInputs.cache
-D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.CopyComplete
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.dll
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.pdb
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.InitialCreate.resources
