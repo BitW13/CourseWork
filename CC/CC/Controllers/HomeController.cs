@@ -38,6 +38,11 @@ namespace CC.Controllers
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
+                if (user.UserRoleName != "Admin")
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
                 return View();
             }
         }

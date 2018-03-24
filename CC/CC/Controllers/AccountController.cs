@@ -38,10 +38,12 @@ namespace CC.Controllers
 
                     if (user == null)
                     {
-                        context.Users.Add(new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 });
+                        var newUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
+
+                        context.Users.Add(newUser);
                         context.SaveChanges();
 
-                        Session["Id"] = user.Id.ToString();
+                        Session["Id"] = newUser.Id;
                         Session["UserRole"] = "User";
 
                         return RedirectToAction("Index", "Home");

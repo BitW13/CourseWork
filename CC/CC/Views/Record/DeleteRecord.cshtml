@@ -1,7 +1,7 @@
 ﻿@model CC.Context.Record
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "DeleteRecord";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,12 +12,11 @@
 </head>
 <body>
     <div class="container body-content">
-        <h2>Подробное описание</h2>
-
         <div>
+            <h2>Удаление записи</h2>
+            <h3>Вы действительно хотите удалить эту запись?</h3>
             <hr />
             <dl class="dl-horizontal">
-
                 <dt>
                     @Html.DisplayName("Никнейм автора")
                 </dt>
@@ -43,10 +42,17 @@
                 </dd>
 
             </dl>
+
+            @using (Html.BeginForm("DeleteRecord", "Record"))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    @Html.ActionLink("Назад", "ListOfRecords", "Record")
+                </div>
+            }
         </div>
-        <p>
-            @Html.ActionLink("Назад", "AllRecords", "Manage")
-        </p>
     </div>
 </body>
 </html>

@@ -191,7 +191,7 @@ namespace CC.Controllers
 
                     if (cafe != null)
                     {
-                        context.Entry(cafe).State = EntityState.Modified;
+                        context.Entry(cafe).State = EntityState.Deleted;
                         context.SaveChanges();
 
                         return RedirectToAction("AccountIndex", "Manage");
@@ -203,12 +203,12 @@ namespace CC.Controllers
                 }
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion
 
-        //GET: Cage/UserCafe
+        //GET: Cafe/UserCafe
         #region Описание заведений определенного пользователя
 
         public async Task<ActionResult> UserCafe()

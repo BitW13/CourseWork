@@ -203,6 +203,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Migrations\201803121210526_InitialCreate.cs" />
     <Compile Include="Migrations\201803121210526_InitialCreate.Designer.cs">
       <DependentUpon>201803121210526_InitialCreate.cs</DependentUpon>
@@ -226,7 +227,6 @@
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Models\UseTicketsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignalR\LiveChat.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,8 +258,11 @@
     <Content Include="Scripts\jquery-3.0.0.slim.js" />
     <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\SlowScroll.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -286,9 +289,9 @@
     <Content Include="Views\Manage\EditUserData.cshtml" />
     <Content Include="Views\Manage\EditUserPassword.cshtml" />
     <Content Include="Views\Manage\Delete.cshtml" />
-    <Content Include="Views\Manage\AllRecords.cshtml" />
-    <Content Include="Views\Manage\Details.cshtml" />
-    <Content Include="Views\Manage\ListOfRecords.cshtml" />
+    <Content Include="Views\Record\AllRecords.cshtml" />
+    <Content Include="Views\Record\Details.cshtml" />
+    <Content Include="Views\Record\ListOfRecords.cshtml" />
     <Content Include="Views\Home\Chat.cshtml" />
     <Content Include="Views\Shared\_Admin.cshtml" />
     <Content Include="Views\Shared\_Moder.cshtml" />
@@ -297,8 +300,7 @@
     <Content Include="Views\Order\GetCoffeeCoins.cshtml" />
     <Content Include="Views\Order\GetTickets.cshtml" />
     <Content Include="Views\Manage\UseTickets.cshtml" />
-    <Content Include="Views\Manage\AddRecord.cshtml" />
-    <Content Include="Views\Order\View.cshtml" />
+    <Content Include="Views\Record\AddRecord.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\Cafe\WriteDescription.cshtml" />
     <Content Include="Views\Shared\_AccountAdmin.cshtml" />
@@ -307,10 +309,11 @@
     <Content Include="Views\Cafe\DeleteDescription.cshtml" />
     <Content Include="Views\Cafe\GetCafe.cshtml" />
     <Content Include="Views\Cafe\UserCafe.cshtml" />
+    <Content Include="Views\Record\DeleteRecord.cshtml" />
+    <Content Include="Views\Record\EditRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Record\" />
     <Folder Include="Views\Support\" />
   </ItemGroup>
   <ItemGroup>

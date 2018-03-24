@@ -35,7 +35,14 @@
             </dl>
         </div>
         <p>
-            @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
+            @if (Session["AdminRole"] != null)
+            {
+                @Html.ActionLink("Назад", "UserCafe", "Cafe")
+            }
+            else
+            {
+                @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
+            }
         </p>
     </div>
 </body>
