@@ -240,7 +240,9 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
-                return View(context.Cafes.ToList());
+                IEnumerable<Cafe> list = context.Cafes.ToList();
+
+                return View(list);
             }
         }
 

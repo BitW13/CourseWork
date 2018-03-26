@@ -41,9 +41,13 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
-                        @Html.ActionLink("Редактировать", "EditRecord", "Manage", new { id = item.Id }) |
+                        
+                        <a href="~/Record/EditRecord/@item.Id">Редактировать</a> |
+                        <a href="~/Record/Details/@item.Id">Подробнее</a> |
+                        <a href="~/Record/DeleteRecord/@item.Id">Удалить</a>
+                        @*@Html.ActionLink("Редактировать", "EditRecord", "Manage", new { id = item.Id }) |
                         @Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id }) |
-                        @Html.ActionLink("Удалить", "DeleteRecord", "Manage", new { id = item.Id })
+                        @Html.ActionLink("Удалить", "DeleteRecord", "Manage", new { id = item.Id })*@
                     </td>
                 </tr>
             }

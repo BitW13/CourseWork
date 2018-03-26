@@ -29,7 +29,9 @@
                     </td>
 
                     <td>
-                        @Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { id = item.Id })
+                        <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a>
+                        @*@Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { item.Id}, htmlAttributes: new { id = "myId"})*@
+                        @*@Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { id = item.Id})*@
                     </td>
                 </tr>
             }

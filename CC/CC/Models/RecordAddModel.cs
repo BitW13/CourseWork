@@ -12,6 +12,8 @@ namespace CC.Models
 
         public int Id { get; set; }
 
+        public int UserId { get; set; }
+
         [Display(Name = "Никнейм")]
         [DataType(DataType.Text)]
         public string NickName { get; set; }

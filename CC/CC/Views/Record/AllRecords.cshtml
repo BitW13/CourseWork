@@ -37,7 +37,8 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
-                        @Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })
+                        <a href="~/Record/Details/@item.Id">Подробнее</a>
+                        @*@Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })*@
                     </td>
                 </tr>
             }

@@ -47,7 +47,8 @@
                         @Html.DisplayFor(modelItem => item.UserTickets)
                     </td>
                     <td>
-                        @Html.ActionLink("Обналичить купон", "UseTickets", "Manage", new { id = item.Id })
+                        <a href="~/Manage/UseTickets/@item.Id">Обналичить купон</a>
+                        @*@Html.ActionLink("Обналичить купон", "UseTickets", "Manage", new { id = item.Id })*@
                     </td>
                 </tr>
             }

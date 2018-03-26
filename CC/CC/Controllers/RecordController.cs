@@ -91,7 +91,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                var model = new RecordAddModel { Id = user.Id };
+                var model = new RecordAddModel { UserId = user.Id };
 
                 return View(model);
             }
@@ -106,7 +106,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
