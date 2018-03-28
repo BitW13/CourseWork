@@ -112,7 +112,12 @@ namespace CC.Controllers
                     {
                         if (user.UserRoleName == "Moder")
                         {
-                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id });
+                            if (model.NickName == null)
+                            {
+                                model.NickName = user.NickName;
+                            }
+
+                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
                             context.SaveChanges();
 
                             return RedirectToAction("Index", "Home");

@@ -23,6 +23,7 @@
                     @Html.DisplayName("Заголовок")
                 </th>
                 <th>
+                    @Html.DisplayName("Дата")
                 </th>
                 <th></th>
             </tr>
@@ -36,6 +37,11 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
+
+                    <td>
+                        @Html.DisplayFor(model => item.RecordDate)
+                    </td>
+
                     <td>
                         <a href="~/Record/Details/@item.Id">Подробнее</a>
                         @*@Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })*@

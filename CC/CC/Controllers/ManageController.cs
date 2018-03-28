@@ -267,6 +267,11 @@ namespace CC.Controllers
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
+                if (user.UserTickets <= 0)
+                {
+                    ModelState.AddModelError("", "У Вас недостаточно купонов");
+                }
+
                 var model = new UseTicketsModel() { Id = user.Id};
 
                 return View(model);
@@ -288,12 +293,19 @@ namespace CC.Controllers
                     {
                         if (user.Password == model.Password)
                         {
-                            user.UserTickets = user.UserTickets - 1;
+                            if (user.UserTickets > 0)
+                            {
+                                user.UserTickets = user.UserTickets - 1;
 
-                            context.Entry(user).State = EntityState.Modified;
-                            context.SaveChanges();
+                                context.Entry(user).State = EntityState.Modified;
+                                context.SaveChanges();
 
-                            return RedirectToAction("ListOfUsers", "Manage");
+                                return RedirectToAction("ListOfUsers", "Manage");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "У Вас недостаточно купонов");
+                            }
                         }
                         else
                         {

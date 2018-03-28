@@ -212,6 +212,10 @@
     <Compile Include="Migrations\201803150842486_Mig.Designer.cs">
       <DependentUpon>201803150842486_Mig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803280917325_Mig2.cs" />
+    <Compile Include="Migrations\201803280917325_Mig2.Designer.cs">
+      <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AddCafeDescriptionModel.cs" />
     <Compile Include="Models\EditCafeDescriptionModel.cs" />
@@ -336,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803150842486_Mig.resx">
       <DependentUpon>201803150842486_Mig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803280917325_Mig2.resx">
+      <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
