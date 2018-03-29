@@ -26,7 +26,7 @@ namespace CC.Context
     public class User
     {
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
         public string UserSurname { get; set; }
@@ -43,8 +43,8 @@ namespace CC.Context
 
     public class Record
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public DateTime RecordDate { get; set; }
         public string NickName { get; set; }
         public string Title { get; set; }
@@ -57,8 +57,8 @@ namespace CC.Context
 
     public class Cafe
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

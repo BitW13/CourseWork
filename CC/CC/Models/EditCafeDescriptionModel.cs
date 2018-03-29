@@ -10,7 +10,7 @@ namespace CC.Models
     {
         #region Модель для добавления описания заведения
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]

@@ -43,7 +43,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -61,7 +61,7 @@ namespace CC.Controllers
         //GET: Record/Details
         #region Новость детально
 
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details(Guid? id)
         {
             using (var context = new UserContext())
             {
@@ -86,7 +86,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -121,7 +121,7 @@ namespace CC.Controllers
                                 model.NickName = user.NickName;
                             }
 
-                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
+                            context.Records.Add(new Record { Id = Guid.NewGuid(), NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
                             context.SaveChanges();
 
                             return RedirectToAction("Index", "Home");
@@ -147,7 +147,7 @@ namespace CC.Controllers
         #region Редактирование новостей
 
         //[MyAuth]
-        public async Task<ActionResult> EditRecord(int? id)
+        public async Task<ActionResult> EditRecord(Guid? id)
         {
             using (var context = new UserContext())
             {
@@ -156,7 +156,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int userId = int.Parse(Session["Id"].ToString());
+                Guid userId = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
 
@@ -219,7 +219,7 @@ namespace CC.Controllers
         #region Удаление новостей
 
         //[MyAuth]
-        public async Task<ActionResult> DeleteRecord(int? id)
+        public async Task<ActionResult> DeleteRecord(Guid? id)
         {
             using (var context = new UserContext())
             {
@@ -228,7 +228,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int userId = int.Parse(Session["Id"].ToString());
+                Guid userId = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
 

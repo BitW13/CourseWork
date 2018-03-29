@@ -10,9 +10,9 @@ namespace CC.Models
     {
         #region Модель для добавления новости
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Display(Name = "Никнейм")]
         [DataType(DataType.Text)]

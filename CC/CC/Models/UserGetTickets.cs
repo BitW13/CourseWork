@@ -10,7 +10,7 @@ namespace CC.Models
     {
         #region Модель для получения билетов
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Display(Name = "Количество Coffee-Coins")]
         public int CoffeeCoin { get; set; }

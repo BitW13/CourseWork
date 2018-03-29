@@ -10,7 +10,7 @@ namespace CC.Models
     {
         #region Модель для регистрации пользователя
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Никнейм")]

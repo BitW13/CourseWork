@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace CC.Controllers
 {
     public class CafeController : Controller
-    {        
+    {
         //GET, POST: Cafe/WriteDescription
         #region Добавление описания для заведений 
 
@@ -25,7 +25,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -48,7 +48,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    int id = int.Parse(Session["Id"].ToString());
+                    Guid id = Guid.Parse(Session["Id"].ToString());
 
                     var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -60,7 +60,7 @@ namespace CC.Controllers
 
                             if (cafe == null)
                             {
-                                context.Cafes.Add(new Cafe { Name = model.Name, Description = model.Description, UserId = user.Id });
+                                context.Cafes.Add(new Cafe { Id = Guid.NewGuid(), Name = model.Name, Description = model.Description, UserId = user.Id });
                                 context.SaveChanges();
 
                                 return RedirectToAction("AccountIndex", "Manage");
@@ -91,7 +91,7 @@ namespace CC.Controllers
         #region Редактирование описания для заведения 
 
         //[MyAuth]
-        public async Task<ActionResult> EditDescription(int? id)
+        public async Task<ActionResult> EditDescription(Guid? id)
         {
             using (var contex = new UserContext())
             {
@@ -100,7 +100,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int userId = int.Parse(Session["Id"].ToString());
+                Guid userId = Guid.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
 
@@ -154,7 +154,7 @@ namespace CC.Controllers
         #region Удаление описания для заведения
 
         //[MyAuth]
-        public async Task<ActionResult> DeleteDescription(int? id)
+        public async Task<ActionResult> DeleteDescription(Guid? id)
         {
             using (var contex = new UserContext())
             {
@@ -163,7 +163,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int userId = int.Parse(Session["Id"].ToString());
+                Guid userId = Guid.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
 
@@ -218,7 +218,7 @@ namespace CC.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            int id = int.Parse(Session["Id"].ToString());
+            Guid id = Guid.Parse(Session["Id"].ToString());
 
             using (var context = new UserContext())
             {
@@ -251,7 +251,7 @@ namespace CC.Controllers
         //GET: Cafe/GetCafe
         #region Вывод описание одного заведения
 
-        public async Task<ActionResult> GetCafe(int? id)
+        public async Task<ActionResult> GetCafe(Guid? id)
         {
             using (var context = new UserContext())
             {

@@ -37,7 +37,7 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -105,7 +105,7 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 

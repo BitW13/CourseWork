@@ -34,7 +34,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 

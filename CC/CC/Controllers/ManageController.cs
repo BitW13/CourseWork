@@ -27,7 +27,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -50,7 +50,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -78,7 +78,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -135,20 +135,14 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
-                //if (user == null)
-                //{
-                //    return RedirectToAction("Login", "Account");
-                //}
                 var model = new UserEditPasswordModel { Id = user.Id };
 
                 return View(model);
             }
-
-
         }
 
         [HttpPost]
@@ -206,7 +200,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int id = int.Parse(Session["Id"].ToString());
+                Guid id = Guid.Parse(Session["Id"].ToString());
 
                 var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
@@ -248,7 +242,7 @@ namespace CC.Controllers
         #region Использование билетов для кофе
 
         //[MyAuth]
-        public async Task<ActionResult> UseTickets(int? id)
+        public async Task<ActionResult> UseTickets(Guid? id)
         {
             using (var context = new UserContext())
             {
@@ -257,7 +251,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                int adminId = int.Parse(Session["Id"].ToString());
+                Guid adminId = Guid.Parse(Session["Id"].ToString());
 
                 var admin = await context.Users.Where(m => m.Id == adminId).FirstOrDefaultAsync();
 
@@ -336,7 +330,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    int id = int.Parse(Session["Id"].ToString());
+                    Guid id = Guid.Parse(Session["Id"].ToString());
 
                     var list = await context.Users.ToListAsync();
 

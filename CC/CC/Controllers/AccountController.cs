@@ -41,7 +41,7 @@ namespace CC.Controllers
                     {
                         if (model.Password == model.ConfirmPassword)
                         {
-                            var newUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = Encoding.GetCrypt(model.Password), UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
+                            var newUser = new User { Id = Guid.NewGuid(), NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = Encoding.GetCrypt(model.Password), UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
 
                             context.Users.Add(newUser);
                             context.SaveChanges();
@@ -97,7 +97,7 @@ namespace CC.Controllers
                         {
                             if (user.UserRoleName == "User")
                             {
-                                Session["Id"] = user.Id.ToString();
+                                Session["Id"] = user.Id;
                                 Session["UserRole"] = user.UserRoleName;
 
                                 return RedirectToAction("Index", "Home");
@@ -136,18 +136,8 @@ namespace CC.Controllers
         //POST: Account/Logout
         #region Выход из аккаунта
 
-        public ActionResult Logout()
-        {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            return View();
-        }
-
         [HttpPost]
-        public ActionResult Logout(int? id)
+        public ActionResult Logout()
         {
             Session["Id"] = null;
             Session["UserRole"] = null;
@@ -169,7 +159,13 @@ namespace CC.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            return View();
+            using (var context = new UserContext())
+            {
+                Guid id = Guid.Parse(Session["Id"].ToString());
+
+                return View(new UserGetRightsModel { Id = id });
+            }
+
         }
 
         [HttpPost]
@@ -181,9 +177,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    int id = int.Parse(Session["Id"].ToString());
-
-                    var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
@@ -235,7 +229,12 @@ namespace CC.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            return View();
+            using (var context = new UserContext())
+            {
+                Guid id = Guid.Parse(Session["Id"].ToString());
+
+                return View(new UserGetRightsModel { Id = id });
+            }
         }
 
         [HttpPost]
@@ -247,9 +246,7 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    int id = int.Parse(Session["Id"].ToString());
-
-                    var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {

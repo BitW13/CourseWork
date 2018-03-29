@@ -218,6 +218,14 @@
     <Compile Include="Migrations\201803280917325_Mig2.Designer.cs">
       <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803292036530_Mig3.cs" />
+    <Compile Include="Migrations\201803292036530_Mig3.Designer.cs">
+      <DependentUpon>201803292036530_Mig3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803292039125_Mig4.cs" />
+    <Compile Include="Migrations\201803292039125_Mig4.Designer.cs">
+      <DependentUpon>201803292039125_Mig4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AddCafeDescriptionModel.cs" />
     <Compile Include="Models\EditCafeDescriptionModel.cs" />
@@ -308,7 +316,6 @@
     <Content Include="Views\Order\GetTickets.cshtml" />
     <Content Include="Views\Manage\UseTickets.cshtml" />
     <Content Include="Views\Record\AddRecord.cshtml" />
-    <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\Cafe\WriteDescription.cshtml" />
     <Content Include="Views\Shared\_AccountAdmin.cshtml" />
     <Content Include="Views\Cafe\EditDescription.cshtml" />
@@ -346,6 +353,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803280917325_Mig2.resx">
       <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803292036530_Mig3.resx">
+      <DependentUpon>201803292036530_Mig3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803292039125_Mig4.resx">
+      <DependentUpon>201803292039125_Mig4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
