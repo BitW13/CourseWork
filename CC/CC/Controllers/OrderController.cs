@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CC.Cryptor;
 
 namespace CC.Controllers
 {
@@ -67,7 +68,7 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (model.SecretKey == "hdieo986vck4")
                             {
@@ -97,7 +98,7 @@ namespace CC.Controllers
         #endregion
 
         //GET, POST: Order/GetTickets
-        #region Получение билетов
+        #region Получение купонов
 
         //[MyAuth]
         public async Task<ActionResult> GetTickets()
@@ -113,10 +114,7 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                var user1 = new UserGetTickets();
-
-                user1.UserTickets = user.UserTickets;
-                user1.Id = user.Id;
+                var user1 = new UserGetTickets { UserTickets = user.UserTickets, Id = user.Id, CoffeeCoin = user.UserCoins };
 
                 return View(user1);
             }
@@ -135,7 +133,7 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (user.UserCoins >= 2)
                             {

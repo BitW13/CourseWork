@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using CC.Filters;
 using System.Threading.Tasks;
+using CC.Cryptor;
 
 namespace CC.Controllers
 {
@@ -38,15 +39,22 @@ namespace CC.Controllers
 
                     if (user == null)
                     {
-                        var newUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
+                        if (model.Password == model.ConfirmPassword)
+                        {
+                            var newUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = Encoding.GetCrypt(model.Password), UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
 
-                        context.Users.Add(newUser);
-                        context.SaveChanges();
+                            context.Users.Add(newUser);
+                            context.SaveChanges();
 
-                        Session["Id"] = newUser.Id;
-                        Session["UserRole"] = "User";
+                            Session["Id"] = newUser.Id;
+                            Session["UserRole"] = "User";
 
-                        return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Пароли не совпадают");
+                        }
                     }
                     else
                     {
@@ -85,7 +93,7 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (user.UserRoleName == "User")
                             {
@@ -173,17 +181,22 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
+                    int id = int.Parse(Session["Id"].ToString());
+
+                    var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (model.SecurityCode == "qw12po09fj")
                             {
                                 user.UserRoleName = "Admin";
 
                                 Session["AdminRole"] = user.UserRoleName;
+
+                                Session["UserRole"] = null;
+                                Session["ModerRole"] = null;
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
@@ -195,6 +208,14 @@ namespace CC.Controllers
                                 ModelState.AddModelError("", "Неправильный защитный код");
                             }
                         }
+                        else
+                        {
+                            ModelState.AddModelError("", "Неверный пароль");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого пользователя не существует");
                     }
                 }
             }
@@ -226,17 +247,22 @@ namespace CC.Controllers
             {
                 using (var context = new UserContext())
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
+                    int id = int.Parse(Session["Id"].ToString());
+
+                    var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (model.SecurityCode == "bmd78zl4r1")
                             {
                                 user.UserRoleName = "Moder";
 
                                 Session["ModerRole"] = user.UserRoleName;
+
+                                Session["UserRole"] = null;
+                                Session["AdminRole"] = null;
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
@@ -248,6 +274,14 @@ namespace CC.Controllers
                                 ModelState.AddModelError("", "Неправильный защитный код");
                             }
                         }
+                        else
+                        {
+                            ModelState.AddModelError("", "Неверный пароль");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого пользователя не существует");
                     }
                 }
             }

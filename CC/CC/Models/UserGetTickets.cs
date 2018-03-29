@@ -12,6 +12,9 @@ namespace CC.Models
 
         public int Id { get; set; }
 
+        [Display(Name = "Количество Coffee-Coins")]
+        public int CoffeeCoin { get; set; }
+
         [Required]
         [Display(Name = "Количество купонов")]
         public int UserTickets { get; set; }

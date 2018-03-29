@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using CC.Cryptor;
 
 namespace CC.Controllers
 {
@@ -163,11 +164,11 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (model.NewPassword == model.ConfirmPassword)
                             {
-                                user.Password = model.NewPassword;
+                                user.Password = Encoding.GetCrypt(model.NewPassword);
 
                                 context.Entry(user).State = EntityState.Modified;
                                 context.SaveChanges();
@@ -272,7 +273,7 @@ namespace CC.Controllers
                     ModelState.AddModelError("", "У Вас недостаточно купонов");
                 }
 
-                var model = new UseTicketsModel() { Id = user.Id};
+                var model = new UseTicketsModel() { Id = user.Id };
 
                 return View(model);
             }
@@ -291,7 +292,7 @@ namespace CC.Controllers
 
                     if (user != null)
                     {
-                        if (user.Password == model.Password)
+                        if (user.Password == Encoding.GetCrypt(model.Password))
                         {
                             if (user.UserTickets > 0)
                             {
@@ -304,7 +305,7 @@ namespace CC.Controllers
                             }
                             else
                             {
-                                ModelState.AddModelError("", "У Вас недостаточно купонов");
+                                ModelState.AddModelError("", "У Вас недостаточно Coffee-Coins");
                             }
                         }
                         else
@@ -320,6 +321,55 @@ namespace CC.Controllers
             }
 
             return View();
+        }
+
+        #endregion
+
+        //POST: Manage/SearchUser
+        #region Поиск пользователя по никнейму
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SearchUser(UserSearchModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var context = new UserContext())
+                {
+                    int id = int.Parse(Session["Id"].ToString());
+
+                    var list = await context.Users.ToListAsync();
+
+                    var userAdmin = await context.Users.FirstOrDefaultAsync(m => m.Id == id);
+
+                    if (userAdmin != null)
+                    {
+                        if (userAdmin.UserRoleName == "Admin")
+                        {
+                            var user = list.Where(m => m.NickName == model.NickName).FirstOrDefault();
+
+                            if (user != null)
+                            {
+                                return PartialView("_SomePartial", user);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Такого пользователя не существует");
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "У вас недостаточно прав");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Такого пользователя не существует");
+                    }
+                }
+            }
+
+            return PartialView("_SomePartial");
         }
 
         #endregion

@@ -19,7 +19,11 @@ namespace CC.Controllers
         {
             using (var context = new UserContext())
             {
-                return View(context.Records.ToList());
+                var list = context.Records.ToList();
+
+                list.Reverse();
+
+                return View(list);
             }
         }
 
