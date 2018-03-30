@@ -13,6 +13,14 @@
 <body>
     <div class="container body-content">
         <h2>Список заведений</h2>
+
+        @using (Html.BeginForm("ListOfCafes", "Cafe", FormMethod.Get))
+        {
+            @Html.TextBox("cafe") <input type="submit" value="Поиск" />
+        }
+
+        <br />
+
         <table class="table">
             <tr>
                 <th>
@@ -20,6 +28,15 @@
                 </th>
                 <th></th>
             </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="1" style="color: red;">
+                        Заведение не найдено
+                    </td>
+                </tr>
+            }
 
             @foreach (var item in Model)
             {

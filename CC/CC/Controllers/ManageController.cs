@@ -41,7 +41,7 @@ namespace CC.Controllers
         #region Список пользователей
 
         //[MyAuth]
-        public async Task<ActionResult> ListOfUsers()
+        public async Task<ActionResult> ListOfUsers(string NickName)
         {
             using (var context = new UserContext())
             {
@@ -59,7 +59,9 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                return View(context.Users.ToList());
+                var list = await context.Users.Where(m => m.NickName.Contains(NickName) || NickName == null).ToListAsync();
+
+                return View(list);
             }
         }
 
@@ -322,49 +324,47 @@ namespace CC.Controllers
         //POST: Manage/SearchUser
         #region Поиск пользователя по никнейму
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SearchUser(UserSearchModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var context = new UserContext())
-                {
-                    Guid id = Guid.Parse(Session["Id"].ToString());
+        //[HttpPost]
+        //public async Task<ActionResult> SearchUser(string NickName)
+        //{
+        //    using (var context = new UserContext())
+        //    {
+        //        Guid id = Guid.Parse(Session["Id"].ToString());
 
-                    var list = await context.Users.ToListAsync();
+        //        var list = await context.Users.ToListAsync();
 
-                    var userAdmin = await context.Users.FirstOrDefaultAsync(m => m.Id == id);
+        //        var userAdmin = await context.Users.FirstOrDefaultAsync(m => m.Id == id);
 
-                    if (userAdmin != null)
-                    {
-                        if (userAdmin.UserRoleName == "Admin")
-                        {
-                            var user = list.Where(m => m.NickName == model.NickName).FirstOrDefault();
+        //        if (userAdmin != null)
+        //        {
+        //            if (userAdmin.UserRoleName == "Admin")
+        //            {
+        //                var user = list.Where(m => m.NickName == NickName).ToList();
 
-                            if (user != null)
-                            {
-                                return PartialView("_SomePartial", user);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Такого пользователя не существует");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "У вас недостаточно прав");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
-                }
-            }
+        //                if (user != null)
+        //                {
+        //                    ViewBag.Check = "alright";
 
-            return PartialView("_SomePartial");
-        }
+        //                    return PartialView("_SearchUser", user);
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError("", "Такого пользователя не существует");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("", "У вас недостаточно прав");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Такого пользователя не существует");
+        //        }
+        //    }
+
+        //    return PartialView("_SearchUser");
+        //}
 
         #endregion
     }

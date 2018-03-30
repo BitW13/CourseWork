@@ -225,8 +225,6 @@ namespace CC.Controllers
                 var cafe = await context.Cafes.Where(m => m.UserId == id).ToListAsync();
 
                 return View(cafe);
-
-
             }
 
         }
@@ -236,11 +234,11 @@ namespace CC.Controllers
         //GET: Cafe/ListOfCafes
         #region Список заведений 
 
-        public ActionResult ListOfCafes()
+        public async Task<ActionResult> ListOfCafes(string cafe)
         {
             using (var context = new UserContext())
             {
-                IEnumerable<Cafe> list = context.Cafes.ToList();
+                var list = await context.Cafes.Where(m => m.Name.Contains(cafe) || cafe == null).ToListAsync();
 
                 return View(list);
             }

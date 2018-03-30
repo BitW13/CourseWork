@@ -15,11 +15,11 @@ namespace CC.Controllers
         //GET: Record/AllRecords
         #region Список всех новостей
 
-        public ActionResult AllRecords()
+        public async Task<ActionResult> AllRecords(string recordName)
         {
             using (var context = new UserContext())
             {
-                var list = context.Records.ToList();
+                var list = await context.Records.Where(m => m.Title.Contains(recordName) || recordName == null).ToListAsync();
 
                 list.Reverse();
 
@@ -52,7 +52,9 @@ namespace CC.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                return View(context.Records.Where(m => m.UserId == user.Id).ToList());
+                var list = await context.Records.Where(m => m.UserId == user.Id).ToListAsync();
+
+                return View(list);
             }
         }
 
