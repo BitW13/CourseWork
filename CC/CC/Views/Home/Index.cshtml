@@ -1,13 +1,51 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Main Page";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
+<!-- #region Видео -->
 
-</body>
-</html>
+<div class="homepage-hero-module">
+    <div class="video-container">
+        <div class="filter"></div>
+        <video autoplay loop class="fillWidth">
+            <source src="~/Content/Videos/VideoBackground.mp4" type="video/mp4" />
+        </video>
+        <div class="poster hidden">
+            <img src="PATH_TO_JPEG" alt="">
+        </div>
+    </div>
+</div>
+
+<!-- #endregion -->
+<!-- #region Описание работы приложения -->
+
+<div class="about">
+    <div class="col-md-12" id="First">
+        Что такое
+        <strong>Coffe-Cup</strong>
+    </div>
+
+    <div id="Second" class="col-md-12">
+
+    </div>
+
+    <div class="col-md-12" id="Third">
+        <div class="col-md-4">
+
+        </div>
+
+        <div class="col-md-4">
+
+        </div>
+
+        <div class="col-md-4">
+
+        </div>
+    </div>
+
+    <div>
+
+    </div>
+</div>
+
+<!-- #endregion -->

@@ -5,59 +5,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
-        <h2>Подробное описание</h2>
+<div class="container body-content">
+    <h2>Подробное описание</h2>
 
-        <div>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayName("Никнейм автора")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NickName)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Дата")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RecordDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Заголовок")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
             <hr />
-            <dl class="dl-horizontal">
 
-                <dt>
-                    @Html.DisplayName("Никнейм автора")
-                </dt>
+            <dt>
+                @Html.DisplayName("Описание")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.NickName)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Дата")
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.RecordDate)
-                </dd>
-
-                <dt>
-                    @Html.DisplayName("Заголовок")
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Title)
-                </dd>
-
-                <hr />
-
-                <dt>
-                    @Html.DisplayName("Описание")
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-            </dl>
-        </div>
-        <p>
-            @Html.ActionLink("Назад", "AllRecords", "Record")
-        </p>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
     </div>
-</body>
-</html>
+    <p>
+        @Html.ActionLink("Назад", "AllRecords", "Record")
+    </p>
+</div>
+
 
 

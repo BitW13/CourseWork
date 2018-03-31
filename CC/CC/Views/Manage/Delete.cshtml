@@ -5,83 +5,76 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
-        <h2>Удаление аккаунта</h2>
+<div class="container body-content">
+    <h2>Удаление аккаунта</h2>
 
-        <h3>Елси Вы удалите аккаунт, Вы потеряете все данные. Вы действителььно хотите удалить аккаунт?</h3>
-        <div>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName("Никнейм")
-                </dt>
+    <h3>Елси Вы удалите аккаунт, Вы потеряете все данные. Вы действителььно хотите удалить аккаунт?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Никнейм")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.NickName)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.NickName)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Имя")
-                </dt>
+            <dt>
+                @Html.DisplayName("Имя")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.UserName)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Фамилия")
-                </dt>
+            <dt>
+                @Html.DisplayName("Фамилия")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.UserSurname)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserSurname)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Ваши права")
-                </dt>
+            <dt>
+                @Html.DisplayName("Ваши права")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.UserRoleName)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserRoleName)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Количество Coffee-Coins")
-                </dt>
+            <dt>
+                @Html.DisplayName("Количество Coffee-Coins")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.UserCoins)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserCoins)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Количество билетов на кофе")
-                </dt>
+            <dt>
+                @Html.DisplayName("Количество билетов на кофе")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.UserTickets)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.UserTickets)
+            </dd>
 
-            </dl>
+        </dl>
 
-            @using (Html.BeginForm("Delete", "Manage"))
-            {
-                @Html.AntiForgeryToken()
+        @using (Html.BeginForm("Delete", "Manage"))
+        {
+            @Html.AntiForgeryToken()
 
-                @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.Id)
 
-                <div class="form-actions no-color">
-                    <input type="submit" value="Удалить" class="btn btn-default" /> |
-                    @Html.ActionLink("Назад", "AccountIndex", "Manage")
-                </div>
-            }
-        </div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-default" /> |
+                @Html.ActionLink("Назад", "AccountIndex", "Manage")
+            </div>
+        }
     </div>
-</body>
-</html>
+</div>
+
 
 

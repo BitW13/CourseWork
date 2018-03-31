@@ -5,59 +5,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
-        <div>
-            <h2>Удаление записи</h2>
-            <h3>Вы действительно хотите удалить эту запись?</h3>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName("Никнейм автора")
-                </dt>
+<div class="container body-content">
+    <div>
+        <h2>Удаление записи</h2>
+        <h3>Вы действительно хотите удалить эту запись?</h3>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Никнейм автора")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.NickName)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.NickName)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Заголовок")
-                </dt>
+            <dt>
+                @Html.DisplayName("Заголовок")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Title)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Описание")
-                </dt>
+            <dt>
+                @Html.DisplayName("Описание")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-            </dl>
+        </dl>
 
-            @using (Html.BeginForm("DeleteRecord", "Record"))
-            {
-                @Html.AntiForgeryToken()
+        @using (Html.BeginForm("DeleteRecord", "Record"))
+        {
+            @Html.AntiForgeryToken()
 
-                @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.UserId)
 
-                <div class="form-actions no-color">
-                    <input type="submit" value="Удалить" class="btn btn-default" /> |
-                    @Html.ActionLink("Назад", "ListOfRecords", "Record")
-                </div>
-            }
-        </div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-default" /> |
+                @Html.ActionLink("Назад", "ListOfRecords", "Record")
+            </div>
+        }
     </div>
-</body>
-</html>
+</div>
+
 
 

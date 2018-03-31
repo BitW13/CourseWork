@@ -5,51 +5,47 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
-        <h2>Удаление заведения</h2>
+<div class="container body-content">
+    <h2>Удаление заведения</h2>
 
-        <h3>Вы потеряете все данные, Вы действительно хотите удалить Ваше заведение?</h3>
-        <div>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName("Название")
-                </dt>
+    <h3>Вы потеряете все данные, Вы действительно хотите удалить Ваше заведение?</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Название")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Описание")
-                </dt>
+            <dt>
+                @Html.DisplayName("Описание")
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-            </dl>
+        </dl>
 
-            @using (Html.BeginForm("DeleteDescription", "Cafe"))
-            {
-                @Html.AntiForgeryToken()
+        @using (Html.BeginForm("DeleteDescription", "Cafe"))
+        {
+            @Html.AntiForgeryToken()
 
-                @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Id)
 
-                <div class="form-actions no-color">
-                    <input type="submit" value="Удалить" class="btn btn-default" /> |
-                    @Html.ActionLink("Назад", "UserCafe", "Cafe")
-                </div>
-            }
-        </div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Удалить" class="btn btn-default" /> |
+                @Html.ActionLink("Назад", "UserCafe", "Cafe")
+            </div>
+        }
     </div>
-</body>
-</html>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 

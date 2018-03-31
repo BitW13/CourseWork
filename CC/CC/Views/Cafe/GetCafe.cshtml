@@ -5,49 +5,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
-        <div>
-            <h2>Подробное описание</h2>
+<div class="container body-content">
+    <div>
+        <h2>Подробное описание</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Назавание заведения")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
             <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayName("Назавание заведения")
-                </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+            <dt>
+                @Html.DisplayName("Описание заведения")
+            </dt>
 
-                <hr />
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-                <dt>
-                    @Html.DisplayName("Описание заведения")
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-
-            </dl>
-        </div>
-        <p>
-            @if (Session["AdminRole"] != null)
-            {
-                @Html.ActionLink("Назад", "UserCafe", "Cafe")
-            }
-            else
-            {
-                @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
-            }
-        </p>
+        </dl>
     </div>
-</body>
-</html>
+    <p>
+        @if (Session["AdminRole"] != null)
+        {
+            @Html.ActionLink("Назад", "UserCafe", "Cafe")
+        }
+        else
+        {
+            @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
+        }
+    </p>
+</div>
+
 
 
