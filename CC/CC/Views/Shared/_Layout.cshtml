@@ -21,7 +21,7 @@
                 @Html.ActionLink("Coffee-Cup", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse" id="header">
-
+                
                 @*Для зарегистрированных пользователей*@
                 @if (Session["Id"] != null)
                 {
@@ -50,6 +50,7 @@
         </div>
     </div>
     <div>
+
         @RenderBody()
         <div class="container body-content">
             <hr />
@@ -61,6 +62,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("Scripts", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>

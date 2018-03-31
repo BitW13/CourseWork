@@ -6,7 +6,7 @@
 }
 
 
-<div class="container body-content">
+<div class="container body-content font18">
     <div>
         <h2>Мой аккаунт</h2>
         <hr />
@@ -19,6 +19,8 @@
                 @Html.DisplayFor(model => model.NickName)
             </dd>
 
+            <hr />
+
             <dt>
                 @Html.DisplayName("Имя")
             </dt>
@@ -26,6 +28,8 @@
             <dd>
                 @Html.DisplayFor(model => model.UserName)
             </dd>
+
+            <hr />
 
             <dt>
                 @Html.DisplayName("Фамилия")
@@ -35,6 +39,8 @@
                 @Html.DisplayFor(model => model.UserSurname)
             </dd>
 
+            <hr />
+
             <dt>
                 @Html.DisplayName("Ваши права")
             </dt>
@@ -42,6 +48,8 @@
             <dd>
                 @Html.DisplayFor(model => model.UserRoleName)
             </dd>
+
+            <hr />
 
             <dt>
                 @Html.DisplayName("Количество Coffee-Coins")
@@ -51,6 +59,8 @@
                 @Html.DisplayFor(model => model.UserCoins)
             </dd>
 
+            <hr />
+
             <dt>
                 @Html.DisplayName("Количество купонов на кофе")
             </dt>
@@ -58,6 +68,8 @@
             <dd>
                 @Html.DisplayFor(model => model.UserTickets)
             </dd>
+
+            <hr />
 
         </dl>
     </div>

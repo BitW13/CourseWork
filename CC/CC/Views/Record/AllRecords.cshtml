@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content">
+<div class="container body-content font18">
     <h2>Все новости</h2>
 
     @using (Html.BeginForm("AllRecords", "Record", FormMethod.Get))
     {
-        @Html.TextBox("recordName") <input type="submit" value="Поиск" />
+        @Html.TextBox("recordName") <input type="submit" value="Поиск" placeholder="Введите заголовок заведения"/>
     }
 
     <br />

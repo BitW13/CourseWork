@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content">
+<div class="container body-content font18">
     <h2>Список Ваших заведений</h2>
 
     <table class="table">
@@ -27,9 +27,6 @@
                     <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a> |
                     <a href="~/Cafe/EditDescription/@item.Id">Редактировать</a> |
                     <a href="~/Cafe/DeleteDescription/@item.Id">Удалить</a>
-                    @*@Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { id = item.Id }) |
-                        @Html.ActionLink("Редактировать", "EditDescription", "Cafe", new { id = item.Id }) |
-                        @Html.ActionLink("Удалить", "DeleteDescription", "Cafe", new { id = item.Id })*@
                 </td>
             </tr>
         }

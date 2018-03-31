@@ -155,7 +155,6 @@ D:\CourseWork\CC\CC\obj\Debug\CC.csproj.CoreCompileInputs.cache
 D:\CourseWork\CC\CC\obj\Debug\CC.csproj.CopyComplete
 D:\CourseWork\CC\CC\obj\Debug\CC.dll
 D:\CourseWork\CC\CC\obj\Debug\CC.pdb
-D:\Git\CourseWork\CC\CC\obj\Debug\CC.csproj.CopyComplete
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig2.resources
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig3.resources
 D:\Git\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig4.resources

@@ -5,61 +5,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content">
-    <h2>Список ваших записей</h2>
+@section Body{
+    <div class="container body-content font18">
+        <h2>Список ваших записей</h2>
 
-    <div>
-        @Html.ActionLink("Назад", "AccountIndex", "Manage")
-    </div>
+        <div>
+            @Html.ActionLink("Назад", "AccountIndex", "Manage")
+        </div>
 
-    @{
-        int i = 0;
-    }
-
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Номер")
-            </th>
-
-            <th>
-                @Html.DisplayName("Заголовок")
-            </th>
-
-            <th>
-                @Html.DisplayName("Дата")
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            i++;
-            <tr>
-                <td style="text-align: center;">
-                    @Html.DisplayFor(modelItem => i)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => item.RecordDate)
-                </td>
-
-                <td>
-
-                    <a href="~/Record/EditRecord/@item.Id">Редактировать</a> |
-                    <a href="~/Record/Details/@item.Id">Подробнее</a> |
-                    <a href="~/Record/DeleteRecord/@item.Id">Удалить</a>
-
-                </td>
-            </tr>
+        @{
+            int i = 0;
         }
 
-    </table>
-</div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Номер")
+                </th>
 
+                <th>
+                    @Html.DisplayName("Заголовок")
+                </th>
 
+                <th>
+                    @Html.DisplayName("Дата")
+                </th>
+                <th></th>
+            </tr>
 
+            @foreach (var item in Model)
+            {
+                i++;
+                <tr>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => i)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => item.RecordDate)
+                    </td>
+
+                    <td>
+
+                        <a href="~/Record/EditRecord/@item.Id">Редактировать</a> |
+                        <a href="~/Record/Details/@item.Id">Подробнее</a> |
+                        <a href="~/Record/DeleteRecord/@item.Id">Удалить</a>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}

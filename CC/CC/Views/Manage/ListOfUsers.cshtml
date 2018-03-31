@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content">
+<div class="container body-content font18">
     <h2>Список пользователей</h2>
 
     @using (Html.BeginForm("ListOfUsers", "Manage", FormMethod.Get))
     {
-        @Html.TextBox("NickName") <input type="submit" value="Поиск" />
+        @Html.TextBox("NickName") <input type="submit" value="Поиск" placeholder="Введите никнейм пользователя"/>
     }
 
     <br />
@@ -26,7 +26,7 @@
             <th>
                 @Html.DisplayName("Фамилия")
             </th>
-            <th>
+            <th class="to-centre">
                 @Html.DisplayName("Количество купонов на кофе")
             </th>
 
@@ -54,7 +54,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UserSurname)
                 </td>
-                <td>
+                <td class="to-centre">
                     @Html.DisplayFor(modelItem => item.UserTickets)
                 </td>
                 <td>

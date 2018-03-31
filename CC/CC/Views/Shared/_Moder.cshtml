@@ -1,6 +1,8 @@
 ﻿<ul class="nav navbar-nav">
     <li>@Html.ActionLink("Заведения", "ListOfCafes", "Cafe")</li>
     <li>@Html.ActionLink("Новости", "AllRecords", "Record")</li>
+    <li><a href="javascript://0" onclick="slowScroll('#about')">Что такое Coffee-Cup</a></li>
+    <li><a href="javascript://0" onclick="slowScroll('#alg')">Как это работает</a></li>
 </ul>
 
 @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "Acc" }))

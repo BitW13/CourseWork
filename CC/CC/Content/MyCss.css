@@ -59,19 +59,75 @@
     font-family: 'IBM Plex Sans Condensed', sans-serif;
 }
 
+.font18 {
+    font-size: 18px;
+}
+
+.font20 {
+    font-size: 20px;
+}
+
+.font25 {
+    font-size: 25px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 /*#endregion */
 
 /*#region Описание работы приложения */
 
-#First {
-    margin-top: 3em;
-    font-size: 35px;
+.to-centre {
     text-align: center;
 }
 
-#Second{
-
+.little-img {
+    width: 30px;
+    height: auto;
 }
+
+#First {
+    margin-top: 2em;
+    font-size: 40px;
+    text-align: center;
+}
+
+#Second {
+    margin-top: 1em;
+    font-size: 25px;
+    text-align: center;
+}
+
+#Third {
+    margin-top: 3em;
+}
+
+#Forth {
+    margin-top: 1em;
+}
+
+#Img {
+    width: 300px;
+    height: auto;
+}
+
+#howItWorks {
+    font-size: 40px;
+}
+
+#alg {
+    margin-top: 2em;
+}
+
+/*#endregion */
+
+/*#region Все страницы */
+
+/*body {
+    background-image: url(Pictures/background.jpg);
+}*/
 
 /*#endregion */
 
