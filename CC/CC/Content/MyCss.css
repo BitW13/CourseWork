@@ -83,6 +83,11 @@
     text-align: center;
 }
 
+.aver-img {
+    width: 45px;
+    height: auto;
+}
+
 .little-img {
     width: 30px;
     height: auto;
@@ -123,11 +128,46 @@
 
 /*#endregion */
 
-/*#region Все страницы */
+/*#region Short-news */
 
-/*body {
-    background-image: url(Pictures/background.jpg);
-}*/
+#title {
+    margin-top: 2em;
+    font-size: 40px;
+}
+
+#first-line-news {
+    margin-top: 2em;
+}
+
+#second-line-news {
+    margin-top: 2em;
+}
+
+#news-icon {
+    width: 60px;
+    height: auto;
+}
+
 
 /*#endregion */
+
+/*#region Footer */
+
+#footer {
+    margin-top: 1em;
+    height: 250px;
+    background-color: #CECECE;
+}
+
+#fot {
+    margin-top: 3em;
+}
+
+.super-little-icon {
+    width: 22px;
+    height: auto;
+}
+
+/*#endregion */
+
 

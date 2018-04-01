@@ -5,52 +5,64 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <div>
-        <h2>Удаление записи</h2>
-        <h3>Вы действительно хотите удалить эту запись?</h3>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Никнейм автора")
-            </dt>
+@section body{
 
-            <dd>
-                @Html.DisplayFor(model => model.NickName)
-            </dd>
+    <div class="container body-content font18">
+        <div>
+            <h2>Удаление записи</h2>
+            <h3>Вы действительно хотите удалить эту запись?</h3>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Никнейм автора")
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Заголовок")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NickName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Заголовок")
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Описание")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Описание")
+                </dt>
 
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
 
-        @using (Html.BeginForm("DeleteRecord", "Record"))
-        {
-            @Html.AntiForgeryToken()
+            </dl>
 
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.UserId)
+            @using (Html.BeginForm("DeleteRecord", "Record"))
+            {
+                @Html.AntiForgeryToken()
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Удалить" class="btn btn-default" /> |
-                @Html.ActionLink("Назад", "ListOfRecords", "Record")
-            </div>
-        }
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.UserId)
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    @Html.ActionLink("Назад", "ListOfRecords", "Record")
+                </div>
+            }
+        </div>
     </div>
-</div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 
 
 

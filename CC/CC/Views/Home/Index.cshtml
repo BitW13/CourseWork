@@ -1,121 +1,249 @@
-﻿@{
+﻿@model List<CC.Context.Record>
+
+@{
     ViewBag.Title = "Main Page";
 }
 
-<!-- #region Видео -->
+@section body{
 
-<div class="homepage-hero-module">
-    <div class="video-container">
-        <div class="filter"></div>
-        <video autoplay loop class="fillWidth">
-            <source src="~/Content/Videos/VideoBackground.mp4" type="video/mp4" />
-        </video>
-        <div class="poster hidden">
-            <img src="PATH_TO_JPEG" alt="">
-        </div>
-    </div>
-</div>
+    <!-- #region Видео -->
 
-<!-- #endregion -->
-<!-- #region Описание работы приложения -->
-
-<hr />
-
-<div id="about">
-    <div class="col-md-12" id="First">
-        Что такое
-        <strong>Coffe-Cup</strong>
-    </div>
-
-    <div id="Second" class="col-md-12">
-        <p>
-            Это оплаченные купоны на различную продукцию
-        </p>
-
-        <p>
-            в твоем городе
-        </p>
-    </div>
-
-    <div class="col-md-12" id="Third">
-        <div class="col-md-4 to-centre">
-            <p class="font20 bold">
-                Это выгодно
-            </p>
-
-            <p class="font20">
-                По абонементу Coffee-Cup Вы экономите на каждом купленном продукте
-            </p>
-        </div>
-
-        <div id="Img" class="col-md-4 to-centre">
-            <img src="~/Content/Pictures/coffee-cup.svg" />
-        </div>
-
-        <div class="col-md-4 to-centre" style="margin: 0 auto;">
-            <p class="font20 bold">
-                Это оплачено
-            </p>
-
-            <p class="font20">
-                Если Вы купили купон Coffee-Cup, то в заведении уже платить не надо
-            </p>
+    <div class="homepage-hero-module">
+        <div class="video-container">
+            <div class="filter"></div>
+            <video autoplay loop class="fillWidth">
+                <source src="~/Content/Videos/VideoBackground.mp4" type="video/mp4" />
+            </video>
+            <div class="poster hidden">
+                <img src="PATH_TO_JPEG" alt="">
+            </div>
         </div>
     </div>
 
-    <div class="col-md-12 font20" id="Forth">
-        <div class="col-md-4 to-centre">
-            <p class="bold">
-                Это удобно
+    <!-- #endregion -->
+    <!-- #region Описание работы приложения -->
+
+    <hr />
+
+    <div id="about">
+        <div class="col-md-12" id="First">
+            Что такое
+            <strong>Coffe-Cup</strong>
+        </div>
+
+        <div id="Second" class="col-md-12">
+            <p>
+                Это оплаченные купоны на различную продукцию
             </p>
 
             <p>
-                Вы можете найти заведение на карте, где можно воспользоваться купоном, а также прочитать последние новости
+                в твоем городе
             </p>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-12" id="Third">
+            <div class="col-md-4 to-centre">
+                <p class="font20 bold">
+                    <img class="aver-img" src="~/Content/Pictures/dollar-symbol.svg" />
+                    Это выгодно
+                </p>
 
+                <p class="font20">
+                    По абонементу Coffee-Cup Вы экономите на каждом купленном продукте
+                </p>
+            </div>
+
+            <div id="Img" class="col-md-4 to-centre">
+                <img src="~/Content/Pictures/coffee-cup.svg" />
+            </div>
+
+            <div class="col-md-4 to-centre" style="margin: 0 auto;">
+                <p class="font20 bold">
+                    <img class="aver-img" src="~/Content/Pictures/buy.svg" />
+                    Это оплачено
+                </p>
+
+                <p class="font20">
+                    Если Вы купили купон Coffee-Cup, то в заведении уже платить не надо
+                </p>
+            </div>
         </div>
 
-        <div class="col-md-4 to-centre">
-            <p class="bold">
-                Это Coffee-Cup
-            </p>
+        <div class="col-md-12 font20" id="Forth">
+            <div class="col-md-4 to-centre">
+                <p class="bold">
+                    <img class="aver-img" src="~/Content/Pictures/location-pointer.svg" />
+                    Это удобно
+                </p>
 
-            <p>
-                При регистрации в подарок вы получите 2 Coffee-Coins
-            </p>
+                <p>
+                    Вы можете найти заведение на карте, где можно воспользоваться купоном, а также прочитать последние новости
+                </p>
+            </div>
+
+            <div class="col-md-4">
+
+            </div>
+
+            <div class="col-md-4 to-centre">
+                <p class="bold">
+                    <img class="aver-img" src="~/Content/Pictures/coins.svg" />
+                    Это Coffee-Cup
+                </p>
+
+                <p>
+                    При регистрации в подарок вы получите 2 Coffee-Coins
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="howItWorks" class="to-centre">
-    <div class="col-md-12" id="alg">
-        <p class="bold">Как это работает</p>
-        <div class="font25">
-            <p>
-                <img class="little-img" src="~/Content/Pictures/one.svg" />
-                Купите валюту Coffee-Coins
-            </p>
-            <p>
-                <img class="little-img" src="~/Content/Pictures/two.svg" />
-                Купите купон на понравившийся Вам продукт
-            </p>
-            <p>
-                <img class="little-img" src="~/Content/Pictures/three.svg" />
-                Выберите заведение, в которое хотите пойти
-            </p>
-            <p>
-                <img class="little-img" src="~/Content/Pictures/four.svg" />
-                Попросите официанта обналичить Ваш купон
-            </p>
-            <p>
-                <img class="little-img" src="~/Content/Pictures/five.svg" />
-                Получите Ваш продукт
-            </p>
+    <div id="howItWorks" class="to-centre">
+        <div class="col-md-12" id="alg">
+            <p class="bold">Как это работает</p>
+            <div class="font25">
+                <p>
+                    <img class="little-img" src="~/Content/Pictures/one.svg" />
+                    Купите валюту Coffee-Coins
+                </p>
+                <p>
+                    <img class="little-img" src="~/Content/Pictures/two.svg" />
+                    Купите купон на понравившийся Вам продукт
+                </p>
+                <p>
+                    <img class="little-img" src="~/Content/Pictures/three.svg" />
+                    Выберите заведение, в которое хотите пойти
+                </p>
+                <p>
+                    <img class="little-img" src="~/Content/Pictures/four.svg" />
+                    Попросите официанта обналичить Ваш купон
+                </p>
+                <p>
+                    <img class="little-img" src="~/Content/Pictures/five.svg" />
+                    Получите Ваш продукт
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- #endregion -->
+    <!-- #endregion -->
+    <!--Карта(геолокация)-->
+    <!-- #region Short-news -->
+
+    <div id="short-news-container">
+        <div class="col-md-12 bold to-centre" id="title">
+            Последние новости
+            <img id="news-icon" src="~/Content/Pictures/news.svg" />
+        </div>
+
+        <div id="news-list" class="font18 to-centre">
+
+            <!-- #region Первая линия -->
+
+            <div class="col-md-12" id="first-line-news">
+                <div class="col-md-3">
+                    @Model[0].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[0].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[1].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[1].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[2].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[2].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[3].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[3].Id">Подробнее</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- #endregion -->
+            <!-- #region Вторая линия -->
+
+            <div class="col-md-12" id="second-line-news">
+                <div class="col-md-3">
+                    @Model[4].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[4].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[5].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[5].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[6].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[6].Id">Подробнее</a>
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    @Model[7].Title
+                    <p class="to-centre">
+                        <a href="~/Record/Details/@Model[7].Id">Подробнее</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- #endregion -->
+
+        </div>
+    </div>
+
+    <!-- #endregion -->
+
+    <div id="footer" class="col-md-12">
+        <div id="fot">
+
+            <div class="col-md-3">
+                <p>Разработчики</p>
+                <p>
+                    Petrochenko Sergey
+                    <a href="https://vk.com/id160371377" target="_blank">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                </p>
+                <p>
+                    Shabolda Artyom
+                    <a href="https://vk.com/id143773139" target="_blank">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                </p>
+                <p>
+                    Stoukachev Yaroslav
+                    <a href="https://vk.com/ystukachyov" target="_blank">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                </p>
+            </div>
+
+            <div class="col-md-3">
+
+            </div>
+
+            <div class="col-md-3">
+
+            </div>
+
+            <div class="col-md-3">
+
+            </div>
+        </div>
+
+    </div>
+
+}
+
+

@@ -5,101 +5,114 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section body{
 
-<div class="container body-content font18">
-    <div>
-        <h2>Мой аккаунт</h2>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Никнейм")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.NickName)
-            </dd>
-
+    <div class="container body-content font18">
+        <div>
+            <h2>Мой аккаунт</h2>
             <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Никнейм"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Имя")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NickName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
+                <hr />
 
-            <hr />
+                <dt>
+                    @Html.DisplayName("Имя"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Фамилия")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserSurname)
-            </dd>
+                <hr />
 
-            <hr />
+                <dt>
+                    @Html.DisplayName("Фамилия"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Ваши права")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserSurname)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserRoleName)
-            </dd>
+                <hr />
 
-            <hr />
+                <dt>
+                    @Html.DisplayName("Ваши права"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Количество Coffee-Coins")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserRoleName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserCoins)
-            </dd>
+                <hr />
 
-            <hr />
+                <dt>
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/coin.svg" />:
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Количество купонов на кофе")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserCoins)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserTickets)
-            </dd>
+                <hr />
 
-            <hr />
+                <dt>
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/tickets.svg" />:
+                </dt>
 
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.UserTickets)
+                </dd>
+
+                <hr />
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("На главную", "Index", "Home") |
+            @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage") |
+            @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage") |
+            @Html.ActionLink("Удалить аккаунт", "Delete", "Manage")
+        </p>
+
+        <p>
+            @if (Session["ModerRole"] == null)
+            {
+                @Html.ActionLink("Получить права модератора", "GetModer", "Account")
+            }
+            else
+            {
+                Html.RenderPartial("_AccountModer");
+            }
+        </p>
+
+        <p>
+            @if (Session["AdminRole"] == null)
+            {
+                @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")
+            }
+            else
+            {
+                Html.RenderPartial("_AccountAdmin");
+            }
+        </p>
     </div>
-    <p>
-        @Html.ActionLink("На главную", "Index", "Home") |
-        @Html.ActionLink("Изменить личные данные", "EditUserData", "Manage") |
-        @Html.ActionLink("Изменить пароль", "EditUserPassword", "Manage") |
-        @Html.ActionLink("Удалить аккаунт", "Delete", "Manage")
-    </p>
 
-    <p>
-        @if (Session["ModerRole"] == null)
-        {
-            @Html.ActionLink("Получить права модератора", "GetModer", "Account")
-        }
-        else
-        {
-            Html.RenderPartial("_AccountModer");
-        }
-    </p>
+}
 
-    <p>
-        @if (Session["AdminRole"] == null)
-        {
-            @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")
-        }
-        else
-        {
-            Html.RenderPartial("_AccountAdmin");
-        }
-    </p>
-</div>
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 

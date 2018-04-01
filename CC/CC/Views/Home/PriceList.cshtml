@@ -1,0 +1,76 @@
+﻿@using CC.Models
+@model CC.Models.PriceListModel
+
+@{
+    ViewBag.Title = "PriceList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section body{
+
+    <div class="container body-content font18">
+        <h2>Цены на продукцию Coffee-Cup</h2>
+        <hr />
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Чашка кофе"):
+            </dt>
+            <dd>
+                @PriceListModel.CoffeeCup.ToString()
+                <img class="little-img" src="~/Content/Pictures/coin.svg" />
+            </dd>
+            <hr />
+
+            <p class="to-centre">Появится совсем скоро</p>
+            <hr />
+
+            <dt>
+                @Html.DisplayName("Чашка чая"):
+            </dt>
+            <dd>
+                @PriceListModel.TeaCup.ToString()
+                <img class="little-img" src="~/Content/Pictures/coin.svg" />
+            </dd>
+            <hr />
+
+            <dt>
+                @Html.DisplayName("Пирожное"):
+            </dt>
+            <dd>
+                @PriceListModel.Cake.ToString()
+                <img class="little-img" src="~/Content/Pictures/coin.svg" />
+            </dd>
+            <hr />
+
+            <dt>
+                @Html.DisplayName("Мороженое"):
+            </dt>
+            <dd>
+                @PriceListModel.IceCream.ToString()
+                <img class="little-img" src="~/Content/Pictures/coin.svg" />
+            </dd>
+            <hr />
+
+            <dt>
+                @Html.DisplayName("Блинчики"):
+            </dt>
+            <dd>
+                @PriceListModel.Pancake.ToString()
+                <img class="little-img" src="~/Content/Pictures/coin.svg" />
+            </dd>
+        </dl>
+        <p>
+            @Html.ActionLink("Назад", "OrderIndex", "Order")
+        </p>
+    </div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+

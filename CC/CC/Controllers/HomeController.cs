@@ -5,8 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using CC.Context;
 using System.Threading.Tasks;
-using CC.Filters;
 using System.Data.Entity;
+using CC.Models;
 
 namespace CC.Controllers
 {
@@ -15,9 +15,16 @@ namespace CC.Controllers
         //GET: Home/Index
         #region Главная страница
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            using (var context = new UserContext())
+            {
+                var list = await context.Records.ToListAsync();
+
+                list.Reverse();
+
+                return View(list);
+            }
         }
 
         #endregion
@@ -45,6 +52,16 @@ namespace CC.Controllers
 
                 return View();
             }
+        }
+
+        #endregion
+
+        //GET: Home/PriceList
+        #region Прайс-лист
+
+        public ActionResult PriceList()
+        {
+            return View();
         }
 
         #endregion

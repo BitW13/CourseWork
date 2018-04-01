@@ -5,34 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <h2>Список Ваших заведений</h2>
+@section body{
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Название заведения")
-            </th>
-            <th></th>
-        </tr>
+    <div class="container body-content font18">
+        <h2>Список Ваших заведений</h2>
 
-        @foreach (var item in Model)
-        {
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-
-                <td>
-                    <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a> |
-                    <a href="~/Cafe/EditDescription/@item.Id">Редактировать</a> |
-                    <a href="~/Cafe/DeleteDescription/@item.Id">Удалить</a>
-                </td>
+                <th>
+                    @Html.DisplayName("Название заведения")
+                </th>
+                <th></th>
             </tr>
-        }
-    </table>
-    @Html.ActionLink("Назад", "AccountIndex", "Manage")
-</div>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a> |
+                        <a href="~/Cafe/EditDescription/@item.Id">Редактировать</a> |
+                        <a href="~/Cafe/DeleteDescription/@item.Id">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        @Html.ActionLink("Назад", "AccountIndex", "Manage")
+    </div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
 
 
 

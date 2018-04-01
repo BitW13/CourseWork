@@ -4,15 +4,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section body{
+
     <div class="container body-content  font18">
         <h2>Лайв чат для администраторов</h2>
-            <input type="text" id="message" class="form-control" />
-            <br />
-            <input type="button" id="sendmessage" value="Отправить" class="btn btn-default"/>
-            <hr />
-            <input type="hidden" id="displayname" />
-            <ul id="discussion"></ul>
+        <input type="text" id="message" class="form-control" />
+        <br />
+        <input type="button" id="sendmessage" value="Отправить" class="btn btn-default" />
+        <hr />
+        <input type="hidden" id="displayname" />
+        <ul id="discussion"></ul>
     </div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->

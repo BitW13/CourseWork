@@ -5,62 +5,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <h2>Все новости</h2>
+@section body{
 
-    @using (Html.BeginForm("AllRecords", "Record", FormMethod.Get))
-    {
-        @Html.TextBox("recordName") <input type="submit" value="Поиск" placeholder="Введите заголовок заведения"/>
+    <div class="container body-content font18">
+        <h2>Все новости</h2>
+
+        @using (Html.BeginForm("AllRecords", "Record", FormMethod.Get))
+        {
+            @Html.TextBox("recordName") <input type="submit" value="Поиск" />
+        }
+
+        <br />
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Псевдоним автора")
+                </th>
+                <th>
+                    @Html.DisplayName("Заголовок")
+                </th>
+                <th>
+                    @Html.DisplayName("Дата")
+                </th>
+                <th></th>
+            </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="3" style="color: red;">
+                        Запись не найден
+                    </td>
+                </tr>
+            }
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NickName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => item.RecordDate)
+                    </td>
+
+                    <td>
+                        <a href="~/Record/Details/@item.Id">Подробнее</a>
+                        @*@Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })*@
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
     }
-
-    <br />
-
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Никнейм автора")
-            </th>
-            <th>
-                @Html.DisplayName("Заголовок")
-            </th>
-            <th>
-                @Html.DisplayName("Дата")
-            </th>
-            <th></th>
-        </tr>
-
-        @if (Model.Count() == 0)
-        {
-            <tr>
-                <td colspan="3" style="color: red;">
-                    Запись не найден
-                </td>
-            </tr>
-        }
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NickName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => item.RecordDate)
-                </td>
-
-                <td>
-                    <a href="~/Record/Details/@item.Id">Подробнее</a>
-                    @*@Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })*@
-                </td>
-            </tr>
-        }
-
-    </table>
-</div>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

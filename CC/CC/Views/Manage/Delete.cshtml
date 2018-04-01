@@ -5,76 +5,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <h2>Удаление аккаунта</h2>
+@section body{
 
-    <h3>Елси Вы удалите аккаунт, Вы потеряете все данные. Вы действителььно хотите удалить аккаунт?</h3>
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Никнейм")
-            </dt>
+    <div class="container body-content font18">
+        <h2>Удаление аккаунта</h2>
 
-            <dd>
-                @Html.DisplayFor(model => model.NickName)
-            </dd>
+        <h3>Елси Вы удалите аккаунт, Вы потеряете все данные. Вы действителььно хотите удалить аккаунт?</h3>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Никнейм"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Имя")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NickName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Имя"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Фамилия")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserSurname)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Фамилия"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Ваши права")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserSurname)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserRoleName)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Ваши права"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Количество Coffee-Coins")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserRoleName)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserCoins)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/coin.svg" />:
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Количество билетов на кофе")
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.UserCoins)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserTickets)
-            </dd>
+                <dt>
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/tickets.svg" />:
+                </dt>
 
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.UserTickets)
+                </dd>
 
-        @using (Html.BeginForm("Delete", "Manage"))
-        {
-            @Html.AntiForgeryToken()
+            </dl>
 
-            @Html.HiddenFor(m => m.Id)
+            @using (Html.BeginForm("Delete", "Manage"))
+            {
+                @Html.AntiForgeryToken()
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Удалить" class="btn btn-default" /> |
-                @Html.ActionLink("Назад", "AccountIndex", "Manage")
-            </div>
-        }
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    @Html.ActionLink("Назад", "AccountIndex", "Manage")
+                </div>
+            }
+        </div>
     </div>
-</div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 
 
 

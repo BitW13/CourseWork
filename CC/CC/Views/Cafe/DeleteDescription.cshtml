@@ -5,44 +5,57 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <h2>Удаление заведения</h2>
 
-    <h3>Вы потеряете все данные, Вы действительно хотите удалить Ваше заведение?</h3>
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Название")
-            </dt>
+@section body{
 
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
 
-            <dt>
-                @Html.DisplayName("Описание")
-            </dt>
+    <div class="container body-content font18">
+        <h2>Удаление заведения</h2>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+        <h3>Вы потеряете все данные, Вы действительно хотите удалить Ваше заведение?</h3>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Название")
+                </dt>
 
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
 
-        @using (Html.BeginForm("DeleteDescription", "Cafe"))
-        {
-            @Html.AntiForgeryToken()
+                <dt>
+                    @Html.DisplayName("Описание")
+                </dt>
 
-            @Html.HiddenFor(model => model.Id)
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Удалить" class="btn btn-default" /> |
-                @Html.ActionLink("Назад", "UserCafe", "Cafe")
-            </div>
-        }
+            </dl>
+
+            @using (Html.BeginForm("DeleteDescription", "Cafe"))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    @Html.ActionLink("Назад", "UserCafe", "Cafe")
+                </div>
+            }
+        </div>
     </div>
-</div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

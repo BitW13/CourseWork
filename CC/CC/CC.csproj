@@ -230,6 +230,7 @@
     <Compile Include="Models\AddCafeDescriptionModel.cs" />
     <Compile Include="Models\EditCafeDescriptionModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PriceListModel.cs" />
     <Compile Include="Models\RecordAddModel.cs" />
     <Compile Include="Models\RecordEditModel.cs" />
     <Compile Include="Models\UserCreateModel.cs" />
@@ -250,13 +251,21 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\MyCss.css" />
     <Content Include="Content\Pictures\background.jpg" />
+    <Content Include="Content\Pictures\buy.svg" />
     <Content Include="Content\Pictures\coffee-cup.svg" />
+    <Content Include="Content\Pictures\coin.svg" />
+    <Content Include="Content\Pictures\coins.svg" />
+    <Content Include="Content\Pictures\dollar-symbol.svg" />
     <Content Include="Content\Pictures\five.svg" />
     <Content Include="Content\Pictures\four.svg" />
+    <Content Include="Content\Pictures\location-pointer.svg" />
+    <Content Include="Content\Pictures\news.svg" />
     <Content Include="Content\Pictures\one.svg" />
     <Content Include="Content\Pictures\ShortIcon.svg" />
     <Content Include="Content\Pictures\three.svg" />
+    <Content Include="Content\Pictures\tickets.svg" />
     <Content Include="Content\Pictures\two.svg" />
+    <Content Include="Content\Pictures\vk.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Videos\VideoBackground.mp4" />
     <Content Include="favicon.ico" />
@@ -337,7 +346,8 @@
     <Content Include="Views\Cafe\UserCafe.cshtml" />
     <Content Include="Views\Record\DeleteRecord.cshtml" />
     <Content Include="Views\Record\EditRecord.cshtml" />
-    <Content Include="Views\Manage\_SearchUser.cshtml" />
+    <Content Include="Views\Home\PriceList.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

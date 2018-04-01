@@ -5,52 +5,64 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <h2>Подробное описание</h2>
+@section body{
 
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
+    <div class="container body-content font18">
+        <h2>Подробное описание</h2>
 
-            <dt>
-                @Html.DisplayName("Никнейм автора")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.NickName)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Дата")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.RecordDate)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Заголовок")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-
+        <div>
             <hr />
+            <dl class="dl-horizontal">
 
-            <dt>
-                @Html.DisplayName("Описание")
-            </dt>
+                <dt>
+                    @Html.DisplayName("Псевдоним автора"):
+                </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-        </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.NickName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Дата"):
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.RecordDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Заголовок"):
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+
+                <hr />
+
+                <dt>
+                    @Html.DisplayName("Описание"):
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Назад", "AllRecords", "Record")
+        </p>
     </div>
-    <p>
-        @Html.ActionLink("Назад", "AllRecords", "Record")
-    </p>
-</div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 
 
 

@@ -5,7 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Body{
+@section body{
+
     <div class="container body-content font18">
         <h2>Список ваших записей</h2>
 
@@ -61,4 +62,14 @@
 
         </table>
     </div>
+
 }
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+

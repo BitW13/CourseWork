@@ -3,14 +3,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content" style="font-size: 20px;">
-    <h2>Магазин Coffee-Cup</h2>
-    <hr />
+@section body{
 
-    @Html.ActionLink("Получить Coffee-Coins", "GetCoffeeCoins", "Order") |
-    @Html.ActionLink("Получить купоны на кофе", "GetTickets", "Order")
+    <div class="container body-content font18">
+        <h2>Магазин Coffee-Cup</h2>
+        <hr />
+        <p>
+            @Html.ActionLink("Получить Coffee-Coins", "GetCoffeeCoins", "Order") |
+            @Html.ActionLink("Получить купоны на кофе", "GetTickets", "Order")
+        </p>
 
-</div>
+        <p>
+            @Html.ActionLink("Цены на продукцию Coffee-Cup", "PriceList", "Home")
+        </p>
+    </div>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
 
 
 
