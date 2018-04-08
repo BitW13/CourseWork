@@ -1,0 +1,173 @@
+﻿/*#region Видео на главную страницу */
+
+.homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
+}
+
+.no-video .video-container video,
+.touch .video-container video {
+    display: none;
+}
+
+.no-video .video-container .poster,
+.touch .video-container .poster {
+    display: block !important;
+}
+
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+    .video-container .poster img {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+    }
+
+    .video-container .filter {
+        z-index: 100;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.4);
+        width: 100%;
+    }
+
+    .video-container video {
+        position: absolute;
+        z-index: 0;
+        bottom: 0;
+    }
+
+        .video-container video.fillWidth {
+            width: 100%;
+        }
+
+/*#endregion */
+
+/*#region Шрифт веб-приложения */
+
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed');
+
+* {
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
+.font20 {
+    font-size: 20px;
+}
+
+.font25 {
+    font-size: 25px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/*#endregion */
+
+/*#region Описание работы приложения */
+
+.to-centre {
+    text-align: center;
+}
+
+.aver-img {
+    width: 45px;
+    height: auto;
+}
+
+.little-img {
+    width: 30px;
+    height: auto;
+}
+
+#First {
+    margin-top: 2em;
+    font-size: 40px;
+    text-align: center;
+}
+
+#Second {
+    margin-top: 1em;
+    font-size: 25px;
+    text-align: center;
+}
+
+#Third {
+    margin-top: 3em;
+}
+
+#Forth {
+    margin-top: 1em;
+}
+
+#Img {
+    width: 300px;
+    height: auto;
+}
+
+#howItWorks {
+    font-size: 40px;
+}
+
+#alg {
+    margin-top: 2em;
+}
+
+/*#endregion */
+
+/*#region Short-news */
+
+#title {
+    margin-top: 2em;
+    font-size: 40px;
+}
+
+#first-line-news {
+    margin-top: 2em;
+}
+
+#second-line-news {
+    margin-top: 2em;
+}
+
+#news-icon {
+    width: 60px;
+    height: auto;
+}
+
+
+/*#endregion */
+
+/*#region Footer */
+
+#footer {
+    margin-top: 1em;
+    height: 250px;
+    background-color: #CECECE;
+}
+
+#fot {
+    margin-top: 3em;
+}
+
+.super-little-icon {
+    width: 22px;
+    height: auto;
+}
+
+/*#endregion */
+
+

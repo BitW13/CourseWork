@@ -1,5 +1,10 @@
-﻿using CC.Context;
+﻿using AutoMapper;
+using CC.Context;
+using CC.Context.ContextModels;
+using CC.Cryptor;
+using CC.Filters;
 using CC.Models;
+using CC.Models.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,15 +17,25 @@ namespace CC.Controllers
 {
     public class RecordController : Controller
     {
+        private IRepository<Record> _repostitoryRecord;
+        private IRepository<User> _repostitoryUser;
+
+        public RecordController(IRepository<Record> repository1, IRepository<User> repository2)
+        {
+            _repostitoryRecord = repository1;
+            _repostitoryUser = repository2;
+        }
+
         //GET: Record/AllRecords
         #region Список всех новостей
 
-        public ActionResult AllRecords()
+        public ActionResult AllRecords(string recordName)
         {
-            using (var context = new UserContext())
-            {
-                return View(context.Records.ToList());
-            }
+            var list = _repostitoryRecord.GetAll();
+
+            list.Reverse();
+
+            return View(list);
         }
 
 
@@ -29,27 +44,14 @@ namespace CC.Controllers
         //GET: Record/ListOfRecords
         #region Список новостей определенного пользователя
 
-        //[MyAuth]
-        public async Task<ActionResult> ListOfRecords()
+        [Moder]
+        public ActionResult ListOfRecords()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                int id = int.Parse(Session["Id"].ToString());
+            var list = _repostitoryRecord.GetElementByUserId(id);
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Moder")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                return View(context.Records.Where(m => m.UserId == user.Id).ToList());
-            }
+            return View(list);
         }
 
         #endregion
@@ -57,14 +59,11 @@ namespace CC.Controllers
         //GET: Record/Details
         #region Новость детально
 
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(Guid? id)
         {
-            using (var context = new UserContext())
-            {
-                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var record = _repostitoryRecord.GetElementById(id);
 
-                return View(record);
-            }
+            return View(record);
         }
 
         #endregion
@@ -72,65 +71,44 @@ namespace CC.Controllers
         //GET, POST: Record/AddRecord
         #region Добавление новостей
 
-        //[MyAuth]
-        public async Task<ActionResult> AddRecord()
+        [Moder]
+        public ActionResult AddRecord()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Moder")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var model = new RecordAddModel { UserId = user.Id };
-
-                return View(model);
-            }
+            return View();
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddRecord(RecordAddModel model)
+        public ActionResult AddRecord(RecordAddModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var getConvert = new Record { NickName = model.NickName, Title = model.Title, Description = model.Description };
+
+                var oldRecord = _repostitoryRecord.GetElement(getConvert);
+
+                Guid userId = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
+
+                if (oldRecord == null)
                 {
-                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (model.NickName == null)
                     {
-                        if (user.UserRoleName == "Moder")
-                        {
-                            if (model.NickName == null)
-                            {
-                                model.NickName = user.NickName;
-                            }
+                        var user = _repostitoryUser.GetElementById(userId);
 
-                            context.Records.Add(new Record { NickName = model.NickName, Title = model.Title, Description = model.Description, UserId = user.Id, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
-                            context.SaveChanges();
+                        _repostitoryRecord.Create(new Record { Id = Guid.NewGuid(), UserId = userId, NickName = user.NickName, Title = model.Title, Description = model.Description, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
 
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "У Вас недостаточно прав");
-                        }
+                        return RedirectToAction("AccountIndex", "Manage");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
+                        _repostitoryRecord.Create(new Record { Id = Guid.NewGuid(), UserId = userId, NickName = Encoding.GetCrypt(model.NickName), Title = model.Title, Description = model.Description, RecordDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) });
+
+                        return RedirectToAction("AccountIndex", "Manage");
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такое заведение уже существует");
                 }
             }
 
@@ -142,67 +120,37 @@ namespace CC.Controllers
         //GET, POST: Record/EditRecord
         #region Редактирование новостей
 
-        //[MyAuth]
-        public async Task<ActionResult> EditRecord(int? id)
+        [Moder]
+        public ActionResult EditRecord(Guid? id)
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var record = _repostitoryRecord.GetElementById(id);
 
-                int userId = int.Parse(Session["Id"].ToString());
+            var model = new RecordEditModel { Id = record.Id, UserId = record.UserId };
 
-                var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
+            return View(model);
 
-                if (user.UserRoleName != "Moder")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                var model = new RecordEditModel { Id = record.Id, Title = record.Title, UserId = user.Id, Description = record.Description };
-
-                return View(model);
-            }
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditRecord(RecordEditModel model)
+        public ActionResult EditRecord(RecordEditModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var record = _repostitoryRecord.GetElementById(model.Id);
+
+                if (record != null)
                 {
-                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
+                    record.Title = model.Title;
+                    record.Description = model.Description;
 
-                    if (user != null)
-                    {
-                        if (user.UserRoleName == "Moder")
-                        {
-                            var record = await context.Records.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                    _repostitoryRecord.Update(record);
 
-                            record.Title = model.Title;
-                            record.Description = model.Description;
-
-                            context.Entry(record).State = EntityState.Modified;
-                            context.SaveChanges();
-
-                            return RedirectToAction("AccountIndex", "Manage");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "У Вас недостаточно прав");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Пользователя с таким никнеймом не существует");
-                    }
+                    return RedirectToAction("ListOfRecords", "Record");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такой записи не сущетвует");
                 }
             }
 
@@ -214,66 +162,35 @@ namespace CC.Controllers
         //GET, POST: Record/DeleteRecord
         #region Удаление новостей
 
-        //[MyAuth]
-        public async Task<ActionResult> DeleteRecord(int? id)
+        [Moder]
+        public ActionResult DeleteRecord(Guid? id)
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var record = _repostitoryRecord.GetElementById(id);
 
-                int userId = int.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Moder")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var record = await context.Records.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                return View(record);
-            }
+            return View(record);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteRecord(Record model)
+        public ActionResult DeleteRecord(Record model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var record = _repostitoryRecord.GetElementById(model.Id);
+
+                if (record != null)
                 {
-                    var user = await context.Users.Where(m => m.Id == model.UserId).FirstOrDefaultAsync();
+                    _repostitoryRecord.Delete(record.Id);
 
-                    if (user != null)
-                    {
-                        var record = await context.Records.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
-
-                        if (record != null)
-                        {
-                            context.Entry(record).State = EntityState.Deleted;
-                            context.SaveChanges();
-
-                            return RedirectToAction("AccountIndex", "Manage");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Такой записи не существует");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
+                    return RedirectToAction("ListOfRecords", "Record");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такой записи не существует");
                 }
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion

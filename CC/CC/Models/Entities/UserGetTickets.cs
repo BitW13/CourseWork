@@ -6,20 +6,18 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class UserGetCoins
+    public class UserGetTickets
     {
-        #region Модель для получения валюты 
+        #region Модель для получения билетов
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Это поле обязательно для заполнения")]
-        [Display(Name = "Coffee-Coins")]
-        public int UserCoins { get; set; }
+        [Display(Name = "Количество Coffee-Coins")]
+        public int CoffeeCoin { get; set; }
 
-        [Required(ErrorMessage = "Это поле обязательно для заполнения")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Промокод")]
-        public string SecretKey { get; set; }
+        [Required]
+        [Display(Name = "Количество купонов")]
+        public int UserTickets { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Пароль")]

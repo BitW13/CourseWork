@@ -8,9 +8,9 @@ namespace CC.Models
 {
     public class EditCafeDescriptionModel
     {
-        #region Модель для добавления описания заведения
+        #region Модель для изменения описания заведения
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]

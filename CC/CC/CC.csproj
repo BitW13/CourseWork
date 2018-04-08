@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -67,9 +70,19 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -113,6 +126,9 @@
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -189,8 +205,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Context\ContextModels\Cafe.cs" />
+    <Compile Include="Context\ContextModels\Host.cs" />
+    <Compile Include="Context\ContextModels\Record.cs" />
+    <Compile Include="Context\ContextModels\User.cs" />
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CafeController.cs" />
@@ -198,12 +219,16 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\RecordController.cs" />
-    <Compile Include="Controllers\SupportController.cs" />
+    <Compile Include="Cryptor\Encoding.cs" />
+    <Compile Include="Cryptor\Decoding.cs" />
+    <Compile Include="Filters\AdminAttribute.cs" />
+    <Compile Include="Filters\ModerAttribute.cs" />
     <Compile Include="Filters\MyAuthAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Infrastructure\NinjectDependency.cs" />
     <Compile Include="Migrations\201803121210526_InitialCreate.cs" />
     <Compile Include="Migrations\201803121210526_InitialCreate.Designer.cs">
       <DependentUpon>201803121210526_InitialCreate.cs</DependentUpon>
@@ -216,20 +241,47 @@
     <Compile Include="Migrations\201803280917325_Mig2.Designer.cs">
       <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803292036530_Mig3.cs" />
+    <Compile Include="Migrations\201803292036530_Mig3.Designer.cs">
+      <DependentUpon>201803292036530_Mig3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803292039125_Mig4.cs" />
+    <Compile Include="Migrations\201803292039125_Mig4.Designer.cs">
+      <DependentUpon>201803292039125_Mig4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804031206100_Mig5.cs" />
+    <Compile Include="Migrations\201804031206100_Mig5.Designer.cs">
+      <DependentUpon>201804031206100_Mig5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804061041566_Mig6.cs" />
+    <Compile Include="Migrations\201804061041566_Mig6.Designer.cs">
+      <DependentUpon>201804061041566_Mig6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804071600222_Mig7.cs" />
+    <Compile Include="Migrations\201804071600222_Mig7.Designer.cs">
+      <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AddCafeDescriptionModel.cs" />
-    <Compile Include="Models\EditCafeDescriptionModel.cs" />
+    <Compile Include="Models\Abstract\IRepository.cs" />
+    <Compile Include="Models\Entities\AddCafeDescriptionModel.cs" />
+    <Compile Include="Models\Entities\EditCafeDescriptionModel.cs" />
+    <Compile Include="Models\Entities\RecordAddModel.cs" />
+    <Compile Include="Models\Entities\RecordEditModel.cs" />
+    <Compile Include="Models\Entities\UserEditDataModel.cs" />
+    <Compile Include="Models\Entities\UserGetTickets.cs" />
+    <Compile Include="Models\Entities\UserLoginModel.cs" />
+    <Compile Include="Models\Entities\UserSearchModel.cs" />
+    <Compile Include="Models\Entities\UseTicketsModel.cs" />
+    <Compile Include="Models\Mapping\AutoMapperModel.cs" />
+    <Compile Include="Models\Concrete\EFCafeRepository.cs" />
+    <Compile Include="Models\Concrete\EFRecordRepository.cs" />
+    <Compile Include="Models\Concrete\EFUserRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\RecordAddModel.cs" />
-    <Compile Include="Models\RecordEditModel.cs" />
-    <Compile Include="Models\UserCreateModel.cs" />
-    <Compile Include="Models\UserEditDataModel.cs" />
-    <Compile Include="Models\UserEditPasswordModel.cs" />
-    <Compile Include="Models\UserGetCoins.cs" />
-    <Compile Include="Models\UserGetRightsModel.cs" />
-    <Compile Include="Models\UserGetTickets.cs" />
-    <Compile Include="Models\UserLoginModel.cs" />
-    <Compile Include="Models\UseTicketsModel.cs" />
+    <Compile Include="Models\Entities\PriceListModel.cs" />
+    <Compile Include="Models\Entities\UserCreateModel.cs" />
+    <Compile Include="Models\Entities\UserEditPasswordModel.cs" />
+    <Compile Include="Models\Entities\UserGetCoins.cs" />
+    <Compile Include="Models\Entities\UserGetRightsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -238,7 +290,25 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MyCss.css" />
+    <Content Include="Content\Pictures\background.jpg" />
+    <Content Include="Content\Pictures\buy.svg" />
+    <Content Include="Content\Pictures\coffee-cup.svg" />
+    <Content Include="Content\Pictures\coin.svg" />
+    <Content Include="Content\Pictures\coins.svg" />
+    <Content Include="Content\Pictures\dollar-symbol.svg" />
+    <Content Include="Content\Pictures\five.svg" />
+    <Content Include="Content\Pictures\four.svg" />
+    <Content Include="Content\Pictures\location-pointer.svg" />
+    <Content Include="Content\Pictures\news.svg" />
+    <Content Include="Content\Pictures\one.svg" />
+    <Content Include="Content\Pictures\ShortIcon.svg" />
+    <Content Include="Content\Pictures\three.svg" />
+    <Content Include="Content\Pictures\tickets.svg" />
+    <Content Include="Content\Pictures\two.svg" />
+    <Content Include="Content\Pictures\vk.svg" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Videos\VideoBackground.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -266,12 +336,15 @@
     <Content Include="Scripts\jquery.signalR-2.2.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\JSForVideo.js" />
     <Content Include="Scripts\SlowScroll.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SignalRChatScript.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -305,7 +378,6 @@
     <Content Include="Views\Order\GetTickets.cshtml" />
     <Content Include="Views\Manage\UseTickets.cshtml" />
     <Content Include="Views\Record\AddRecord.cshtml" />
-    <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\Cafe\WriteDescription.cshtml" />
     <Content Include="Views\Shared\_AccountAdmin.cshtml" />
     <Content Include="Views\Cafe\EditDescription.cshtml" />
@@ -315,6 +387,8 @@
     <Content Include="Views\Cafe\UserCafe.cshtml" />
     <Content Include="Views\Record\DeleteRecord.cshtml" />
     <Content Include="Views\Record\EditRecord.cshtml" />
+    <Content Include="Views\Home\PriceList.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -343,6 +417,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803280917325_Mig2.resx">
       <DependentUpon>201803280917325_Mig2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803292036530_Mig3.resx">
+      <DependentUpon>201803292036530_Mig3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803292039125_Mig4.resx">
+      <DependentUpon>201803292039125_Mig4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804031206100_Mig5.resx">
+      <DependentUpon>201804031206100_Mig5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804061041566_Mig6.resx">
+      <DependentUpon>201804061041566_Mig6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804071600222_Mig7.resx">
+      <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

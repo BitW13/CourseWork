@@ -5,13 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
+
         @using (Html.BeginForm("Create", "Account"))
         {
             @Html.AntiForgeryToken()
@@ -73,8 +70,19 @@
             @Html.ActionLink("На главную", "Index", "Home")
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 
 

@@ -1,18 +1,24 @@
 ﻿using CC.Models;
-using CC.Context;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
 using CC.Filters;
-using System.Threading.Tasks;
+using CC.Cryptor;
+using AutoMapper;
+using CC.Models.Abstract;
+using CC.Context.ContextModels;
 
 namespace CC.Controllers
 {
     public class AccountController : Controller
     {
+        private IRepository<User> _repository;
+
+        public AccountController(IRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
         // GET, POST: Account/Create
         #region Регистрация
 
@@ -23,35 +29,47 @@ namespace CC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UserCreateModel model)
+        public ActionResult Create(UserCreateModel model)
         {
-            Session["Id"] = null;
-            Session["UserRole"] = null;
-            Session["AdminRole"] = null;
-            Session["ModerRole"] = null;
+            ClearCookie();
 
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                User oldUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname };
+
+                User newUser = _repository.GetElement(oldUser);
+
+                if (newUser == null)
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
-
-                    if (user == null)
+                    if (model.ConfirmPassword == model.Password)
                     {
-                        var newUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname, Password = model.Password, UserRoleName = "User", UserTickets = 0, UserCoins = 2 };
+                        Guid id = Guid.NewGuid();
 
-                        context.Users.Add(newUser);
-                        context.SaveChanges();
+                        newUser = new User { Id = id, NickName = Encoding.GetCrypt(model.NickName), Password = Encoding.GetCrypt(model.Password), UserCoins = 4, UserRoleName = "User", UserName = Encoding.GetCrypt(model.UserName), UserSurname = Encoding.GetCrypt(model.UserSurname), UserTickets = 0 };
 
-                        Session["Id"] = newUser.Id;
-                        Session["UserRole"] = "User";
+                        _repository.Create(newUser);
+
+                        const int timeout = 262800;
+
+                        Response.Cookies["LoggedIn"].Value = "Accepted";
+                        Response.Cookies["LoggedIn"].Expires = DateTime.Now.AddMinutes(timeout);
+
+                        Response.Cookies["User"].Value = newUser.UserName;
+                        Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(timeout);
+
+                        Response.Cookies["Id"].Value = Encoding.GetCrypt(newUser.Id.ToString());
+                        Response.Cookies["Id"].Expires = DateTime.Now.AddMinutes(timeout);
 
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Такой пользователь уже существует");
+                        ModelState.AddModelError("", "Пароли не совпадают");
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такой пользователь уже существует");
                 }
             }
 
@@ -70,54 +88,54 @@ namespace CC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(UserLoginModel model)
+        public ActionResult Login(UserLoginModel model)
         {
-            Session["Id"] = null;
-            Session["UserRole"] = null;
-            Session["AdminRole"] = null;
-            Session["ModerRole"] = null;
+            ClearCookie();
 
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var getConvert = new User { UserName = Encoding.GetCrypt(model.UserName), NickName = Encoding.GetCrypt(model.NickName), UserSurname = Encoding.GetCrypt(model.UserSurname) };
+
+                var user = _repository.GetElement(getConvert);
+
+                if (user != null)
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (user.Password == Encoding.GetCrypt(model.Password))
                     {
-                        if (user.Password == model.Password)
+                        const int timeout = 262800;
+
+                        Response.Cookies["Id"].Value = Encoding.GetCrypt(user.Id.ToString());
+                        Response.Cookies["Id"].Expires = DateTime.Now.AddMinutes(timeout);
+
+                        Response.Cookies["LoggedIn"].Value = "Accepted";
+                        Response.Cookies["LoggedIn"].Expires = DateTime.Now.AddMinutes(timeout);
+
+                        if (user.UserRoleName == "User")
                         {
-                            if (user.UserRoleName == "User")
-                            {
-                                Session["Id"] = user.Id.ToString();
-                                Session["UserRole"] = user.UserRoleName;
-
-                                return RedirectToAction("Index", "Home");
-                            }
-                            else if (user.UserRoleName == "Admin")
-                            {
-                                Session["Id"] = user.Id.ToString();
-                                Session["AdminRole"] = user.UserRoleName;
-
-                                return RedirectToAction("Index", "Home");
-                            }
-                            else if (user.UserRoleName == "Moder")
-                            {
-                                Session["Id"] = user.Id.ToString();
-                                Session["ModerRole"] = user.UserRoleName;
-
-                                return RedirectToAction("Index", "Home");
-                            }
+                            Response.Cookies["User"].Value = user.UserRoleName;
+                            Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(timeout);
                         }
-                        else
+                        else if (user.UserRoleName == "Admin")
                         {
-                            ModelState.AddModelError("", "Неверный пароль");
+                            Response.Cookies["Admin"].Value = user.UserRoleName;
+                            Response.Cookies["Admin"].Expires = DateTime.Now.AddMinutes(timeout);
                         }
+                        else if (user.UserRoleName == "Moder")
+                        {
+                            Response.Cookies["Moder"].Value = user.UserRoleName;
+                            Response.Cookies["Moder"].Expires = DateTime.Now.AddMinutes(timeout);
+                        }
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
+                        ModelState.AddModelError("", "Неправильный пароль");
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такого пользователя не существует");
                 }
             }
 
@@ -125,26 +143,31 @@ namespace CC.Controllers
         }
         #endregion
 
+        #region Метод удаления куков
+
+        public void ClearCookie()
+        {
+            const int negativeTime = -263000;
+
+            if (Request.Cookies["Id"] != null)
+            {
+                Response.Cookies["Id"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["LoggedIn"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["Admin"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["Moder"].Expires = DateTime.Now.AddMinutes(negativeTime);
+            }
+        }
+
+        #endregion
+
         //POST: Account/Logout
         #region Выход из аккаунта
 
+        [HttpPost]
         public ActionResult Logout()
         {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Logout(int? id)
-        {
-            Session["Id"] = null;
-            Session["UserRole"] = null;
-            Session["AdminRole"] = null;
-            Session["ModerRole"] = null;
+            ClearCookie();
 
             return RedirectToAction("Index", "Home");
         }
@@ -153,49 +176,49 @@ namespace CC.Controllers
         //GET, POST: Account/GetAdmin
         #region Получение прав администратора
 
-        //[MyAuth]
+        [MyAuth]
         public ActionResult GetAdmin()
         {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-            return View();
+            var user = _repository.GetElementById(id);
+
+            var model = new UserGetRightsModel { Id = user.Id };
+
+            return View(model);
+
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetAdmin(UserGetRightsModel model)
+        public ActionResult GetAdmin(UserGetRightsModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (model.SecurityCode == "qw12po09fj")
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (user.Password == Encoding.GetCrypt(model.Password))
                     {
-                        if (user.Password == model.Password)
-                        {
-                            if (model.SecurityCode == "qw12po09fj")
-                            {
-                                user.UserRoleName = "Admin";
+                        user.UserRoleName = "Admin";
+                        Session["AdminRole"] = user.UserRoleName;
 
-                                Session["AdminRole"] = user.UserRoleName;
+                        Session["UserRole"] = null;
+                        Session["ModerRole"] = null;
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
+                        _repository.Update(user);
 
-                                return RedirectToAction("AccountIndex", "Manage");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Неправильный защитный код");
-                            }
-                        }
+                        return RedirectToAction("AccountIndex", "Manage");
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", "Неверный пароль");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неверный код");
                 }
             }
 
@@ -206,49 +229,48 @@ namespace CC.Controllers
         //GET, POST: Account/GetModer
         #region Получение прав модератора
 
-        //[MyAuth]
+        [MyAuth]
         public ActionResult GetModer()
         {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-            return View();
+            var user = _repository.GetElementById(id);
+
+            var model = new UserGetRightsModel { Id = user.Id };
+
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetModer(UserGetRightsModel model)
+        public ActionResult GetModer(UserGetRightsModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (model.SecurityCode == "bmd78zl4r1")
                 {
-                    var user = await context.Users.Where(m => m.NickName == model.NickName && m.UserName == model.UserName && m.UserSurname == model.UserSurname).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (user.Password == Encoding.GetCrypt(model.Password))
                     {
-                        if (user.Password == model.Password)
-                        {
-                            if (model.SecurityCode == "bmd78zl4r1")
-                            {
-                                user.UserRoleName = "Moder";
+                        user.UserRoleName = "Moder";
+                        Session["ModelRole"] = user.UserRoleName;
 
-                                Session["ModerRole"] = user.UserRoleName;
+                        Session["UserRole"] = null;
+                        Session["AdminRole"] = null;
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
+                        _repository.Update(user);
 
-                                return RedirectToAction("AccountIndex", "Manage");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Неправильный защитный код");
-                            }
-                        }
+                        return RedirectToAction("AccountIndex", "Manage");
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", "Неверный пароль");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неверный код");
                 }
             }
 

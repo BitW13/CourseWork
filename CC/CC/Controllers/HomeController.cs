@@ -5,19 +5,34 @@ using System.Web;
 using System.Web.Mvc;
 using CC.Context;
 using System.Threading.Tasks;
-using CC.Filters;
 using System.Data.Entity;
+using CC.Models;
+using AutoMapper;
+using CC.Models.Abstract;
+using CC.Context.ContextModels;
+using CC.Filters;
 
 namespace CC.Controllers
 {
     public class HomeController : Controller
     {
+        private IRepository<Record> _repository;
+
+        public HomeController(IRepository<Record> repository)
+        {
+            _repository = repository;
+        }
+
         //GET: Home/Index
         #region Главная страница
 
         public ActionResult Index()
         {
-            return View();
+            //var list = _repository.GetAll.ToList();
+
+            //list.Reverse();
+
+            return View(/*list*/);
         }
 
         #endregion
@@ -25,26 +40,20 @@ namespace CC.Controllers
         //GET: Home/Chat
         #region Лайв чат для админов
 
-        public async Task<ActionResult> Chat()
+        [Admin]
+        public ActionResult Chat()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            return View();
+        }
 
-                int id = int.Parse(Session["Id"].ToString());
+        #endregion
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+        //GET: Home/PriceList
+        #region Прайс-лист
 
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                return View();
-            }
+        public ActionResult PriceList()
+        {
+            return View();
         }
 
         #endregion

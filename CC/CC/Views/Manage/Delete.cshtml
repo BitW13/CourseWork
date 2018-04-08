@@ -1,17 +1,13 @@
-﻿@model CC.Context.User
+﻿@model CC.Context.ContextModels.User
 
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <h2>Удаление аккаунта</h2>
 
         <h3>Елси Вы удалите аккаунт, Вы потеряете все данные. Вы действителььно хотите удалить аккаунт?</h3>
@@ -19,7 +15,7 @@
             <hr />
             <dl class="dl-horizontal">
                 <dt>
-                    @Html.DisplayName("Никнейм")
+                    @Html.DisplayName("Никнейм"):
                 </dt>
 
                 <dd>
@@ -27,7 +23,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Имя")
+                    @Html.DisplayName("Имя"):
                 </dt>
 
                 <dd>
@@ -35,7 +31,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Фамилия")
+                    @Html.DisplayName("Фамилия"):
                 </dt>
 
                 <dd>
@@ -43,7 +39,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Ваши права")
+                    @Html.DisplayName("Ваши права"):
                 </dt>
 
                 <dd>
@@ -51,7 +47,8 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Количество Coffee-Coins")
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/coin.svg" />:
                 </dt>
 
                 <dd>
@@ -59,7 +56,8 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Количество билетов на кофе")
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/tickets.svg" />:
                 </dt>
 
                 <dd>
@@ -72,7 +70,7 @@
             {
                 @Html.AntiForgeryToken()
 
-                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(model => model.Id)
 
                 <div class="form-actions no-color">
                     <input type="submit" value="Удалить" class="btn btn-default" /> |
@@ -81,7 +79,16 @@
             }
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+
 
 

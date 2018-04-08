@@ -2,27 +2,31 @@
 using CC.Filters;
 using CC.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using CC.Cryptor;
+using CC.Models.Abstract;
+using CC.Context.ContextModels;
 
 namespace CC.Controllers
 {
     public class OrderController : Controller
     {
+        private IRepository<User> _repository;
+
+        public OrderController(IRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
         // GET: Order/OrderInex
         #region Главная страница для получения валюты и билетов
 
+        [MyAuth]
         public ActionResult OrderIndex()
         {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             return View();
         }
 
@@ -31,63 +35,40 @@ namespace CC.Controllers
         //GET, POST: Order/GetCoins
         #region Получение валюты Coffee-Coin
 
-        //[MyAuth]
-        public async Task<ActionResult> GetCoffeeCoins()
+        [MyAuth]
+        public ActionResult GetCoffeeCoins()
         {
-            using (var context = new UserContext())
-            {
-                int id = int.Parse(Session["Id"].ToString());
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var user = _repository.GetElementById(id);
 
-                if (user == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var model = new UserGetCoins() { Id = user.Id, UserCoins = user.UserCoins };
 
-                var user1 = new UserGetCoins();
-
-                user1.Id = user.Id;
-                user1.UserCoins = user.UserCoins;
-
-                return View(user1);
-            }
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetCoffeeCoins(UserGetCoins model)
+        public ActionResult GetCoffeeCoins(UserGetCoins model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (user.Password == Encoding.GetCrypt(model.Password))
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (model.SecretKey == "hdieo986vck4")
                     {
-                        if (user.Password == model.Password)
-                        {
-                            if (model.SecretKey == "hdieo986vck4")
-                            {
-                                user.UserCoins = user.UserCoins + 5;
+                        user.UserCoins = user.UserCoins + 5;
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
+                        _repository.Update(user);
 
-                                return RedirectToAction("OrderIndex", "Order");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Неверный пароль");
-                        }
+                        return RedirectToAction("OrderIndex", "Order");
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неверный пароль");
                 }
             }
 
@@ -97,77 +78,54 @@ namespace CC.Controllers
         #endregion
 
         //GET, POST: Order/GetTickets
-        #region Получение билетов
+        #region Получение купонов
 
-        //[MyAuth]
-        public async Task<ActionResult> GetTickets()
+        [MyAuth]
+        public ActionResult GetTickets()
         {
-            using (var context = new UserContext())
-            {
-                int id = int.Parse(Session["Id"].ToString());
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var user = _repository.GetElementById(id);
 
-                if (user == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var model = new UserGetTickets { Id = user.Id, CoffeeCoin = user.UserCoins, UserTickets = user.UserTickets };
 
-                var user1 = new UserGetTickets();
-
-                user1.UserTickets = user.UserTickets;
-                user1.Id = user.Id;
-
-                return View(user1);
-            }
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetTickets(UserGetTickets model)
+        public ActionResult GetTickets(UserGetTickets model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (user.Password == Encoding.GetCrypt(model.Password))
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (user.UserCoins >= 2)
                     {
-                        if (user.Password == model.Password)
+                        user.UserTickets = user.UserTickets + model.UserTickets;
+                        user.UserCoins = user.UserCoins - (model.UserTickets * 2);
+
+                        if (user.UserCoins < 0)
                         {
-                            if (user.UserCoins >= 2)
-                            {
-                                user.UserTickets = user.UserTickets + model.UserTickets;
-                                user.UserCoins = user.UserCoins - (model.UserTickets * 2);
-
-                                if (user.UserCoins < 0)
-                                {
-                                    ModelState.AddModelError("", "Вы не можете купить столько купонов, у Вас не хватает средств");
-                                }
-                                else
-                                {
-                                    context.Entry(user).State = EntityState.Modified;
-                                    context.SaveChanges();
-
-                                    return RedirectToAction("OrderIndex", "Order");
-                                }
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "У Вас недостаточно Coffee-Coins");
-                            }
+                            ModelState.AddModelError("", "Вы не можете купить столько купонов, у Вас не хватает средств");
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Неверный пароль");
+                            _repository.Update(user);
+
+                            return RedirectToAction("OrderIndex", "Order");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
+                        ModelState.AddModelError("", "У Вас недостаточно Coffee-Coins");
                     }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный пароль");
                 }
             }
 
@@ -175,5 +133,6 @@ namespace CC.Controllers
         }
 
         #endregion
+
     }
 }

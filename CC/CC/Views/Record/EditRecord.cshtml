@@ -5,13 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <h2>Редактирование записи</h2>
 
         @using (Html.BeginForm("EditRecord", "Record"))
@@ -53,6 +49,17 @@
             @Html.ActionLink("Назад", "ListOfRecords", "Record")
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 

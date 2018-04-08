@@ -6,15 +6,11 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class UserGetTickets
+    public class UseTicketsModel
     {
-        #region Модель для получения билетов
+        #region Модель для обналичивания билетов
 
-        public int Id { get; set; }
-
-        [Required]
-        [Display(Name = "Количество купонов")]
-        public int UserTickets { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Пароль")]

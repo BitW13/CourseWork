@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using CC.Context.ContextModels;
 
 namespace CC.Models
 {
     public class AddCafeDescriptionModel
     {
         #region Модель для добавления описания заведения
-
-        public int Id { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]

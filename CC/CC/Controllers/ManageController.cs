@@ -8,30 +8,54 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using CC.Cryptor;
+using AutoMapper;
+using CC.Controllers;
+using CC.Models.Abstract;
+using CC.Context.ContextModels;
 
 namespace CC.Controllers
 {
     public class ManageController : Controller
     {
+        private IRepository<User> _repository;
+
+        public ManageController(IRepository<User> repository)
+        {
+            _repository = repository;
+        }
+
+        #region Метод удаления куков
+
+        public void ClearCookie()
+        {
+            const int negativeTime = -263000;
+
+            if (Request.Cookies["Id"] != null)
+            {
+                Response.Cookies["Id"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["LoggedIn"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["Admin"].Expires = DateTime.Now.AddMinutes(negativeTime);
+                Response.Cookies["Moder"].Expires = DateTime.Now.AddMinutes(negativeTime);
+            }
+        }
+
+        #endregion
+
         // GET: Manage/AccountIndex
         #region Страница аккаунта пользователя
 
-        //[MyAuth]
-        public async Task<ActionResult> AccountIndex()
+        [MyAuth]
+        public ActionResult AccountIndex()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                int id = int.Parse(Session["Id"].ToString());
+            var encodeUser = (_repository.GetElementById(id));
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var user = new User { Id = id, UserCoins = encodeUser.UserCoins, NickName = Decoding.GetDecrypt(encodeUser.NickName), UserName = Decoding.GetDecrypt(encodeUser.UserName), UserSurname = Decoding.GetDecrypt(encodeUser.UserSurname), UserRoleName = encodeUser.UserRoleName };
 
-                return View(user);
-            }
+            return View(user);
         }
 
         #endregion
@@ -39,27 +63,13 @@ namespace CC.Controllers
         //GET: Manage/ListOfUsers
         #region Список пользователей
 
-        //[MyAuth]
-        public async Task<ActionResult> ListOfUsers()
+        [MyAuth]
+        [Admin]
+        public ActionResult ListOfUsers(string NickName)
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var list = _repository.GetAll()/*.Where(m => m.NickName.Contains(NickName) || NickName == null)*/;
 
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                return View(context.Users.ToList());
-            }
+            return View(list);
         }
 
         #endregion
@@ -67,52 +77,35 @@ namespace CC.Controllers
         //GET, POST: Manage/EditUserData
         #region Редактирование данных пользователя
 
-        //[MyAuth]
-        public async Task<ActionResult> EditUserData()
+        [MyAuth]
+        public ActionResult EditUserData()
         {
-            using (var contex = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                int id = int.Parse(Session["Id"].ToString());
+            var user = _repository.GetElementById(id);
 
-                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var model = new UserEditDataModel { Id = user.Id, NickName = Decoding.GetDecrypt(user.NickName), UserName = Decoding.GetDecrypt(user.UserName), UserSurname = Decoding.GetDecrypt(user.UserSurname) };
 
-                var model = new UserEditDataModel { Id = user.Id, NickName = user.NickName, UserName = user.UserName, UserSurname = user.UserSurname };
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditUserData(UserEditDataModel model)
+        public ActionResult EditUserData(UserEditDataModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (user != null)
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                    user.NickName = Encoding.GetCrypt(model.NickName);
+                    user.UserName = Encoding.GetCrypt(model.UserName);
+                    user.UserSurname = Encoding.GetCrypt(model.UserSurname);
 
-                    if (user != null)
-                    {
-                        user.NickName = model.NickName;
-                        user.UserName = model.UserName;
-                        user.UserSurname = model.UserSurname;
+                    _repository.Update(user);
 
-                        context.Entry(user).State = EntityState.Modified;
-                        context.SaveChanges();
-
-                        return RedirectToAction("AccountIndex", "Manage");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
+                    return RedirectToAction("AccountIndex", "Manage");
                 }
             }
 
@@ -124,66 +117,37 @@ namespace CC.Controllers
         //GET, POST: Manage/EditUserPassword
         #region Изменение пароля пользователя 
 
-        //[MyAuth]
-        public async Task<ActionResult> EditUserPassword()
+        [MyAuth]
+        public ActionResult EditUserPassword()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                int id = int.Parse(Session["Id"].ToString());
+            var user = _repository.GetElementById(id);
 
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var model = new UserEditPasswordModel { Id = user.Id };
 
-                //if (user == null)
-                //{
-                //    return RedirectToAction("Login", "Account");
-                //}
-                var model = new UserEditPasswordModel { Id = user.Id };
-
-                return View(model);
-            }
-
-
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditUserPassword(UserEditPasswordModel model)
+        public ActionResult EditUserPassword(UserEditPasswordModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (user.Password == Encoding.GetCrypt(model.Password))
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                    user.Password = Encoding.GetCrypt(model.NewPassword);
 
-                    if (user != null)
-                    {
-                        if (user.Password == model.Password)
-                        {
-                            if (model.NewPassword == model.ConfirmPassword)
-                            {
-                                user.Password = model.NewPassword;
+                    _repository.Update(user);
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
-
-                                return RedirectToAction("AccountIndex", "Manage");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Неверный пароль");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
+                    return RedirectToAction("AccountIndex", "Manage");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный пароль");
                 }
             }
 
@@ -195,50 +159,33 @@ namespace CC.Controllers
         //GET, POST: Manage/Delete
         #region Удаление аккаунта пользователя
 
-        //[MyAuth]
-        public async Task<ActionResult> Delete()
+        [MyAuth]
+        public ActionResult Delete()
         {
-            using (var contex = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                int id = int.Parse(Session["Id"].ToString());
+            var encodeUser = _repository.GetElementById(id);
 
-                var user = await contex.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+            var user = new User { Id = id, NickName = Decoding.GetDecrypt(encodeUser.NickName), UserName = Decoding.GetDecrypt(encodeUser.UserName), UserSurname = Decoding.GetDecrypt(encodeUser.UserSurname), UserRoleName = encodeUser.UserRoleName, UserCoins = encodeUser.UserCoins, UserTickets = encodeUser.UserTickets };
 
-                return View(user);
-            }
+            return View(user);
         }
 
         [HttpPost]
-        //[MyAuth]
-        public async Task<ActionResult> Delete(User model)
+        public ActionResult Delete(User model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
-                {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                var user = _repository.GetElementById(model.Id);
 
-                    if (user != null)
-                    {
-                        context.Entry(user).State = EntityState.Deleted;
-                        context.SaveChanges();
+                _repository.Delete(user.Id);
 
-                        Session["Id"] = null;
-                        Session["UserRole"] = null;
-                        Session["AdminRole"] = null;
-                        Session["ModerRole"] = null;
+                ClearCookie();
 
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
+                return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion
@@ -246,75 +193,50 @@ namespace CC.Controllers
         //GET, POST: Manage/UseTickets
         #region Использование билетов для кофе
 
-        //[MyAuth]
-        public async Task<ActionResult> UseTickets(int? id)
+        [MyAuth]
+        [Admin]
+        public ActionResult UseTickets(Guid? id)
         {
-            using (var context = new UserContext())
+            var user = _repository.GetElementById(id);
+
+            if (user.UserTickets <= 0)
             {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                int adminId = int.Parse(Session["Id"].ToString());
-
-                var admin = await context.Users.Where(m => m.Id == adminId).FirstOrDefaultAsync();
-
-                if (admin == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserTickets <= 0)
-                {
-                    ModelState.AddModelError("", "У Вас недостаточно купонов");
-                }
-
-                var model = new UseTicketsModel() { Id = user.Id};
-
-                return View(model);
+                ModelState.AddModelError("", "У Вас недостаточно купонов");
             }
+
+            var model = new UseTicketsModel { Id = user.Id };
+
+            return View(model);
         }
 
         [HttpPost]
-        //[MyAuth]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UseTickets(UseTicketsModel model)
+        public ActionResult UseTickets(UseTicketsModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                var user = _repository.GetElementById(model.Id);
+
+                if (user != null)
                 {
-                    var user = await context.Users.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
-
-                    if (user != null)
+                    if (user.Password == Encoding.GetCrypt(model.Password))
                     {
-                        if (user.Password == model.Password)
+                        if (user.UserTickets > 0)
                         {
-                            if (user.UserTickets > 0)
-                            {
-                                user.UserTickets = user.UserTickets - 1;
+                            user.UserTickets = user.UserTickets - 1;
 
-                                context.Entry(user).State = EntityState.Modified;
-                                context.SaveChanges();
+                            _repository.Update(user);
 
-                                return RedirectToAction("ListOfUsers", "Manage");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "У Вас недостаточно купонов");
-                            }
+                            return RedirectToAction("ListOfUsers", "Manage");
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Неверный пароль");
+                            ModelState.AddModelError("", "У вас недостаточно купонов");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
+                        ModelState.AddModelError("", "Неверный пароль");
                     }
                 }
             }
@@ -323,5 +245,6 @@ namespace CC.Controllers
         }
 
         #endregion
+
     }
 }

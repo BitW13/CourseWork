@@ -1,5 +1,10 @@
-﻿using CC.Context;
+﻿using AutoMapper;
+using CC.Context;
+using CC.Context.ContextModels;
+using CC.Cryptor;
+using CC.Filters;
 using CC.Models;
+using CC.Models.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,74 +16,48 @@ using System.Web.Mvc;
 namespace CC.Controllers
 {
     public class CafeController : Controller
-    {        
+    {
+        private IRepository<Cafe> _repositoryCafe;
+        private IRepository<User> _repositoryUser;
+
+        public CafeController(IRepository<Cafe> repository1, IRepository<User> repository2)
+        {
+            _repositoryCafe = repository1;
+            _repositoryUser = repository2;
+        }
+
         //GET, POST: Cafe/WriteDescription
         #region Добавление описания для заведений 
 
-        //[MyAuth]
-        public async Task<ActionResult> WriteDescription()
+        [Admin]
+        public ActionResult WriteDescription()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                int id = int.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-            }
-
             return View();
         }
 
-        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> WriteDescription(AddCafeDescriptionModel model)
+        public ActionResult WriteDescription(AddCafeDescriptionModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
+                Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
+
+                var getConvert = new Cafe { Name = model.Name, Description = model.Description };
+
+                var user = _repositoryUser.GetElementById(id);
+
+                var oldCafe = _repositoryCafe.GetElement(getConvert);
+
+                if (oldCafe == null)
                 {
-                    int id = int.Parse(Session["Id"].ToString());
+                    _repositoryCafe.Create(new Cafe {Id = Guid.NewGuid(), UserId = id, Name = model.Name, Description = model.Description });
 
-                    var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                    if (user != null)
-                    {
-                        if (user.UserRoleName == "Admin")
-                        {
-                            var cafe = await context.Cafes.Where(m => m.Name == model.Name).FirstOrDefaultAsync();
-
-                            if (cafe == null)
-                            {
-                                context.Cafes.Add(new Cafe { Name = model.Name, Description = model.Description, UserId = user.Id });
-                                context.SaveChanges();
-
-                                return RedirectToAction("AccountIndex", "Manage");
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Заведение с таким именем уже существует");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "У Вас недостаточно прав");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого пользователя не существует");
-                    }
+                    return RedirectToAction("AccountIndex", "Manage");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такое заведение уже существует");
                 }
             }
 
@@ -90,59 +69,28 @@ namespace CC.Controllers
         //GET, POST: Cafe/EditDescription
         #region Редактирование описания для заведения 
 
-        //[MyAuth]
-        public async Task<ActionResult> EditDescription(int? id)
+        [Admin]
+        public ActionResult EditDescription(Guid? id)
         {
-            using (var contex = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var cafe = _repositoryCafe.GetElementById(id);
 
-                int userId = int.Parse(Session["Id"].ToString());
+            var model = new EditCafeDescriptionModel { Id = cafe.Id, Description = cafe.Description, Name = cafe.Name };
 
-                var user = await contex.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var cafe = await contex.Cafes.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                var model = new EditCafeDescriptionModel { Id = cafe.Id, Name = cafe.Name, Description = cafe.Description };
-
-                return View(model);
-            }
+            return View(model);
         }
 
-        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditDescription(EditCafeDescriptionModel model)
+        public ActionResult EditDescription(EditCafeDescriptionModel model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
-                {
-                    var cafe = await context.Cafes.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                var cafe = _repositoryCafe.GetElementById(model.Id);
 
-                    if (cafe != null)
-                    {
-                        cafe.Name = model.Name;
-                        cafe.Description = model.Description;
+                cafe.Name = model.Name;
+                cafe.Description = model.Description;
 
-                        context.Entry(cafe).State = EntityState.Modified;
-                        context.SaveChanges();
-
-                        return RedirectToAction("AccountIndex", "Manage");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такой записи ну существует");
-                    }
-                }
+                _repositoryCafe.Update(cafe);
             }
 
             return View(model);
@@ -153,54 +101,23 @@ namespace CC.Controllers
         //GET, POST: Cafe/DeleteDescription
         #region Удаление описания для заведения
 
-        //[MyAuth]
-        public async Task<ActionResult> DeleteDescription(int? id)
+        [Admin]
+        public ActionResult DeleteDescription(Guid? id)
         {
-            using (var contex = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+            var cafe = _repositoryCafe.GetElementById(id);
 
-                int userId = int.Parse(Session["Id"].ToString());
-
-                var user = await contex.Users.Where(m => m.Id == userId).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                var cafe = await contex.Cafes.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                return View(cafe);
-            }
+            return View(cafe);
         }
 
-        //[MyAuth]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteDescription(Cafe model)
+        public ActionResult DeleteDescription(Cafe model)
         {
             if (ModelState.IsValid)
             {
-                using (var context = new UserContext())
-                {
-                    var cafe = await context.Cafes.Where(m => m.Id == model.Id).FirstOrDefaultAsync();
+                var cafe = _repositoryCafe.GetElementById(model.Id);
 
-                    if (cafe != null)
-                    {
-                        context.Entry(cafe).State = EntityState.Deleted;
-                        context.SaveChanges();
-
-                        return RedirectToAction("AccountIndex", "Manage");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Такого заведения не существует");
-                    }
-                }
+                _repositoryCafe.Delete(cafe.Id);
             }
 
             return View(model);
@@ -211,23 +128,13 @@ namespace CC.Controllers
         //GET: Cafe/UserCafe
         #region Описание заведений определенного пользователя
 
-        public async Task<ActionResult> UserCafe()
+        public ActionResult UserCafe()
         {
-            if (Session["Id"] == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-            int id = int.Parse(Session["Id"].ToString());
+            var cafe = _repositoryCafe.GetElementByUserId(id);
 
-            using (var context = new UserContext())
-            {
-                var cafe = await context.Cafes.Where(m => m.UserId == id).ToListAsync();
-
-                return View(cafe);
-
-
-            }
+            return View(cafe);
 
         }
 
@@ -236,14 +143,11 @@ namespace CC.Controllers
         //GET: Cafe/ListOfCafes
         #region Список заведений 
 
-        public ActionResult ListOfCafes()
+        public ActionResult ListOfCafes(string cafe)
         {
-            using (var context = new UserContext())
-            {
-                IEnumerable<Cafe> list = context.Cafes.ToList();
+            var list = _repositoryCafe.GetAll();
 
-                return View(list);
-            }
+            return View(list);
         }
 
         #endregion
@@ -251,14 +155,10 @@ namespace CC.Controllers
         //GET: Cafe/GetCafe
         #region Вывод описание одного заведения
 
-        public async Task<ActionResult> GetCafe(int? id)
+        public ActionResult GetCafe(Guid? id)
         {
-            using (var context = new UserContext())
-            {
-                var cafe = await context.Cafes.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                return View(cafe);
-            }
+            var cafe = _repositoryCafe.GetElementById(id);
+            return View(cafe);
         }
 
         #endregion

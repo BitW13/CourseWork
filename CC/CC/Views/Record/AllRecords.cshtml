@@ -1,23 +1,26 @@
-﻿@model IEnumerable<CC.Context.Record>
+﻿@model IEnumerable<CC.Context.ContextModels.Record>
 
 @{
     ViewBag.Title = "AllRecords";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <h2>Все новости</h2>
+
+        @using (Html.BeginForm("AllRecords", "Record", FormMethod.Get))
+        {
+            @Html.TextBox("recordName") <input type="submit" value="Поиск" />
+        }
+
+        <br />
 
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayName("Никнейм автора")
+                    @Html.DisplayName("Псевдоним автора")
                 </th>
                 <th>
                     @Html.DisplayName("Заголовок")
@@ -27,6 +30,15 @@
                 </th>
                 <th></th>
             </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="3" style="color: red;">
+                        Запись не найден
+                    </td>
+                </tr>
+            }
 
             @foreach (var item in Model)
             {
@@ -51,7 +63,17 @@
 
         </table>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 

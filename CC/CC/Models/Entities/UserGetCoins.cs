@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CC.Context.ContextModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,11 +7,14 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class UserEditPasswordModel
+    public class UserGetCoins
     {
-        #region Модель для редактирования пароля пользователя
+        #region Модель для получения валюты 
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+
+        [Display(Name = "Количество Coffee-Coins")]
+        public int UserCoins { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Пароль")]
@@ -19,15 +23,9 @@ namespace CC.Models
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
-        [Display(Name = "Новый пароль")]
         [DataType(DataType.Password)]
-        [StringLength(25, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 5)]
-        public string NewPassword { get; set; }
-
-        [Compare("NewPassword", ErrorMessage = "Пороли не совпадают")]
-        [Display(Name = "Подтверждение пароля")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "Промокод")]
+        public string SecretKey { get; set; }
 
         #endregion
     }

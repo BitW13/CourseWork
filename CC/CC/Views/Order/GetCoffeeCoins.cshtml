@@ -5,14 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section body{
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+    <div class="container body-content font18">
         <h2>Получене Coffee-Coins</h2>
 
         @using (Html.BeginForm("GetCoffeeCoins", "Order"))
@@ -61,7 +56,18 @@
             @Html.ActionLink("Назад", "OrderIndex", "Order")
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 

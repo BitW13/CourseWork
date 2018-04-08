@@ -1,17 +1,13 @@
-﻿@model CC.Context.Record
+﻿@model CC.Context.ContextModels.Record
 
 @{
     ViewBag.Title = "DeleteRecord";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <div>
             <h2>Удаление записи</h2>
             <h3>Вы действительно хотите удалить эту запись?</h3>
@@ -57,7 +53,16 @@
             }
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+
 
 

@@ -5,13 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         @using (Html.BeginForm("AddRecord", "Record"))
         {
             @Html.AntiForgeryToken()
@@ -21,10 +17,8 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                @Html.HiddenFor(model => model.UserId)
-
                 <div class="form-group">
-                    @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label("Псевдоним", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger" })
@@ -59,7 +53,19 @@
             @Html.ActionLink("Назад", "Index", "Home")
         </div>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 

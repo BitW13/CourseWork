@@ -1,17 +1,13 @@
-﻿@model CC.Context.Record
+﻿@model CC.Context.ContextModels.Record
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <h2>Подробное описание</h2>
 
         <div>
@@ -19,7 +15,7 @@
             <dl class="dl-horizontal">
 
                 <dt>
-                    @Html.DisplayName("Никнейм автора")
+                    @Html.DisplayName("Псевдоним автора"):
                 </dt>
 
                 <dd>
@@ -27,7 +23,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Дата")
+                    @Html.DisplayName("Дата"):
                 </dt>
 
                 <dd>
@@ -35,7 +31,7 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayName("Заголовок")
+                    @Html.DisplayName("Заголовок"):
                 </dt>
 
                 <dd>
@@ -45,7 +41,7 @@
                 <hr />
 
                 <dt>
-                    @Html.DisplayName("Описание")
+                    @Html.DisplayName("Описание"):
                 </dt>
 
                 <dd>
@@ -57,7 +53,16 @@
             @Html.ActionLink("Назад", "AllRecords", "Record")
         </p>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+
 
 

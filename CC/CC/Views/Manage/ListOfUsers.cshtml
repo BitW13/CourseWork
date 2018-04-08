@@ -1,20 +1,23 @@
-﻿@model IEnumerable<CC.Context.User>
+﻿@model IEnumerable<CC.Context.ContextModels.User>
 
 @{
     ViewBag.Title = "ListOfUsers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div class="container body-content">
+@section body{
+
+    <div class="container body-content font18">
         <h2>Список пользователей</h2>
 
-        <table class="table">
+        @using (Html.BeginForm("ListOfUsers", "Manage", FormMethod.Get))
+        {
+            @Html.TextBox("NickName") <input type="submit" value="Поиск" placeholder="Введите никнейм пользователя" />
+        }
+
+        <br />
+
+        <table class="table" id="table">
             <tr>
                 <th>
                     @Html.DisplayName("Никнейм")
@@ -25,11 +28,22 @@
                 <th>
                     @Html.DisplayName("Фамилия")
                 </th>
-                <th>
-                    @Html.DisplayName("Количество купонов на кофе")
+                <th class="to-centre">
+                    @Html.DisplayName("Количество")
+                    <img class="little-img" src="~/Content/Pictures/tickets.svg" />
                 </th>
+
                 <th></th>
             </tr>
+
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4" style="color: red;">
+                        Пользователь не найден
+                    </td>
+                </tr>
+            }
 
             @foreach (var item in @Model)
             {
@@ -43,19 +57,27 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.UserSurname)
                     </td>
-                    <td>
+                    <td class="to-centre">
                         @Html.DisplayFor(modelItem => item.UserTickets)
                     </td>
                     <td>
                         <a href="~/Manage/UseTickets/@item.Id">Обналичить купон</a>
-                        @*@Html.ActionLink("Обналичить купон", "UseTickets", "Manage", new { id = item.Id })*@
                     </td>
                 </tr>
             }
 
         </table>
     </div>
-</body>
-</html>
+
+}
+
+@section footer{
+    @{
+        Html.RenderPartial("_Footer");
+    }
+}
+
+
+
 
 

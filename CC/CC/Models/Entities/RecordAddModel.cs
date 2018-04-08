@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CC.Context.ContextModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,16 +7,14 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class RecordAddModel
+    public class RecordAddModel 
     {
         #region Модель для добавления новости
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        [Display(Name = "Никнейм")]
-        [DataType(DataType.Text)]
         public string NickName { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
