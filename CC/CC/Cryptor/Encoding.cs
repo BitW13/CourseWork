@@ -14,8 +14,6 @@ namespace CC.Cryptor
             var valueBytes = System.Text.Encoding.UTF8.GetBytes(value);
 
             return Convert.ToBase64String(valueBytes);
-
-            //return Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(value)));
         }
     }
 }

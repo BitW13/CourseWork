@@ -7,24 +7,32 @@ using CC.Context;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using CC.Models;
+using AutoMapper;
+using CC.Models.Abstract;
+using CC.Context.ContextModels;
+using CC.Filters;
 
 namespace CC.Controllers
 {
     public class HomeController : Controller
     {
+        private IRepository<Record> _repository;
+
+        public HomeController(IRepository<Record> repository)
+        {
+            _repository = repository;
+        }
+
         //GET: Home/Index
         #region Главная страница
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            using (var context = new UserContext())
-            {
-                var list = await context.Records.ToListAsync();
+            //var list = _repository.GetAll.ToList();
 
-                list.Reverse();
+            //list.Reverse();
 
-                return View(list);
-            }
+            return View(/*list*/);
         }
 
         #endregion
@@ -32,26 +40,10 @@ namespace CC.Controllers
         //GET: Home/Chat
         #region Лайв чат для админов
 
-        public async Task<ActionResult> Chat()
+        [Admin]
+        public ActionResult Chat()
         {
-            using (var context = new UserContext())
-            {
-                if (Session["Id"] == null)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                Guid id = Guid.Parse(Session["Id"].ToString());
-
-                var user = await context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
-
-                if (user.UserRoleName != "Admin")
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                return View();
-            }
+            return View();
         }
 
         #endregion

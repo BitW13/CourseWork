@@ -6,23 +6,17 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class RecordAddModel
+    public class EditCafeDescriptionModel
     {
-        #region Модель для добавления новости
+        #region Модель для изменения описания заведения
 
         public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
-
-        [Display(Name = "Никнейм")]
-        [DataType(DataType.Text)]
-        public string NickName { get; set; }
-
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]
-        [Display(Name = "Заголовок")]
-        [StringLength(600, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 10)]
-        public string Title { get; set; }
+        [Display(Name = "Название заведения")]
+        [StringLength(60, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 2)]
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [DataType(DataType.Text)]

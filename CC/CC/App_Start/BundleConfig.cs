@@ -9,9 +9,7 @@ namespace CC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/SlowScroll.js",
-                        "~/Scripts/JSForVideo.js"));
+                        "~/Scripts/jquery-{version}.js").Include("~/Scripts/SlowScroll.js").Include("~/Scripts/JSForVideo.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -27,8 +25,8 @@ namespace CC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/MyCss.css"));
+                      "~/Content/site.css").Include(
+                        "~/Content/MyCss.css"));
         }
     }
 }

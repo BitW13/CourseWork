@@ -1,16 +1,20 @@
-﻿using System;
+﻿using CC.Context.ContextModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
 
 namespace CC.Models
 {
-    public class UserGetRightsModel
+    public class UserGetCoins
     {
-        #region Модель для получения прав
+        #region Модель для получения валюты 
 
         public Guid Id { get; set; }
+
+        [Display(Name = "Количество Coffee-Coins")]
+        public int UserCoins { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Пароль")]
@@ -19,9 +23,9 @@ namespace CC.Models
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
-        [Display(Name = "Защитный код")]
         [DataType(DataType.Password)]
-        public string SecurityCode { get; set; }
+        [Display(Name = "Промокод")]
+        public string SecretKey { get; set; }
 
         #endregion
     }

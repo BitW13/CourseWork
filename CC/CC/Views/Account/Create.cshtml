@@ -8,6 +8,7 @@
 @section body{
 
     <div class="container body-content font18">
+
         @using (Html.BeginForm("Create", "Account"))
         {
             @Html.AntiForgeryToken()

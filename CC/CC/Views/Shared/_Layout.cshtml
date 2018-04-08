@@ -23,19 +23,19 @@
             <div class="navbar-collapse collapse" id="header">
 
                 @*Для зарегистрированных пользователей*@
-                @if (Session["Id"] != null)
+                @if (Request.Cookies["Id"] != null)
                 {
-                    if (Session["UserRole"] != null)
+                    if (Request.Cookies["User"] != null)
                     {
                         Html.RenderPartial("_User");
                     }
 
-                    if (Session["AdminRole"] != null)
+                    if (Request.Cookies["Admin"] != null)
                     {
                         Html.RenderPartial("_Admin");
                     }
 
-                    if (Session["ModerRole"] != null)
+                    if (Request.Cookies["Moder"] != null)
                     {
                         Html.RenderPartial("_Moder");
                     }

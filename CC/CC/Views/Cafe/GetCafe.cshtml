@@ -1,46 +1,52 @@
-﻿@model CC.Context.Cafe
+﻿@model CC.Context.ContextModels.Cafe
 
 @{
     ViewBag.Title = "GetCafe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container body-content font18">
-    <div>
-        <h2>Подробное описание</h2>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Назавание заведения"):
-            </dt>
+@section body{
 
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
+    <div class="container body-content font18">
+        <div>
+            <h2>Подробное описание</h2>
             <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Назавание заведения"):
+                </dt>
 
-            <dt>
-                @Html.DisplayName("Описание заведения"):
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+                <hr />
 
-        </dl>
+                <dt>
+                    @Html.DisplayName("Описание заведения"):
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @if (Session["AdminRole"] != null)
+            {
+                @Html.ActionLink("Назад", "UserCafe", "Cafe")
+            }
+            else
+            {
+                @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
+            }
+        </p>
     </div>
-    <p>
-        @if (Session["AdminRole"] != null)
-        {
-            @Html.ActionLink("Назад", "UserCafe", "Cafe")
-        }
-        else
-        {
-            @Html.ActionLink("Назад", "ListOfCafes", "Cafe")
-        }
-    </p>
-</div>
+
+}
+
+
 
 @section footer{
     @{

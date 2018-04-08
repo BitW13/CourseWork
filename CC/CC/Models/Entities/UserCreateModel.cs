@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CC.Context;
+using CC.Context.ContextModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Web;
 
 namespace CC.Models
 {
-    public class UserCreateModel
+    public class UserCreateModel 
     {
         #region Модель для регистрации пользователя
 
@@ -15,7 +17,7 @@ namespace CC.Models
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
         [Display(Name = "Никнейм")]
         [DataType(DataType.Text)]
-        [StringLength(12, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 4)]
+        [StringLength(20, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 3)]
         public string NickName { get; set; }
 
         [Required(ErrorMessage = "Это поле обязательно для заполнения")]
