@@ -53,7 +53,7 @@ namespace CC.Controllers
 
             var encodeUser = (_repository.GetElementById(id));
 
-            var user = new User { Id = id, UserCoins = encodeUser.UserCoins, NickName = Decoding.GetDecrypt(encodeUser.NickName), UserName = Decoding.GetDecrypt(encodeUser.UserName), UserSurname = Decoding.GetDecrypt(encodeUser.UserSurname), UserRoleName = encodeUser.UserRoleName };
+            var user = new User { Id = id, UserTickets = encodeUser.UserTickets, UserCoins = encodeUser.UserCoins, NickName = Decoding.GetDecrypt(encodeUser.NickName), UserName = Decoding.GetDecrypt(encodeUser.UserName), UserSurname = Decoding.GetDecrypt(encodeUser.UserSurname), UserRoleName = encodeUser.UserRoleName };
 
             return View(user);
         }
@@ -67,7 +67,12 @@ namespace CC.Controllers
         [Admin]
         public ActionResult ListOfUsers(string NickName)
         {
-            var list = _repository.GetAll()/*.Where(m => m.NickName.Contains(NickName) || NickName == null)*/;
+            var list = _repository.GetAll();
+
+            if (NickName != null)
+            {
+                list = list.Where(m => m.NickName.Contains(NickName));
+            }
 
             return View(list);
         }

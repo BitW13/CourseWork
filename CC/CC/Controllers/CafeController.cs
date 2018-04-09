@@ -147,6 +147,11 @@ namespace CC.Controllers
         {
             var list = _repositoryCafe.GetAll();
 
+            if (cafe != null)
+            {
+                list = list.Where(m => m.Name.Contains(cafe));
+            }
+
             return View(list);
         }
 

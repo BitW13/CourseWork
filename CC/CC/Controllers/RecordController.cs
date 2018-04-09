@@ -33,9 +33,12 @@ namespace CC.Controllers
         {
             var list = _repostitoryRecord.GetAll();
 
-            list.Reverse();
+            if (recordName != null)
+            {
+                list = list.Where(m => m.Title.Contains(recordName));
+            }
 
-            return View(list);
+            return View(list.Reverse());
         }
 
 

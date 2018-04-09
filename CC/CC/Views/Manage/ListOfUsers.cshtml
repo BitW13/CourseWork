@@ -12,12 +12,13 @@
 
         @using (Html.BeginForm("ListOfUsers", "Manage", FormMethod.Get))
         {
-            @Html.TextBox("NickName") <input type="submit" value="Поиск" placeholder="Введите никнейм пользователя" />
+            <input type="text" name="NickName" placeholder="Введите никнейм пользователя" />
+            @*@Html.TextBox("NickName")*@ <input type="submit" value="Поиск" placeholder="Введите никнейм пользователя" />
         }
 
         <br />
 
-        <table class="table" id="table">
+        <table class="table table-bordered table-hover" id="table">
             <tr>
                 <th>
                     @Html.DisplayName("Никнейм")
@@ -60,7 +61,7 @@
                     <td class="to-centre">
                         @Html.DisplayFor(modelItem => item.UserTickets)
                     </td>
-                    <td>
+                    <td class="to-centre">
                         <a href="~/Manage/UseTickets/@item.Id">Обналичить купон</a>
                     </td>
                 </tr>

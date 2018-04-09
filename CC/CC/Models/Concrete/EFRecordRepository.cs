@@ -1,5 +1,6 @@
 ﻿using CC.Context;
 using CC.Context.ContextModels;
+using CC.Cryptor;
 using CC.Models.Abstract;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,13 @@ namespace CC.Models.Concrete
 
         public IEnumerable<Record> GetAll()
         {
-            IEnumerable<Record> list = _context.Records.ToList();
+            List<Record> list = _context.Records.ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].NickName = Decoding.GetDecrypt(list[i].NickName);
+            }
+
             return list;
         }
 
@@ -45,12 +52,15 @@ namespace CC.Models.Concrete
         public Record GetElementById(Guid? id)
         {
             var record = _context.Records.FirstOrDefault(m => m.Id == id);
+
+            record.NickName = Decoding.GetDecrypt(record.NickName);
+
             return record;
         }
 
         public IEnumerable<Record> GetElementByUserId(Guid? id)
         {
-            IEnumerable<Record> records = _context.Records.Where(m => m.Id == id).ToList();
+            var records = _context.Records.Where(m => m.UserId == id).ToList();
             return records;
         }
 
