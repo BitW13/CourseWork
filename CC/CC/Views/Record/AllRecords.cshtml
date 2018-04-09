@@ -1,70 +1,45 @@
-﻿@model IEnumerable<CC.Context.ContextModels.Record>
-
-@{
+﻿@{
     ViewBag.Title = "AllRecords";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section body{
 
-<div class="container body-content font18">
-    <h2>Все новости</h2>
+    <div class="container body-content font18">
+        <h2>Все новости</h2>
 
-    @using (Html.BeginForm("AllRecords", "Record", FormMethod.Get))
-    {
-        <input name="recordName" type="text" placeholder="Введите заголовок новости" />
-        @*@Html.TextBox("recordName")*@ <input type="submit" value="Поиск" />
-    }
-
-    <br />
-
-    <table class="table table-bordered table-hover">
-        <tr>
-            <th>
-                @Html.DisplayName("Псевдоним автора")
-            </th>
-            <th>
-                @Html.DisplayName("Заголовок")
-            </th>
-            <th>
-                @Html.DisplayName("Дата")
-            </th>
-            <th></th>
-        </tr>
-
-        @if (Model.Count() == 0)
+        @using (Ajax.BeginForm("AllRecords", "Record", new AjaxOptions { UpdateTargetId = "table", Url = Url.Action("TableData") }, htmlAttributes: new { @id = "myForm"}))
         {
-            <tr>
-                <td class="to-centre" colspan="3" style="color: red;">
-                    Записей не найдено
-                </td>
-            </tr>
+            <input type="text" name="recordName" form="myForm" placeholder="Введите заголовок новости" style="width: 450px" />
+            <input type="submit" value="Поиск" class="btn btn-info" />
+
+            <table class="table table-bordered table-hover" style="margin-top: 20px;">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Псевдоним автора")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Заголовок")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Дата")
+                    </th>
+                    <th></th>
+                </tr>
+
+                <tbody id="table">
+                    @Html.Action("TableData", new { recordName = Model })
+                </tbody>
+
+            </table>
         }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NickName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
+    </div>
 
-                <td>
-                    @Html.DisplayFor(model => item.RecordDate)
-                </td>
+}
 
-                <td class="to-centre">
-                    <a href="~/Record/Details/@item.Id">Подробнее</a>
-                    @*@Html.ActionLink("Подробнее", "Details", "Manage", new { id = item.Id })*@
-                </td>
-            </tr>
-        }
-
-    </table>
-</div>
-
+@section scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 }
 
 @section footer{
@@ -73,8 +48,6 @@
     }
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
 
 

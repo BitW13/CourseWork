@@ -65,7 +65,12 @@ namespace CC.Controllers
 
         [MyAuth]
         [Admin]
-        public ActionResult ListOfUsers(string NickName)
+        public ActionResult ListOfUsers()
+        {
+            return View();
+        }
+
+        public ActionResult TableData(string NickName)
         {
             var list = _repository.GetAll();
 
@@ -74,9 +79,8 @@ namespace CC.Controllers
                 list = list.Where(m => m.NickName.Contains(NickName));
             }
 
-            return View(list);
+            return PartialView(list);
         }
-
         #endregion
 
         //GET, POST: Manage/EditUserData

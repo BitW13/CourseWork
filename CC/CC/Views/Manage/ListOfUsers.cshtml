@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CC.Context.ContextModels.User>
+﻿@*@model IEnumerable<CC.Context.ContextModels.User>*@
 
 @{
     ViewBag.Title = "ListOfUsers";
@@ -10,66 +10,47 @@
     <div class="container body-content font18">
         <h2>Список пользователей</h2>
 
-        @using (Html.BeginForm("ListOfUsers", "Manage", FormMethod.Get))
+        @using (Ajax.BeginForm("ListOfUsers", "Manage", new AjaxOptions { UpdateTargetId = "table", Url = Url.Action("TableData") }, htmlAttributes: new { @id = "myForm"}))
         {
-            <input type="text" name="NickName" placeholder="Введите никнейм пользователя" />
-            @*@Html.TextBox("NickName")*@ <input type="submit" value="Поиск" placeholder="Введите никнейм пользователя" />
+            <input type="text" name="NickName" form="myForm" placeholder="Введите никнейм пользователя" style="width: 450px"/>
+            <input type="submit" value="Поиск" class="btn btn-info"/>
+
+            <br />
+
+            <table class="table table-bordered table-hover" style="margin-top: 20px;">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Никнейм")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Имя")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Фамилия")
+                    </th>
+                    <th class="to-centre">
+                        @Html.DisplayName("Количество")
+                        <img class="little-img" src="~/Content/Pictures/tickets.svg" />
+                    </th>
+
+                    <th></th>
+                </tr>
+
+                <tbody id="table">
+                    @Html.Action("TableData", new { NickName = Model })
+                </tbody>
+
+            </table>
         }
 
-        <br />
 
-        <table class="table table-bordered table-hover" id="table">
-            <tr>
-                <th>
-                    @Html.DisplayName("Никнейм")
-                </th>
-                <th>
-                    @Html.DisplayName("Имя")
-                </th>
-                <th>
-                    @Html.DisplayName("Фамилия")
-                </th>
-                <th class="to-centre">
-                    @Html.DisplayName("Количество")
-                    <img class="little-img" src="~/Content/Pictures/tickets.svg" />
-                </th>
 
-                <th></th>
-            </tr>
-
-            @if (Model.Count() == 0)
-            {
-                <tr>
-                    <td colspan="4" style="color: red;">
-                        Пользователь не найден
-                    </td>
-                </tr>
-            }
-
-            @foreach (var item in @Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NickName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserSurname)
-                    </td>
-                    <td class="to-centre">
-                        @Html.DisplayFor(modelItem => item.UserTickets)
-                    </td>
-                    <td class="to-centre">
-                        <a href="~/Manage/UseTickets/@item.Id">Обналичить купон</a>
-                    </td>
-                </tr>
-            }
-
-        </table>
     </div>
 
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 }
 
 @section footer{

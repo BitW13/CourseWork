@@ -143,7 +143,12 @@ namespace CC.Controllers
         //GET: Cafe/ListOfCafes
         #region Список заведений 
 
-        public ActionResult ListOfCafes(string cafe)
+        public ActionResult ListOfCafes()
+        {
+            return View();
+        }
+
+        public ActionResult TableData(string cafe)
         {
             var list = _repositoryCafe.GetAll();
 
@@ -152,7 +157,7 @@ namespace CC.Controllers
                 list = list.Where(m => m.Name.Contains(cafe));
             }
 
-            return View(list);
+            return PartialView(list);
         }
 
         #endregion

@@ -29,7 +29,12 @@ namespace CC.Controllers
         //GET: Record/AllRecords
         #region Список всех новостей
 
-        public ActionResult AllRecords(string recordName)
+        public ActionResult AllRecords()
+        {
+            return View();
+        }
+
+        public ActionResult TableData(string recordName)
         {
             var list = _repostitoryRecord.GetAll();
 
@@ -38,9 +43,8 @@ namespace CC.Controllers
                 list = list.Where(m => m.Title.Contains(recordName));
             }
 
-            return View(list.Reverse());
+            return PartialView(list.Reverse());
         }
-
 
         #endregion
 
