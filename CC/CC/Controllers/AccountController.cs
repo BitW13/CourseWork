@@ -193,6 +193,9 @@ namespace CC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GetAdmin(UserGetRightsModel model)
         {
+            const int timeCookie = 262800;
+            const int negativeTime = -263000;
+
             if (ModelState.IsValid)
             {
                 var user = _repository.GetElementById(model.Id);
@@ -202,10 +205,12 @@ namespace CC.Controllers
                     if (user.Password == Encoding.GetCrypt(model.Password))
                     {
                         user.UserRoleName = "Admin";
-                        Session["AdminRole"] = user.UserRoleName;
 
-                        Session["UserRole"] = null;
-                        Session["ModerRole"] = null;
+                        Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
+
+                        Response.Cookies["Admin"].Value = user.UserName;
+                        Response.Cookies["Admin"].Expires = DateTime.Now.AddMinutes(timeCookie);
+
 
                         _repository.Update(user);
 
@@ -245,6 +250,9 @@ namespace CC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GetModer(UserGetRightsModel model)
         {
+            const int timeCookie = 262800;
+            const int negativeTime = -263000;
+
             if (ModelState.IsValid)
             {
                 var user = _repository.GetElementById(model.Id);
@@ -254,10 +262,10 @@ namespace CC.Controllers
                     if (user.Password == Encoding.GetCrypt(model.Password))
                     {
                         user.UserRoleName = "Moder";
-                        Session["ModelRole"] = user.UserRoleName;
+                        Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
 
-                        Session["UserRole"] = null;
-                        Session["AdminRole"] = null;
+                        Response.Cookies["Moder"].Value = user.UserName;
+                        Response.Cookies["Moder"].Expires = DateTime.Now.AddMinutes(timeCookie);
 
                         _repository.Update(user);
 
