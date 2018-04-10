@@ -26,6 +26,7 @@ namespace CC.Infrastructure
             _kernel.Bind<IRepository<User>>().To<EFUserRepository>();
             _kernel.Bind<IRepository<Cafe>>().To<EFCafeRepository>();
             _kernel.Bind<IRepository<Record>>().To<EFRecordRepository>();
+            _kernel.Bind<IRepository<Host>>().To<EFHostRepostitory>();
         }
 
         public object GetService(Type serviceType)

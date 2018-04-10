@@ -261,8 +261,13 @@
     <Compile Include="Migrations\201804071600222_Mig7.Designer.cs">
       <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804101235338_Mig8.cs" />
+    <Compile Include="Migrations\201804101235338_Mig8.Designer.cs">
+      <DependentUpon>201804101235338_Mig8.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Abstract\IRepository.cs" />
+    <Compile Include="Models\Concrete\EFHostRepostitory.cs" />
     <Compile Include="Models\Entities\AddCafeDescriptionModel.cs" />
     <Compile Include="Models\Entities\EditCafeDescriptionModel.cs" />
     <Compile Include="Models\Entities\RecordAddModel.cs" />
@@ -438,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804071600222_Mig7.resx">
       <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804101235338_Mig8.resx">
+      <DependentUpon>201804101235338_Mig8.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
