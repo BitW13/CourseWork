@@ -299,6 +299,7 @@
     <Content Include="Content\Pictures\background.jpg" />
     <Content Include="Content\Pictures\buy.svg" />
     <Content Include="Content\Pictures\coffee-cup.svg" />
+    <Content Include="Content\Pictures\CoffeeMainScreen.jpg" />
     <Content Include="Content\Pictures\coin.svg" />
     <Content Include="Content\Pictures\coins.svg" />
     <Content Include="Content\Pictures\dollar-symbol.svg" />
@@ -313,6 +314,7 @@
     <Content Include="Content\Pictures\two.svg" />
     <Content Include="Content\Pictures\vk.svg" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\StyleForm.css" />
     <Content Include="Content\Videos\VideoBackground.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />

@@ -10,15 +10,9 @@
     <div class="container body-content font18">
         <h2>Список заведений</h2>
 
-        @*@using (Html.BeginForm("ListOfCafes", "Cafe", FormMethod.Get))
-            {
-                <input name="cafe" type="text" placeholder="Введите название заведения" />
-                <input type="submit" value="Поиск" />
-            }*@
-
         @using (Ajax.BeginForm("ListOfCafes", "Cafe", new AjaxOptions { UpdateTargetId = "table", Url = Url.Action("TableData") }, htmlAttributes: new { @id = "myForm" }))
         {
-            <input form="myForm" type="text" name="cafe" placeholder="Введите название заведения" style="width: 450px" />
+            <input form="myForm" type="text" class="search" name="cafe" placeholder="Введите название заведения" style="width: 450px" />
             <input type="submit" value="Поиск" class="btn btn-info" />
 
             <table class="table table-bordered table-hover" style="margin-top: 20px;">
@@ -43,6 +37,7 @@
 
 @section scripts{
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/AutoSearch.js"></script>
 }
 
 @section footer{
