@@ -84,7 +84,7 @@
         </p>
 
         <p>
-            @if (Session["ModerRole"] == null)
+            @if (Request.Cookies["Moder"] == null)
             {
                 @Html.ActionLink("Получить права модератора", "GetModer", "Account")
             }
@@ -95,7 +95,7 @@
         </p>
 
         <p>
-            @if (Session["AdminRole"] == null)
+            @if (Request.Cookies["Admin"] == null)
             {
                 @Html.ActionLink("Получить права администратора", "GetAdmin", "Account")
             }

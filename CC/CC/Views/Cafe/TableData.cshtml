@@ -1,0 +1,23 @@
+﻿@model IEnumerable<CC.Context.ContextModels.Cafe>
+
+@if (Model.Count() == 0)
+{
+    <tr>
+        <td class="to-centre" colspan="1" style="color: red;">
+            Заведений не найдено
+        </td>
+    </tr>
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+
+        <td class="to-centre">
+            <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a>
+        </td>
+    </tr>
+}

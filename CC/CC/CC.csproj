@@ -261,8 +261,13 @@
     <Compile Include="Migrations\201804071600222_Mig7.Designer.cs">
       <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804101235338_Mig8.cs" />
+    <Compile Include="Migrations\201804101235338_Mig8.Designer.cs">
+      <DependentUpon>201804101235338_Mig8.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Abstract\IRepository.cs" />
+    <Compile Include="Models\Concrete\EFHostRepostitory.cs" />
     <Compile Include="Models\Entities\AddCafeDescriptionModel.cs" />
     <Compile Include="Models\Entities\EditCafeDescriptionModel.cs" />
     <Compile Include="Models\Entities\RecordAddModel.cs" />
@@ -294,6 +299,7 @@
     <Content Include="Content\Pictures\background.jpg" />
     <Content Include="Content\Pictures\buy.svg" />
     <Content Include="Content\Pictures\coffee-cup.svg" />
+    <Content Include="Content\Pictures\CoffeeMainScreen.jpg" />
     <Content Include="Content\Pictures\coin.svg" />
     <Content Include="Content\Pictures\coins.svg" />
     <Content Include="Content\Pictures\dollar-symbol.svg" />
@@ -308,6 +314,7 @@
     <Content Include="Content\Pictures\two.svg" />
     <Content Include="Content\Pictures\vk.svg" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\StyleForm.css" />
     <Content Include="Content\Videos\VideoBackground.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -324,6 +331,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\AutoSearch.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
@@ -334,6 +342,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.signalR-2.2.3.js" />
     <Content Include="Scripts\jquery.signalR-2.2.3.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\JSForVideo.js" />
@@ -389,6 +399,9 @@
     <Content Include="Views\Record\EditRecord.cshtml" />
     <Content Include="Views\Home\PriceList.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Manage\TableData.cshtml" />
+    <Content Include="Views\Cafe\TableData.cshtml" />
+    <Content Include="Views\Record\TableData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -432,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804071600222_Mig7.resx">
       <DependentUpon>201804071600222_Mig7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804101235338_Mig8.resx">
+      <DependentUpon>201804101235338_Mig8.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

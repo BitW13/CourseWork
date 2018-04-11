@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CC.Context.ContextModels.Cafe>
+﻿@*@model IEnumerable<CC.Context.ContextModels.Cafe>*@
 
 @{
     ViewBag.Title = "ListOfCafes";
@@ -10,48 +10,34 @@
     <div class="container body-content font18">
         <h2>Список заведений</h2>
 
-        @using (Html.BeginForm("ListOfCafes", "Cafe", FormMethod.Get))
+        @using (Ajax.BeginForm("ListOfCafes", "Cafe", new AjaxOptions { UpdateTargetId = "table", Url = Url.Action("TableData") }, htmlAttributes: new { @id = "myForm" }))
         {
-            @Html.TextBox("cafe") <input type="submit" value="Поиск" placeholder="Введите название заведения" />
+            <input form="myForm" type="text" class="search" name="cafe" placeholder="Введите название заведения" style="width: 450px" />
+            <input type="submit" value="Поиск" class="btn btn-info" />
+
+            <table class="table table-bordered table-hover" style="margin-top: 20px;">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Название заведения")
+                    </th>
+                    <th></th>
+                </tr>
+
+                <tbody id="table">
+                    @Html.Action("TableData", new { cafe = Model })
+                </tbody>
+
+            </table>
         }
 
-        <br />
 
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayName("Название заведения")
-                </th>
-                <th></th>
-            </tr>
-
-            @if (Model.Count() == 0)
-            {
-                <tr>
-                    <td colspan="1" style="color: red;">
-                        Заведение не найдено
-                    </td>
-                </tr>
-            }
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-
-                    <td>
-                        <a href="~/Cafe/GetCafe/@item.Id">Подробнее</a>
-                        @*@Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { item.Id}, htmlAttributes: new { id = "myId"})*@
-                        @*@Html.ActionLink("Подробнее", "GetCafe", "Cafe", new { id = item.Id})*@
-                    </td>
-                </tr>
-            }
-
-        </table>
     </div>
 
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/AutoSearch.js"></script>
 }
 
 @section footer{

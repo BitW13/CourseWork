@@ -20,13 +20,15 @@ namespace CC.Models.Concrete
 
         public IEnumerable<User> GetAll()
         {
-            IEnumerable<User> list = _context.Users.ToList();
+            //IEnumerable<User> list = _context.Users.ToList();
 
-            foreach (var item in list)
+            List<User> list = _context.Users.ToList();
+
+            for (int i = 0; i < list.Count; i++)
             {
-                Decoding.GetDecrypt(item.NickName);
-                Decoding.GetDecrypt(item.UserName);
-                Decoding.GetDecrypt(item.UserSurname);
+                list[i].NickName = Decoding.GetDecrypt(list[i].NickName);
+                list[i].UserName = Decoding.GetDecrypt(list[i].UserName);
+                list[i].UserSurname = Decoding.GetDecrypt(list[i].UserSurname);
             }
 
             return list;

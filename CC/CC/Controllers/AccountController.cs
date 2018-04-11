@@ -12,11 +12,13 @@ namespace CC.Controllers
 {
     public class AccountController : Controller
     {
-        private IRepository<User> _repository;
+        private IRepository<User> _repositoryUser;
+        private IRepository<Host> _repositoryHost;
 
-        public AccountController(IRepository<User> repository)
+        public AccountController(IRepository<User> repository, IRepository<Host> repositoryHost)
         {
-            _repository = repository;
+            _repositoryHost = repositoryHost;
+            _repositoryUser = repository;
         }
 
         // GET, POST: Account/Create
@@ -37,17 +39,30 @@ namespace CC.Controllers
             {
                 User oldUser = new User { NickName = model.NickName, UserName = model.UserName, UserSurname = model.UserSurname };
 
-                User newUser = _repository.GetElement(oldUser);
+                User newUser = _repositoryUser.GetElement(oldUser);
 
                 if (newUser == null)
                 {
                     if (model.ConfirmPassword == model.Password)
                     {
-                        Guid id = Guid.NewGuid();
+                        newUser = new User { Id = Guid.NewGuid(), NickName = Encoding.GetCrypt(model.NickName), Password = Encoding.GetCrypt(model.Password), UserRoleName = "User", UserName = Encoding.GetCrypt(model.UserName), UserSurname = Encoding.GetCrypt(model.UserSurname), UserTickets = 0 };
 
-                        newUser = new User { Id = id, NickName = Encoding.GetCrypt(model.NickName), Password = Encoding.GetCrypt(model.Password), UserCoins = 4, UserRoleName = "User", UserName = Encoding.GetCrypt(model.UserName), UserSurname = Encoding.GetCrypt(model.UserSurname), UserTickets = 0 };
+                        string ip = Encoding.GetCrypt(Request.UserHostAddress);
 
-                        _repository.Create(newUser);
+                        var host = _repositoryHost.GetElement(new Host { UserIp = ip });
+
+                        if (host == null)
+                        {
+                            newUser.UserCoins = 4;
+                            host = new Host { UserIp = ip };
+                            _repositoryHost.Create(host);
+                        }
+                        else
+                        {
+                            newUser.UserCoins = 0;
+                        }
+
+                        _repositoryUser.Create(newUser);
 
                         const int timeout = 262800;
 
@@ -96,7 +111,7 @@ namespace CC.Controllers
             {
                 var getConvert = new User { UserName = Encoding.GetCrypt(model.UserName), NickName = Encoding.GetCrypt(model.NickName), UserSurname = Encoding.GetCrypt(model.UserSurname) };
 
-                var user = _repository.GetElement(getConvert);
+                var user = _repositoryUser.GetElement(getConvert);
 
                 if (user != null)
                 {
@@ -181,7 +196,7 @@ namespace CC.Controllers
         {
             Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-            var user = _repository.GetElementById(id);
+            var user = _repositoryUser.GetElementById(id);
 
             var model = new UserGetRightsModel { Id = user.Id };
 
@@ -193,21 +208,26 @@ namespace CC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GetAdmin(UserGetRightsModel model)
         {
+            const int timeCookie = 262800;
+            const int negativeTime = -263000;
+
             if (ModelState.IsValid)
             {
-                var user = _repository.GetElementById(model.Id);
+                var user = _repositoryUser.GetElementById(model.Id);
 
                 if (model.SecurityCode == "qw12po09fj")
                 {
                     if (user.Password == Encoding.GetCrypt(model.Password))
                     {
                         user.UserRoleName = "Admin";
-                        Session["AdminRole"] = user.UserRoleName;
 
-                        Session["UserRole"] = null;
-                        Session["ModerRole"] = null;
+                        Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
 
-                        _repository.Update(user);
+                        Response.Cookies["Admin"].Value = user.UserName;
+                        Response.Cookies["Admin"].Expires = DateTime.Now.AddMinutes(timeCookie);
+
+
+                        _repositoryUser.Update(user);
 
                         return RedirectToAction("AccountIndex", "Manage");
                     }
@@ -234,7 +254,7 @@ namespace CC.Controllers
         {
             Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-            var user = _repository.GetElementById(id);
+            var user = _repositoryUser.GetElementById(id);
 
             var model = new UserGetRightsModel { Id = user.Id };
 
@@ -245,21 +265,24 @@ namespace CC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GetModer(UserGetRightsModel model)
         {
+            const int timeCookie = 262800;
+            const int negativeTime = -263000;
+
             if (ModelState.IsValid)
             {
-                var user = _repository.GetElementById(model.Id);
+                var user = _repositoryUser.GetElementById(model.Id);
 
                 if (model.SecurityCode == "bmd78zl4r1")
                 {
                     if (user.Password == Encoding.GetCrypt(model.Password))
                     {
                         user.UserRoleName = "Moder";
-                        Session["ModelRole"] = user.UserRoleName;
+                        Response.Cookies["User"].Expires = DateTime.Now.AddMinutes(negativeTime);
 
-                        Session["UserRole"] = null;
-                        Session["AdminRole"] = null;
+                        Response.Cookies["Moder"].Value = user.UserName;
+                        Response.Cookies["Moder"].Expires = DateTime.Now.AddMinutes(timeCookie);
 
-                        _repository.Update(user);
+                        _repositoryUser.Update(user);
 
                         return RedirectToAction("AccountIndex", "Manage");
                     }

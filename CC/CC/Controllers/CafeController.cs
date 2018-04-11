@@ -143,11 +143,21 @@ namespace CC.Controllers
         //GET: Cafe/ListOfCafes
         #region Список заведений 
 
-        public ActionResult ListOfCafes(string cafe)
+        public ActionResult ListOfCafes()
+        {
+            return View();
+        }
+
+        public ActionResult TableData(string cafe)
         {
             var list = _repositoryCafe.GetAll();
 
-            return View(list);
+            if (cafe != null)
+            {
+                list = list.Where(m => m.Name.Contains(cafe));
+            }
+
+            return PartialView(list);
         }
 
         #endregion

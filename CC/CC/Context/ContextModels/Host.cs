@@ -8,7 +8,6 @@ namespace CC.Context.ContextModels
     public class Host
     {
         public int Id { get; set; }
-        public Guid UserId { get; set; }
         public string UserIp { get; set; }
     }
 }
