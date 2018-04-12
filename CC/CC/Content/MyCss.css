@@ -78,6 +78,9 @@
 /*#endregion */
 
 /*#region Описание работы приложения */
+.to-right{
+    text-align: right;
+}
 
 .to-centre {
     text-align: center;

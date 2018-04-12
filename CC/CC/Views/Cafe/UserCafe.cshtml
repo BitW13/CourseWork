@@ -22,6 +22,7 @@
             {
                 <tr>
                     <td>
+                        <a href="~/Views/Cafe/UserCafe.cshtml">~/Views/Cafe/UserCafe.cshtml</a>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
 
@@ -39,9 +40,9 @@
 }
 
 @section footer{
-    @{
-        Html.RenderPartial("_Footer");
-    }
+    <p class="font18">
+        &copy; @DateTime.Now.Year - Coffee-Cup
+    </p>
 }
 
 
