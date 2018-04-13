@@ -45,7 +45,7 @@ namespace CC.Models.Concrete
 
         public IEnumerable<Cafe> GetElementByUserId(Guid? id)
         {
-            IEnumerable<Cafe> cafe = _context.Cafes.Where(m => m.Id == id).ToList();
+            IEnumerable<Cafe> cafe = _context.Cafes.Where(m => m.UserId == id).ToList();
             return cafe;
         }
 

@@ -403,6 +403,7 @@
     <Content Include="Views\Manage\TableData.cshtml" />
     <Content Include="Views\Cafe\TableData.cshtml" />
     <Content Include="Views\Record\TableData.cshtml" />
+    <Content Include="Views\Shared\_MiniFooter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

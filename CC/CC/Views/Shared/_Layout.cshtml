@@ -6,8 +6,8 @@
     <link rel="icon" href="~/Content/Pictures/ShortIcon.svg" />
     <title>@ViewBag.Title - Coffee-Cup</title>
     @Styles.Render("~/Content/css")
-    @RenderSection("style", required: false)
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("style", required: false)
 
 </head>
 <body>
@@ -54,7 +54,7 @@
     <div id="wrapper">
         @RenderSection("body", required: false)
     </div>
-    <hr />
+
     <div class="container body-content">
         @RenderSection("footer", required: false)
     </div>

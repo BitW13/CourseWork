@@ -10,42 +10,41 @@
 }
 
 @section body{
-    <div>
+    <div id="slick-login">
+
         @using (Html.BeginForm("Login", "Account"))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div id="slick-login">
-                @Html.EditorFor(m => m.NickName, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Никнейм" } })
-                @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.NickName, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Никнейм" } })
+            @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger" })
 
-                @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Имя" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Имя" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
 
-                @Html.EditorFor(m => m.UserSurname, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Фамилия" } })
-                @Html.ValidationMessageFor(model => model.UserSurname, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.UserSurname, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Фамилия" } })
+            @Html.ValidationMessageFor(model => model.UserSurname, "", new { @class = "text-danger" })
 
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Пароль" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "placeholder", @placeholder = "Пароль" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
 
-                <input type="submit" value="Войти">
+            <input type="submit" value="Войти">
 
-                <div class="to-centre" style="margin-top: 10px;">
-                    <a href="~/Home/Index" class="btn btn-primary">Назад</a>
-                </div>
-
-                <div class="to-centre" style="margin-top: 10px;">
-                    <a href="~/Account/Create" class="btn btn-primary">Регистрация</a>
-                </div>
+            <div class="to-centre" style="margin-top: 10px;">
+                <a href="~/Home/Index" class="btn btn-primary">Назад</a>
             </div>
-        }
 
+            <div class="to-centre" style="margin-top: 10px;">
+                <a href="~/Account/Create" class="btn btn-primary">Регистрация</a>
+            </div>
+
+        }
     </div>
 
 }
 
-@section Scripts {
+@section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/placeholder.js"></script>
 }

@@ -128,9 +128,12 @@
 
     <!-- #endregion -->
     <!--Карта(геолокация)-->
-    @*<!-- #region Short-news -->
+    <!-- #region Short-news -->
 
     <div id="short-news-container">
+        @{
+            int i = 0;
+        }
         <div class="col-md-12 bold to-centre" id="title">
             Последние новости
             <img id="news-icon" src="~/Content/Pictures/news.svg" />
@@ -142,28 +145,44 @@
 
             <div class="col-md-12" id="first-line-news">
                 <div class="col-md-3">
-                    @Model[0].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[0].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[1].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[1].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[2].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[2].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[3].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[3].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
             </div>
 
@@ -172,28 +191,44 @@
 
             <div class="col-md-12" id="second-line-news">
                 <div class="col-md-3">
-                    @Model[4].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[4].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[5].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[5].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[6].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[6].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[7].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[7].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
             </div>
 
@@ -202,7 +237,8 @@
         </div>
     </div>
 
-    <!-- #endregion -->*@
+    <!-- #endregion -->
+    <!-- #region Footer -->
 
     <div id="footer" class="col-md-12">
         <div id="fot">
@@ -244,6 +280,7 @@
 
     </div>
 
+    <!-- #endregion -->
 }
 
 
