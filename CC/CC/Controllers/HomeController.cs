@@ -30,8 +30,6 @@ namespace CC.Controllers
         {
             var list = _repository.GetAll().ToList();
 
-            list.Reverse();
-
             return View(list);
         }
 

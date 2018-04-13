@@ -36,7 +36,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -305,6 +305,8 @@
     <Content Include="Content\Pictures\dollar-symbol.svg" />
     <Content Include="Content\Pictures\five.svg" />
     <Content Include="Content\Pictures\four.svg" />
+    <Content Include="Content\Pictures\google-plus.svg" />
+    <Content Include="Content\Pictures\instagram-logo.svg" />
     <Content Include="Content\Pictures\location-pointer.svg" />
     <Content Include="Content\Pictures\news.svg" />
     <Content Include="Content\Pictures\one.svg" />
@@ -334,6 +336,7 @@
     <Content Include="Scripts\AutoSearch.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
