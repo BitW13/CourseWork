@@ -257,3 +257,4 @@ D:\Git\Repositories\CourseWork\CC\CC\bin\Ninject.Web.Mvc.xml
 D:\Git\Repositories\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig6.resources
 D:\Git\Repositories\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig7.resources
 D:\Git\Repositories\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig8.resources
+D:\Git\Repositories\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig9.resources
