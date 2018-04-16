@@ -20,7 +20,6 @@ namespace CC.Context
         public DbSet<Record> Records { get; set; }
         public DbSet<Host> Hosts { get; set; }
         public DbSet<Cafe> Cafes { get; set; }
-
     }
     #endregion
 }

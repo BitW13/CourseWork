@@ -91,6 +91,8 @@ namespace CC.Controllers
                 cafe.Description = model.Description;
 
                 _repositoryCafe.Update(cafe);
+
+                return RedirectToAction("UserCafe", "Cafe");
             }
 
             return View(model);
