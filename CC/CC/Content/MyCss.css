@@ -78,6 +78,9 @@
 /*#endregion */
 
 /*#region Описание работы приложения */
+.to-right{
+    text-align: right;
+}
 
 .to-centre {
     text-align: center;
@@ -155,12 +158,14 @@
 
 #footer {
     margin-top: 1em;
-    height: 250px;
-    background-color: #CECECE;
 }
 
 #fot {
     margin-top: 3em;
+}
+
+.noneUnderline {
+    text-decoration: none;
 }
 
 .super-little-icon {

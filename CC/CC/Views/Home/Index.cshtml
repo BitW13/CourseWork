@@ -128,9 +128,12 @@
 
     <!-- #endregion -->
     <!--Карта(геолокация)-->
-    @*<!-- #region Short-news -->
+    <!-- #region Short-news -->
 
     <div id="short-news-container">
+        @{
+            int i = 0;
+        }
         <div class="col-md-12 bold to-centre" id="title">
             Последние новости
             <img id="news-icon" src="~/Content/Pictures/news.svg" />
@@ -142,28 +145,44 @@
 
             <div class="col-md-12" id="first-line-news">
                 <div class="col-md-3">
-                    @Model[0].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[0].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[1].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[1].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[2].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[2].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[3].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[3].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
             </div>
 
@@ -172,28 +191,44 @@
 
             <div class="col-md-12" id="second-line-news">
                 <div class="col-md-3">
-                    @Model[4].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[4].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[5].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[5].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[6].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[6].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
                 <div class="col-md-3">
-                    @Model[7].Title
-                    <p class="to-centre">
-                        <a href="~/Record/Details/@Model[7].Id">Подробнее</a>
-                    </p>
+                    @if (i < Model.Count)
+                    {
+                        @Model[i].Title
+                        <p class="to-centre">
+                            <a href="~/Record/Details/@Model[i].Id">Подробнее</a>
+                        </p>
+                        i++;
+                    }
                 </div>
             </div>
 
@@ -202,48 +237,70 @@
         </div>
     </div>
 
-    <!-- #endregion -->*@
+    <!-- #endregion -->
+    <!-- #region Footer -->
 
     <div id="footer" class="col-md-12">
-        <div id="fot">
-
-            <div class="col-md-3">
-                <p>Разработчики</p>
-                <p>
-                    Petrochenko Sergey
-                    <a href="https://vk.com/id160371377" target="_blank">
-                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
-                    </a>
-                </p>
-                <p>
-                    Shabolda Artyom
-                    <a href="https://vk.com/id143773139" target="_blank">
-                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
-                    </a>
-                </p>
-                <p>
-                    Stoukachev Yaroslav
-                    <a href="https://vk.com/ystukachyov" target="_blank">
-                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
-                    </a>
-                </p>
-            </div>
-
-            <div class="col-md-3">
-
-            </div>
-
-            <div class="col-md-3">
-
-            </div>
-
-            <div class="col-md-3">
-
-            </div>
+        <div id="fot" class="to-centre font18">
+            <p>
+                Разработчики
+            </p>
+            <hr />
         </div>
 
+        <div class="font18 to-centre">
+            <div class="col-md-4">
+                <p>
+                    Petrochenko Sergey
+                </p>
+                <p>
+                    <a href="https://vk.com/id160371377" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                    <a href="https://plus.google.com/u/0/106152068114520058662" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/google-plus.svg" />
+                    </a>
+                    <a href="https://www.instagram.com/_shyss18/" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/instagram-logo.svg" />
+                    </a>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    Shabolda Artyom
+                </p>
+                <p>
+                    <a href="https://vk.com/id143773139" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                    <a href="https://plus.google.com/u/0/111414672440426341149" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/google-plus.svg" />
+                    </a>
+                    <a href="" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/instagram-logo.svg" />
+                    </a>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    Stoukachev Yaroslav
+                </p>
+                <p>
+                    <a href="https://vk.com/ystukachyov" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/vk.svg" />
+                    </a>
+                    <a href="https://plus.google.com/u/1/111276395882982590602" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/google-plus.svg" />
+                    </a>
+                    <a href="https://www.instagram.com/ystoukachev/" target="_blank" style="text-decoration: none;">
+                        <img class="super-little-icon" src="~/Content/Pictures/instagram-logo.svg" />
+                    </a>
+                </p>
+            </div>
+        </div>
     </div>
 
+    <!-- #endregion -->
 }
 
 

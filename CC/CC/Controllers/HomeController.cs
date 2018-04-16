@@ -28,11 +28,9 @@ namespace CC.Controllers
 
         public ActionResult Index()
         {
-            //var list = _repository.GetAll.ToList();
+            var list = _repository.GetAll().ToList();
 
-            //list.Reverse();
-
-            return View(/*list*/);
+            return View(list);
         }
 
         #endregion
