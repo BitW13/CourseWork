@@ -120,6 +120,8 @@ namespace CC.Controllers
                 var cafe = _repositoryCafe.GetElementById(model.Id);
 
                 _repositoryCafe.Delete(cafe.Id);
+
+                return RedirectToAction("AccountIndex", "Manage");
             }
 
             return View(model);
