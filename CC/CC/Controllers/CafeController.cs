@@ -7,7 +7,9 @@ using CC.Models;
 using CC.Models.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -176,5 +178,48 @@ namespace CC.Controllers
         }
 
         #endregion
+        //GET: Cafe/Maps
+        public ActionResult Maps()
+        {
+            string markers = "[";
+            string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlCommand cmd = new SqlCommand("SELECT * FROM Cafes");
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                cmd.Connection = con;
+                con.Open();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        markers += "{";
+                        markers += string.Format("'title': '{0}',", sdr["Name"]);
+                        string str = sdr["Lat"].ToString();
+                        string strnew = "";
+                        for (int i = 0; i < str.Length; i++)
+                            if (str[i] == ',')
+                                strnew += '.';
+                            else
+                                strnew += str[i];
+                        markers += string.Format("'lat': '{0}',", strnew);
+                        str = sdr["Lng"].ToString();
+                        strnew = "";
+                        for (int i = 0; i < str.Length; i++)
+                            if (str[i] == ',')
+                                strnew += '.';
+                            else
+                                strnew += str[i];
+                        markers += string.Format("'lng': '{0}'", strnew);
+                        markers += "},";
+                    }
+                }
+                con.Close();
+            }
+
+            markers += "]";
+            ViewBag.Markers = markers;
+
+            return View();
+        }
     }
 }

@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201804161815120_Mig9.Designer.cs">
       <DependentUpon>201804161815120_Mig9.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171335481_Mig10.cs" />
+    <Compile Include="Migrations\201804171335481_Mig10.Designer.cs">
+      <DependentUpon>201804171335481_Mig10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Abstract\IRepository.cs" />
     <Compile Include="Models\Concrete\EFHostRepostitory.cs" />
@@ -410,6 +414,7 @@
     <Content Include="Views\Cafe\TableData.cshtml" />
     <Content Include="Views\Record\TableData.cshtml" />
     <Content Include="Views\Shared\_MiniFooter.cshtml" />
+    <Content Include="Views\Cafe\Maps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -459,6 +464,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804161815120_Mig9.resx">
       <DependentUpon>201804161815120_Mig9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171335481_Mig10.resx">
+      <DependentUpon>201804171335481_Mig10.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

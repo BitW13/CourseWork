@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section body{
+    @*////////////////////////*@
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+
+    <h3>Google Maps</h3>
+        
+        <div id="map"></div>
+        <script>
+        function initMap() {
+            var markers = @Html.Raw(ViewBag.Markers);
+            var mapOptions = {
+                center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+                zoom: 16
+            };
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            for (i = 0; i < markers.length; i++) {
+                var data = markers[i]
+                var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title: data.title
+                });
+            }
+        }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClVq_2ze6XLG5wUNt3DqtpHx2tmoTvFTY&callback=initMap">
+        </script>
+}
