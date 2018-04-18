@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<CC.Context.ContextModels.Cafe>*@
+﻿@model IEnumerable<CC.Context.ContextModels.Cafe>
 
 @{
     ViewBag.Title = "ListOfCafes";
@@ -30,7 +30,7 @@
             </table>
         }
 
-
+        @Html.Action("Maps")
     </div>
 
 }
