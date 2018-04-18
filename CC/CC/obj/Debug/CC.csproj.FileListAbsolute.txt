@@ -355,3 +355,4 @@ E:\MyProgram\MyCourse\CourseWork\CC\CC\obj\Debug\CC.csproj.CopyComplete
 E:\MyProgram\MyCourse\CourseWork\CC\CC\obj\Debug\CC.dll
 E:\MyProgram\MyCourse\CourseWork\CC\CC\obj\Debug\CC.pdb
 E:\MyProgram\MyCourse\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig10.resources
+D:\Git\Repositories\CourseWork\CC\CC\obj\Debug\CC.Migrations.Mig10.resources

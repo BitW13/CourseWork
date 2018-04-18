@@ -127,7 +127,19 @@
     </div>
 
     <!-- #endregion -->
-    <!--Карта(геолокация)-->
+    <!-- #region Maps -->
+
+    <div id="mainMap" class="col-md-12">
+        <div class="bold to-centre" id="title">
+            Google карта заведений
+        </div>
+
+        <div>
+            @Html.Action("Maps", "Cafe")
+        </div>
+    </div>
+
+    <!-- #endregion -->
     <!-- #region Short-news -->
 
     <div id="short-news-container">
@@ -277,8 +289,8 @@
                         <img class="super-little-icon" src="~/Content/Pictures/google-plus.svg" />
                     </a>
                     @*<a href="" target="_blank" style="text-decoration: none;">
-                        <img class="super-little-icon" src="~/Content/Pictures/instagram-logo.svg" />
-                    </a>*@
+                            <img class="super-little-icon" src="~/Content/Pictures/instagram-logo.svg" />
+                        </a>*@
                 </p>
             </div>
             <div class="col-md-4">
