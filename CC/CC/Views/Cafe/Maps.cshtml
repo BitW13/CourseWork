@@ -1,22 +1,14 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+</style>
 
-@section body{
-    @*////////////////////////*@
-    <style>
-        #map {
-            height: 400px;
-            width: 100%;
-        }
-    </style>
+<h3>Google Maps</h3>
 
-    <h3>Google Maps</h3>
-        
-        <div id="map"></div>
-        <script>
+<div id="map"></div>
+<script>
         function initMap() {
             var markers = @Html.Raw(ViewBag.Markers);
             var mapOptions = {
@@ -34,8 +26,7 @@
                 });
             }
         }
-        </script>
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClVq_2ze6XLG5wUNt3DqtpHx2tmoTvFTY&callback=initMap">
-        </script>
-}
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClVq_2ze6XLG5wUNt3DqtpHx2tmoTvFTY&callback=initMap">
+</script>

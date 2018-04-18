@@ -53,7 +53,7 @@ namespace CC.Controllers
 
                 if (oldCafe == null)
                 {
-                    _repositoryCafe.Create(new Cafe {Id = Guid.NewGuid(), UserId = id, Name = model.Name, Description = model.Description });
+                    _repositoryCafe.Create(new Cafe { Id = Guid.NewGuid(), UserId = id, Name = model.Name, Description = model.Description });
 
                     return RedirectToAction("AccountIndex", "Manage");
                 }
@@ -178,38 +178,65 @@ namespace CC.Controllers
         }
 
         #endregion
+
         //GET: Cafe/Maps
         public ActionResult Maps()
         {
             string markers = "[";
+
             string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
             SqlCommand cmd = new SqlCommand("SELECT * FROM Cafes");
+
             using (SqlConnection con = new SqlConnection(conString))
             {
                 cmd.Connection = con;
+
                 con.Open();
+
                 using (SqlDataReader sdr = cmd.ExecuteReader())
                 {
                     while (sdr.Read())
                     {
                         markers += "{";
+
                         markers += string.Format("'title': '{0}',", sdr["Name"]);
+
                         string str = sdr["Lat"].ToString();
+
                         string strnew = "";
+
                         for (int i = 0; i < str.Length; i++)
+                        {
                             if (str[i] == ',')
+                            {
                                 strnew += '.';
+                            }
                             else
+                            {
                                 strnew += str[i];
+                            }
+                        }
+
                         markers += string.Format("'lat': '{0}',", strnew);
+
                         str = sdr["Lng"].ToString();
+
                         strnew = "";
+
                         for (int i = 0; i < str.Length; i++)
+                        {
                             if (str[i] == ',')
+                            {
                                 strnew += '.';
+                            }
                             else
+                            {
                                 strnew += str[i];
+                            }
+                        }
                         markers += string.Format("'lng': '{0}'", strnew);
+
                         markers += "},";
                     }
                 }
@@ -217,9 +244,10 @@ namespace CC.Controllers
             }
 
             markers += "]";
+
             ViewBag.Markers = markers;
 
-            return View();
+            return PartialView();
         }
     }
 }
