@@ -12,35 +12,52 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <h2>Добавление описания заведения</h2>
-                <h4>Заполните все поля</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Добавить" class="btn btn-primary" />
-                    </div>
+        <div class="form-horizontal">
+            <h2>Добавление описания заведения</h2>
+            <h4>Заполните все поля</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
-        }
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @id = "Address" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.Lat, new { htmlAttributes = new { @class = "form-control", @id = "Lat" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.Lng, new { htmlAttributes = new { @class = "form-control", @id = "Lng" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="submit" type="submit" value="Добавить" disabled class="btn btn-primary"/>
+                </div>
+            </div>
+
+
+        </div>
+        }
         <div>
             @Html.ActionLink("Назад", "AccountIndex", "Manage")
         </div>
@@ -57,6 +74,34 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClVq_2ze6XLG5wUNt3DqtpHx2tmoTvFTY&callback=geocoding">
+    </script>
+    <script>
+
+        function geocoding() {
+            document.getElementById('Address').addEventListener('change', function () {
+                geocodeAddress();
+            });
+        }
+        function geocodeAddress() {
+            var address = document.getElementById("Address").value;
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+                    
+                    document.getElementById('Lat').value = latitude;
+                    document.getElementById('Lng').value = longitude;                    
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+                document.getElementById("submit").disabled = false;
+            });
+        }
+    </script>
 }
 
 

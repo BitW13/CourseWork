@@ -45,7 +45,7 @@ namespace CC.Controllers
             {
                 Guid id = Guid.Parse(Decoding.GetDecrypt(HttpContext.Request.Cookies["Id"].Value));
 
-                var getConvert = new Cafe { Name = model.Name, Description = model.Description };
+                var getConvert = new Cafe { Name = model.Name, Description = model.Description, Address = model.Address, Lat = "0", Lng = "0" };
 
                 var user = _repositoryUser.GetElementById(id);
 
@@ -53,8 +53,8 @@ namespace CC.Controllers
 
                 if (oldCafe == null)
                 {
-                    _repositoryCafe.Create(new Cafe { Id = Guid.NewGuid(), UserId = id, Name = model.Name, Description = model.Description });
-
+                    _repositoryCafe.Create(
+                    new Cafe { Id = Guid.NewGuid(), UserId = id, Name = model.Name, Description = model.Description, Address = model.Address, Lat = model.Lat, Lng = model.Lng });
                     return RedirectToAction("AccountIndex", "Manage");
                 }
                 else
@@ -186,11 +186,11 @@ namespace CC.Controllers
 
             string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM Cafes");
 
             using (SqlConnection con = new SqlConnection(conString))
             {
-                cmd.Connection = con;
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Cafes", con);
+                //cmd.Connection = con;
 
                 con.Open();
 
@@ -201,41 +201,8 @@ namespace CC.Controllers
                         markers += "{";
 
                         markers += string.Format("'title': '{0}',", sdr["Name"]);
-
-                        string str = sdr["Lat"].ToString();
-
-                        string strnew = "";
-
-                        for (int i = 0; i < str.Length; i++)
-                        {
-                            if (str[i] == ',')
-                            {
-                                strnew += '.';
-                            }
-                            else
-                            {
-                                strnew += str[i];
-                            }
-                        }
-
-                        markers += string.Format("'lat': '{0}',", strnew);
-
-                        str = sdr["Lng"].ToString();
-
-                        strnew = "";
-
-                        for (int i = 0; i < str.Length; i++)
-                        {
-                            if (str[i] == ',')
-                            {
-                                strnew += '.';
-                            }
-                            else
-                            {
-                                strnew += str[i];
-                            }
-                        }
-                        markers += string.Format("'lng': '{0}'", strnew);
+                        markers += string.Format("'lat': '{0}',", sdr["Lat"]);
+                        markers += string.Format("'lng': '{0}'", sdr["Lng"]);
 
                         markers += "},";
                     }

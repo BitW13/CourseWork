@@ -12,7 +12,7 @@
         function initMap() {
             var markers = @Html.Raw(ViewBag.Markers);
             var mapOptions = {
-                center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+                center: new google.maps.LatLng(53.9080343, 30.3439963),
                 zoom: 16
             };
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);

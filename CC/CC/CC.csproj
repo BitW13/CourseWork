@@ -273,6 +273,10 @@
     <Compile Include="Migrations\201804171335481_Mig10.Designer.cs">
       <DependentUpon>201804171335481_Mig10.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804270743138_Mig11.cs" />
+    <Compile Include="Migrations\201804270743138_Mig11.Designer.cs">
+      <DependentUpon>201804270743138_Mig11.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Abstract\IRepository.cs" />
     <Compile Include="Models\Concrete\EFHostRepostitory.cs" />
@@ -466,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804171335481_Mig10.resx">
       <DependentUpon>201804171335481_Mig10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804270743138_Mig11.resx">
+      <DependentUpon>201804270743138_Mig11.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
