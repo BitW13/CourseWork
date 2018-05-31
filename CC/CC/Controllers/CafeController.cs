@@ -76,7 +76,7 @@ namespace CC.Controllers
         {
             var cafe = _repositoryCafe.GetElementById(id);
 
-            var model = new EditCafeDescriptionModel { Id = cafe.Id, Description = cafe.Description, Name = cafe.Name };
+            var model = new EditCafeDescriptionModel { Id = cafe.Id, Description = cafe.Description, Name = cafe.Name, Address=cafe.Address };
 
             return View(model);
         }
@@ -91,6 +91,9 @@ namespace CC.Controllers
 
                 cafe.Name = model.Name;
                 cafe.Description = model.Description;
+                cafe.Address = model.Address;
+                cafe.Lat = model.Lat;
+                cafe.Lng = model.Lng;
 
                 _repositoryCafe.Update(cafe);
 

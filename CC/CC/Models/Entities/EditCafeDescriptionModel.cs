@@ -24,6 +24,12 @@ namespace CC.Models
         [StringLength(10000, ErrorMessage = "Это поле должно быть от {2} до {1} символов", MinimumLength = 50)]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Это поле обязательно для заполнения")]
+        public string Address { get; set; }
+
+        public string Lat { get; set; }
+
+        public string Lng { get; set; }
         #endregion
     }
 }
